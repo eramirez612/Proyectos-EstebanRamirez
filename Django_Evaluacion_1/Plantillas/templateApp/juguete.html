@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <title>Juguetes</title>
+</head>
+<body class="container mt-5">
+    <div class="alert alert-info display-1 text-center">DJANGO SHOP</div>
+    <div class="alert alert-dark display-2 text-xxl-start">Juguetes</div>
+    <!--Placeholders-->
+    <div class="card-group">
+        <div class="card">
+          <img src="{% static 'images/yoda.png' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Yoda Toy</h5>
+            <p class="card-text">Plug and Play, que la fuerza este contigo</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/milesm.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Funko PoP - Spiderman Miles Morales</h5>
+            <p class="card-text">Funko PoP de Miles Morales, es Spiderman... Pero negro</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/kami.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Funko PoP - Kamisama de Dragon Ball Z</h5>
+            <p class="card-text">Es un funko de Piccolo antes de ser Piccolo, espera asi no es</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-primary"><a href="javascript:history.back()">Volver</a></button>
+</body>
+</html>

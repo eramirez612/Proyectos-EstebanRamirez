@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <title>Usuario</title>
+</head>
+<body class="container mt-5">
+    <div class="alert alert-info display-1 text-center">DJANGO SHOP</div>
+    <div class="alert alert-dark display-2 text-xxl-start">Usuario</div>
+    <img src="{% static 'images/therock.gif' %}" alt="" style="width: 200px;height: 300px;">
+    <ul>
+        <li>ID del usuario: {{ID}}</li>
+        <li>Correo del Usuario: {{Correo}}</li>
+        <li>Edad del Usuario: {{Edad}}</li>
+    </ul>
+    <button type="button" class="btn btn-outline-primary"><a href="javascript:history.back()">Volver</a></button>
+    <audio controls autoplay>
+        <source src="{% static 'audio/boom.mp3' %}"  type="audio/mpeg">
+</body>
+</html>

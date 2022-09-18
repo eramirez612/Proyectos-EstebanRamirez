@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <title>Ropa</title>
+</head>
+<body class="container mt-5">
+    <div class="alert alert-info display-1 text-center">DJANGO SHOP</div>
+    <div class="alert alert-dark display-2 text-xxl-start">Ropa</div>
+    <!--Placeholders-->
+    <div class="card-group">
+        <div class="card">
+          <img src="{% static 'images/corxea.png' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Camiseta Corxea</h5>
+            <p class="card-text">Camiseta del emblematico y esquizofrenico Corxea Champuru, el mejor jungla del mundo</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/yasuo.png' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Camiseta Yone Tres Pentas</h5>
+            <p class="card-text">Camiseta de Yone carreando a su hermano, la pregunta es, como es que se hace tres pentas?</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="{% static 'images/calama.png' %}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Camiseta Calama</h5>
+            <p class="card-text">Camiseta que representa exactamente lo que es Calama, alguna vez lo ha visitado?, esperamos que no</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-primary"><a href="javascript:history.back()">Volver</a></button>
+</body>
+</html>
