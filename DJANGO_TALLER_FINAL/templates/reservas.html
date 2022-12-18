@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <title>Listado de Proyecto</title>
+</head>
+<body class="container mt-5">
+    <div class="alert alert-info display-1 text-center">LISTADO DE RESERVAS</div>
+    {% if ins %}
+    <table class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Reservante</th>
+                <th>Institucion</th>
+                <th>Telefono</th>
+                <th>Fecha de la Reserva</th>
+                <th>Hora de la Reserva</th>
+                <th>Estado de la Reserva</th>
+                <th>Observaciones</th>
+                <th>--</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for Inscritos in ins %}
+            <tr>
+                <td>{{ Inscritos.id}}</td>
+                <td>{{ Inscritos.nombre}}</td>
+                <td>{{ Inscritos.institucion}}</td>
+                <td>{{ Inscritos.telefono}}</td>
+                <td>{{ Inscritos.fechareserva}}</td>
+                <td>{{ Inscritos.horareserva}}</td>
+                <td>{{ Inscritos.estado}}</td>
+                <td>{{ Inscritos.observacion}}</td>
+                <td><a href="/actualizarReserva/{{Inscritos.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></td>
+                <td><a href="/eliminarReserva/{{Inscritos.id}}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <strong>No se encuentran reservas en el sistema</strong>
+    </div>
+    {% endif %}
+
+    <a href="../" class="btn btn-danger">VOLVER</a>
+    <a href="../agregarreserva/" class="btn btn-info float-end">AGREGAR RESERVAS</a>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>
