@@ -5,7 +5,7 @@ from serialApp.forms import ProyectoForm
 # Create your views here.
 
 def personadata(request):
-    personas = persona.objects.all()
+    personas = Proyecto.objects.all()
     data = {'personas' : personas}
     return render(request, 'empleados.html', data)
 
@@ -13,7 +13,7 @@ def index(request):
     return render(request, 'index.html')
 
 def listadoproyectos(request):
-    proyectos = proyecto.objects.all()
+    proyectos = Proyecto.objects.all()
     data = {'proyectos': proyectos}
     return render(request, 'proyectos.html', data)
 
@@ -28,12 +28,12 @@ def agregarproyecto(request):
     return render(request, 'agregarproyecto.html', data)
 
 def eliminarProyecto(request, id):
-    pro = proyecto.objects.get(id = id)
+    pro = Proyecto.objects.get(id = id)
     pro.delete()
     return redirect('/proyectos')
 
 def actualizarProyecto(request, id):
-    pro = proyecto.objects.get(id = id)
+    pro = Proyecto.objects.get(id = id)
     form = ProyectoForm(instance=pro)
     if request.method == 'POST':
         form = ProyectoForm(request.POST, instance=pro)

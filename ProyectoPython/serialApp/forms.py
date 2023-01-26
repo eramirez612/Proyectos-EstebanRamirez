@@ -1,7 +1,17 @@
 from django import forms
 from serialApp.models import Proyecto, User
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+    
+
 class ProyectoForm(forms.ModelForm):
+    
+    nombre = forms.CharField(min_length=3, max_length=50)
+    fecha_inicio = forms.DateField(widget=DateInput)
+    responsable = forms.CharField(min_length=3, max_length=50)
+    prioridad = forms.IntegerField(min_value=1, max_value=10)
+    
     class Meta:
         model = Proyecto
         fields = '__all__'

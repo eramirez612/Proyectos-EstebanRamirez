@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'ProyectoPython.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
+        'NAME': 'django_testing',
         'USER': 'root',
         'PASSWORD': ''
     }

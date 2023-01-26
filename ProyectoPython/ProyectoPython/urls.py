@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from serialApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('persona/', views.personadata),
+    path('', views.index),
+    path('proyectos/', views.listadoproyectos),
+    path('agregarproyecto/', views.agregarproyecto),
+    path('eliminarProyecto/<int:id>', views.eliminarProyecto),
+    path('actualizarProyecto/<int:id>', views.actualizarProyecto),
 ]
