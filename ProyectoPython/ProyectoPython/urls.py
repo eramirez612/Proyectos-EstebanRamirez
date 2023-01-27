@@ -22,6 +22,7 @@ from serialApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('persona/', views.personadata),
+    path('lista/pdf/<int:pk>', views.ProyectoPDF.as_view(), name='listado PDF'),
     path('', views.index),
     path('proyectos/', views.listadoproyectos),
     path('agregarproyecto/', views.agregarproyecto),
