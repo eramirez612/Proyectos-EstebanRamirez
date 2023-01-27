@@ -11,6 +11,8 @@ class ProyectoForm(forms.ModelForm):
     fecha_inicio = forms.DateField(widget=DateInput)
     responsable = forms.CharField(min_length=3, max_length=50)
     prioridad = forms.IntegerField(min_value=1, max_value=10)
+    imagen = forms.ImageField(required=False)
+    
     
     class Meta:
         model = Proyecto

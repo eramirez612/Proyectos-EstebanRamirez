@@ -20,7 +20,7 @@ def listadoproyectos(request):
 def agregarproyecto(request):
     form = ProyectoForm()
     if request.method == 'POST':
-        form = ProyectoForm(request.POST)
+        form = ProyectoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
         return index(request)
@@ -36,9 +36,9 @@ def actualizarProyecto(request, id):
     pro = Proyecto.objects.get(id = id)
     form = ProyectoForm(instance=pro)
     if request.method == 'POST':
-        form = ProyectoForm(request.POST, instance=pro)
+        form = ProyectoForm(request.POST,request.FILES, instance=pro)
         if form.is_valid():
             form.save()
         return index(request)
     data = {'form' : form}
-    return render(request, 'agregarProyecto.html', data)
+    return render(request, 'actualizarProyecto.html', data)

@@ -8,6 +8,9 @@ class Proyecto(models.Model):
     fecha_inicio = models.DateField()
     responsable = models.CharField(max_length=50)
     prioridad = models.IntegerField()
+    imagen = models.ImageField(upload_to="projects/", null=True)
+
+
 
 
 class User(models.Model):
