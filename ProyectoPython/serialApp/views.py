@@ -1,13 +1,28 @@
 from django.shortcuts import render, redirect
-from serialApp.models import User, Proyecto
+from serialApp.models import  Proyecto
 from serialApp.forms import ProyectoForm
-from django.views.generic import ListView, View
+from django.views.generic import View
 from django.http import HttpResponse
-import os
-from django.conf import settings
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.contrib.staticfiles import finders
+from .utils import render_to_pdf
+
+
+class GenerarPDF(View):
+    def get(self, request, *args, **kwargs):
+        data = {
+        "name": "Mama", #you can feach the data from database
+        "id": 18,
+        "amount": 333,
+        }
+        pdf = render_to_pdf('reporte.html',data)
+        if pdf:
+            response=HttpResponse(pdf,content_type='application/pdf')
+            filename = "Report_for_%s.pdf" %(data['id'])
+            content = "inline; filename= %s" %(filename)
+            response['Content-Disposition']=content
+            return response
+        return HttpResponse("Page Not Found")
 
 def personadata(request):
     personas = Proyecto.objects.all()
