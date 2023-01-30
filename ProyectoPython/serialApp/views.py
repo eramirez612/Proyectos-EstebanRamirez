@@ -9,9 +9,6 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
-
-
-
 def personadata(request):
     personas = Proyecto.objects.all()
     data = {'personas' : personas}
