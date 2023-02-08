@@ -11,9 +11,8 @@ from .utils import render_to_pdf
 class GenerarPDF(View):
     def get(self, request, *args, **kwargs):
         data = {
-        "name": "Mama", #you can feach the data from database
-        "id": 18,
-        "amount": 333,
+            'proyectos': Proyecto.objects.all(),
+            'id': 1
         }
         pdf = render_to_pdf('reporte.html',data)
         if pdf:
