@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-*p4iy*p0rj)-bj58y$2qf(md2z3y-=aw3-0bri#3yic=0vt0x8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = [
+    'shared',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,30 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+TENANT_APPS = [
+    'store',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+INSTALLED_APPS = [
+    'tenant_schemas',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'shared',
+    'store',
+]
+
 MIDDLEWARE = [
+    'tenant_schemas.middleware.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,10 +99,26 @@ WSGI_APPLICATION = 'multitenant_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'tenant_schemas.postgresql_backend',
+
+        'NAME': 'multitenant',
+        
+        'USER': 'multitenant',
+
+        'PASSWORD': 'multitenant',
+        
+        'HOST': 'localhost',
+        
+        'PORT': '5432',
+        
+        'CHARSET': 'utf8'
+
+
     }
 }
+
+DATABASES_ROUTERS = ['tenant_schemas.routers.TenantSyncRouter']
+
 
 
 # Password validation
@@ -121,3 +161,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TENANT_MODEL = 'shared.Client'
