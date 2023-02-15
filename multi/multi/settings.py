@@ -68,6 +68,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'multi.urls'
+PUBLIC_SCHEMA_URLCONF = 'multi.urls_public'
+
+
 
 TEMPLATES = [
     {
@@ -148,3 +151,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
+
