@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'multi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'multitenant',
-        'USER': 'esteb',
-        'PASSWORD': 'sa',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'multi',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
