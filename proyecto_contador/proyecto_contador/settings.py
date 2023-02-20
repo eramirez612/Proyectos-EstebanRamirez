@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 SHARED_APPS = [
     'django_tenants',
     'client',
+    'admin_interface',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,11 @@ SHARED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shared_app',
+    'colorfield',
 ]
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 TENANT_APPS = [
     'django.contrib.admin',
