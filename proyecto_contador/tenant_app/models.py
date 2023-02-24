@@ -8,9 +8,9 @@ status_choices = [
 ]
 
 contract_choices = [
-    ('Por Faena', 'Por Faena'),
     ('Plazo Fijo', 'Plazo Fijo'),
     ('Part Time', 'Part Time'),
+    ('Por Faena', 'Por Faena'),
     ('Contrato Indefinido', 'Contrato Indefinido'),
     ('Contrato para Practicante', 'Contrato para Practicante'),
     ('Contrato para extranjero', 'Contrato para extranjero'),
@@ -20,12 +20,12 @@ contract_choices = [
 
 payment_choices = [
     ('Efectivo', 'Efectivo'),
-    ('Transferencia Bancaria'),
+    ('Transferencia Bancaria', 'Transferencia Bancaria'),
 ]
 
-class Empleados(models.Model):
+class Empleado(models.Model):
+    rut = models.CharField(max_length=9, primary_key=True)
     nombre = models.CharField(max_length=100)
-    rut = models.CharField(max_length=9)
     fecha_ingreso = models.DateField()
     fecha_termino = models.DateField()
     estado = models.CharField(
@@ -41,6 +41,11 @@ class Empleados(models.Model):
         choices=contract_choices,
         default=1
     )
-    
+    metodo_pago = models.CharField(
+        max_length = 50,
+        null=False, blank=False,
+        choices=payment_choices,
+        default=1
+    )
 
 
