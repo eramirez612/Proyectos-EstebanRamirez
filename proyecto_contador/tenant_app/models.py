@@ -41,4 +41,6 @@ class Empleados(models.Model):
         choices=contract_choices,
         default=1
     )
+    
+
 
