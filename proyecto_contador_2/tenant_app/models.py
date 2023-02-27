@@ -60,16 +60,20 @@ work_choices = [
     ('BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)', 'BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)'),
     ('JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)', 'JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)'),
     ('EXENTA - ART 22 (sin limitacion de jornada)', 'EXENTA - ART 22 (sin limitacion de jornada)'),
-
 ]
 
-class Empleado(models.Model):
-    ID = models.AutoField(primary_key=True)
-    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE)
+civil_status_choices = [
+    ('--Seleccione el estado civil--', '--Seleccione el estado civil--'),
+    ('Soltero', 'Soltero'),
+    ('Casado', 'Casado'),
+    ('Divorciado', 'Divorciado'),
+    ('Viudo', 'Viudo'),
+]
+
 
 class Datos_Empleado(models.Model):
     Rut = models.CharField(max_length=9, primary_key=True)
-    Nombres = models.CharField(max_length=100)
+    Nombres = models.CharField(max_length=9)
     Apellidos = models.CharField(max_length=100)
     Direccion = models.CharField(max_length=100)
     Comuna = models.CharField(max_length=100)
@@ -79,9 +83,16 @@ class Datos_Empleado(models.Model):
         choices=sex_choices,
         default=1
     )
-    Numero_De_Pasaporte = models.CharField(max_length=10)
-    Labor_en_Liquidacion = models.CharField(max_length=50)
-    Celular = models.IntegerField(max_length=9)
+    Estado_civil = models.CharField(
+        max_length = 50,
+        null=False, blank=False,
+        choices=civil_status_choices,
+        default=1
+    )
+    Nacionalidad = models.CharField(max_length=50)
+    Numero_De_Pasaporte = models.CharField(blank=True,max_length=10)
+    Labor_en_Liquidacion = models.CharField(blank=True,max_length=50)
+    Celular = models.IntegerField()
     Email = models.EmailField()
     Pensionado_por_Invalidez = models.BooleanField()
     Profesional = models.BooleanField()
@@ -95,12 +106,14 @@ class Datos_Empleado(models.Model):
 
 class Libro_Rem_Electronico(models.Model):
     Tipo_Jornada_Trabajo = models.CharField(
-        max_length=50,
+        max_length=500,
         null=False, blank=False,
         choices= work_choices,
         default= 1
     )
     Profesional = models.BooleanField()
     
-    
+class Empleado(models.Model):
+    ID = models.AutoField(primary_key=True)
+    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE)
 
