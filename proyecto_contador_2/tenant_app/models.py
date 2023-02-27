@@ -41,29 +41,7 @@ taxes_choices = [
 ]
 
 class Empleado(models.Model):
-    rut = models.CharField(max_length=9, primary_key=True)
-    nombre = models.CharField(max_length=100)
-    fecha_ingreso = models.DateField()
-    fecha_termino = models.DateField()
-    estado = models.CharField(
-        max_length = 50,
-        null=False, blank=False,
-        choices=status_choices,
-        default=1
-    )
-
-    contrato = models.CharField(
-        max_length = 50,
-        null=False, blank=False,
-        choices=contract_choices,
-        default=1
-    )
-    metodo_pago = models.CharField(
-        max_length = 50,
-        null=False, blank=False,
-        choices=payment_choices,
-        default=1
-    )
+    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE)
 
 class Datos_Empleado(models.Model):
     Rut = models.CharField(max_length=9, primary_key=True)
