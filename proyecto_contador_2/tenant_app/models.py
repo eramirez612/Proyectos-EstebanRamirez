@@ -40,7 +40,31 @@ taxes_choices = [
     ('Trabajador Agricola', 'Trabajador Agricola'),
 ]
 
+work_choices = [
+    ('--Seleccione el tipo de jornada--', '--Seleccione el tipo de jornada--'),
+    ('ORDINARIA - ART 22 (45 Horas)','ORDINARIA-ART 22 (45 Horas)'),
+    ('PARCIAL - ART 40 BIS (30 Horas max)', 'PARCIAL-ART 40 BIS (30 Horas max)'),
+    ('EXTRAORDINARIA - ART 30 (sobretiempo)','EXTRAORDINARIA-ART 30 (sobretiempo)'),
+    ('ESPECIAL - ART 38 INCISO 5 (trabajo fuerza mayor)', 'ESPECIAL - ART 38 INCISO 5 (trabajo fuerza mayor)'),
+    ('ESPECIAL - ART 23 (NAVIERO)', 'ESPECIAL - ART 23 (NAVIERO)'),
+    ('ESPECIAL - ART 106 (NAVIERO)', 'ESPECIAL - ART 106 (NAVIERO)'),
+    ('ESPECIAL - ART 152 TER D (tripulantes de vuelo)', 'ESPECIAL - ART 152 TER D (tripulantes de vuelo)'),
+    ('ESPECIAL - ART 152 TER F (tripulantes de vuelo)', 'ESPECIAL - ART 152 TER F (tripulantes de vuelo)'),
+    ('ESPECIAL - ART 25 (locomocion colectiva interurbana)', 'ESPECIAL - ART 25 (locomocion colectiva interurbana)'),
+    ('ESPECIAL - ART 25 BIS (carga terrestre interurbana)', 'ESPECIAL - ART 25 BIS (carga terrestre interurbana)'),
+    ('ESPECIAL - ART 149 (trabajadores de casa particular)', 'ESPECIAL - ART 149 (trabajadores de casa particular)'),
+    ('ESPECIAL - ART 149 INCISO 2 (trabajadores de casa particular)','ESPECIAL - ART 149 INCISO 2 (trabajadores de casa particular)'),
+    ('ESPECIAL - ART 152 BIS (cuerpos de bomberos)', 'ESPECIAL - ART 152 BIS (cuerpos de bomberos)'),
+    ('ESPECIAL - ART 36 145-D (artes y espectaculos)', 'ESPECIAL - ART 36 145-D (artes y espectaculos)'),
+    ('ESPECIAL - ART 22 INCISO FINAL (deportistas profesionales)', 'ESPECIAL - ART 22 INCISO FINAL (deportistas profesionales)'),
+    ('BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)', 'BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)'),
+    ('JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)', 'JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)'),
+    ('EXENTA - ART 22 (sin limitacion de jornada)', 'EXENTA - ART 22 (sin limitacion de jornada)'),
+
+]
+
 class Empleado(models.Model):
+    ID = models.AutoField(primary_key=True)
     Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE)
 
 class Datos_Empleado(models.Model):
@@ -69,7 +93,14 @@ class Datos_Empleado(models.Model):
     )
     Descuento_Prestamo_SII = models.BooleanField()
 
-
+class Libro_Rem_Electronico(models.Model):
+    Tipo_Jornada_Trabajo = models.CharField(
+        max_length=50,
+        null=False, blank=False,
+        choices= work_choices,
+        default= 1
+    )
+    Profesional = models.BooleanField()
     
     
 
