@@ -89,7 +89,7 @@ class Datos_Empleado(models.Model):
         choices=civil_status_choices,
         default=1
     )
-    Nacionalidad = models.CharField(max_length=50)
+    Nacionalidad = models.CharField(blank=True, null=True, max_length=50)
     Numero_De_Pasaporte = models.CharField(blank=True,max_length=10)
     Labor_en_Liquidacion = models.CharField(blank=True,max_length=50)
     Celular = models.IntegerField()
@@ -103,6 +103,9 @@ class Datos_Empleado(models.Model):
         default=1
     )
     Descuento_Prestamo_SII = models.BooleanField()
+    
+    def __str__(self):
+        return self
 
 class Libro_Rem_Electronico(models.Model):
     Tipo_Jornada_Trabajo = models.CharField(
@@ -114,6 +117,6 @@ class Libro_Rem_Electronico(models.Model):
     Profesional = models.BooleanField()
     
 class Empleado(models.Model):
-    ID = models.AutoField(primary_key=True)
-    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE)
+    ID = models.AutoField(primary_key=True, default=1)
+    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE, blank=True, null=True,)
 
