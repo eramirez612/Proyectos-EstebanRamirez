@@ -77,6 +77,7 @@ class Datos_Empleado(models.Model):
     Apellidos = models.CharField(max_length=100)
     Direccion = models.CharField(max_length=100)
     Comuna = models.CharField(max_length=100)
+    Fecha_Nacimiento = models.DateField(null=True)
     Sexo = models.CharField(
         max_length = 50,
         null=False, blank=False,
