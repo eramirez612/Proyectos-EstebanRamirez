@@ -73,19 +73,19 @@ civil_status_choices = [
 
 class Datos_Empleado(models.Model):
     Rut = models.CharField(max_length=9, primary_key=True)
-    Nombres = models.CharField(max_length=9)
+    Nombres = models.CharField(max_length=100)
     Apellidos = models.CharField(max_length=100)
     Direccion = models.CharField(max_length=100)
     Comuna = models.CharField(max_length=100)
     Fecha_Nacimiento = models.DateField(null=True)
     Sexo = models.CharField(
-        max_length = 50,
+        max_length = 500,
         null=False, blank=False,
         choices=sex_choices,
         default=1
     )
     Estado_civil = models.CharField(
-        max_length = 50,
+        max_length = 500,
         null=False, blank=False,
         choices=civil_status_choices,
         default=1
@@ -98,17 +98,13 @@ class Datos_Empleado(models.Model):
     Pensionado_por_Invalidez = models.BooleanField()
     Profesional = models.BooleanField()
     Tipo_de_impuesto_unico = models.CharField(
-        max_length = 50,
+        max_length = 500,
         null=False, blank=False,
         choices=taxes_choices,
         default=1
     )
     Descuento_Prestamo_SII = models.BooleanField()
     
-    def __str__(self):
-        return self
-
-class Libro_Rem_Electronico(models.Model):
     Tipo_Jornada_Trabajo = models.CharField(
         max_length=500,
         null=False, blank=False,
@@ -116,8 +112,11 @@ class Libro_Rem_Electronico(models.Model):
         default= 1
     )
     Profesional = models.BooleanField()
-    
+
 class Empleado(models.Model):
-    ID = models.AutoField(primary_key=True, default=1)
+    ID = models.AutoField(primary_key=True)
     Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE, blank=True, null=True,)
+
+def __str__(self):
+    return self.Rut
 

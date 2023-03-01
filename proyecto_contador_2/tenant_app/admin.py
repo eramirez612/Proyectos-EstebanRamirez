@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tenant_app.models import Empleado, Datos_Empleado, Libro_Rem_Electronico
+from tenant_app.models import Datos_Empleado, Empleado
 
 # Register your models here.
     
@@ -21,15 +21,7 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                     'Profesional',
                     'Tipo_de_impuesto_unico',
                     'Descuento_Prestamo_SII',)
-
-
-@admin.register(Libro_Rem_Electronico)
-class Libro_Rem_ElectronicoAdmin(admin.ModelAdmin):
-    list_display = ('Tipo_Jornada_Trabajo',
-                    'Profesional',)
-
+    
 @admin.register(Empleado)
 class EmpleadoAdmin(admin.ModelAdmin):
-    list_display = ('ID',
-                    'Datos_Empleado',)
-    
+    list_display = ('Datos_Empleado',)
