@@ -104,3 +104,18 @@ class Datos_Empleado(models.Model):
         default=1
     )
     Descuento_Prestamo_SII = models.BooleanField()
+    
+    Tipo_Jornada_Trabajo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= work_choices,
+        default= 1
+    )
+    Profesional = models.BooleanField()
+
+class Empleado(models.Model):
+    ID = models.AutoField(primary_key=True)
+    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE, blank=True, null=True,)
+
+def __str__(self):
+    return self.Rut
