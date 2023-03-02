@@ -94,7 +94,7 @@ class Datos_Empleado(models.Model):
     Numero_De_Pasaporte = models.CharField(blank=True,max_length=10)
     Labor_en_Liquidacion = models.CharField(blank=True,max_length=50)
     Celular = models.IntegerField()
-    Email = models.EmailField()
+    Email = models.EmailField(blank=True, null=True)
     Pensionado_por_Invalidez = models.BooleanField()
     Profesional = models.BooleanField()
     Tipo_de_impuesto_unico = models.CharField(
