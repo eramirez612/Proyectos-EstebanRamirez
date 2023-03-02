@@ -40,36 +40,30 @@ taxes_choices = [
     ('Trabajador Agricola', 'Trabajador Agricola'),
 ]
 
-work_choices = [
-    ('--Seleccione el tipo de jornada--', '--Seleccione el tipo de jornada--'),
-    ('ORDINARIA - ART 22 (45 Horas)','ORDINARIA-ART 22 (45 Horas)'),
-    ('PARCIAL - ART 40 BIS (30 Horas max)', 'PARCIAL-ART 40 BIS (30 Horas max)'),
-    ('EXTRAORDINARIA - ART 30 (sobretiempo)','EXTRAORDINARIA-ART 30 (sobretiempo)'),
-    ('ESPECIAL - ART 38 INCISO 5 (trabajo fuerza mayor)', 'ESPECIAL - ART 38 INCISO 5 (trabajo fuerza mayor)'),
-    ('ESPECIAL - ART 23 (NAVIERO)', 'ESPECIAL - ART 23 (NAVIERO)'),
-    ('ESPECIAL - ART 106 (NAVIERO)', 'ESPECIAL - ART 106 (NAVIERO)'),
-    ('ESPECIAL - ART 152 TER D (tripulantes de vuelo)', 'ESPECIAL - ART 152 TER D (tripulantes de vuelo)'),
-    ('ESPECIAL - ART 152 TER F (tripulantes de vuelo)', 'ESPECIAL - ART 152 TER F (tripulantes de vuelo)'),
-    ('ESPECIAL - ART 25 (locomocion colectiva interurbana)', 'ESPECIAL - ART 25 (locomocion colectiva interurbana)'),
-    ('ESPECIAL - ART 25 BIS (carga terrestre interurbana)', 'ESPECIAL - ART 25 BIS (carga terrestre interurbana)'),
-    ('ESPECIAL - ART 149 (trabajadores de casa particular)', 'ESPECIAL - ART 149 (trabajadores de casa particular)'),
-    ('ESPECIAL - ART 149 INCISO 2 (trabajadores de casa particular)','ESPECIAL - ART 149 INCISO 2 (trabajadores de casa particular)'),
-    ('ESPECIAL - ART 152 BIS (cuerpos de bomberos)', 'ESPECIAL - ART 152 BIS (cuerpos de bomberos)'),
-    ('ESPECIAL - ART 36 145-D (artes y espectaculos)', 'ESPECIAL - ART 36 145-D (artes y espectaculos)'),
-    ('ESPECIAL - ART 22 INCISO FINAL (deportistas profesionales)', 'ESPECIAL - ART 22 INCISO FINAL (deportistas profesionales)'),
-    ('BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)', 'BISEMANAL - ART 149 INCISO 2 (trabajadores de casa particular)'),
-    ('JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)', 'JORNADA EXCEPCIONAL - ART 38 INCISO FINAL (trabajo fuerza mayor)'),
-    ('EXENTA - ART 22 (sin limitacion de jornada)', 'EXENTA - ART 22 (sin limitacion de jornada)'),
-]
+class Empleado(models.Model):
+    rut = models.CharField(max_length=9, primary_key=True)
+    nombre = models.CharField(max_length=100)
+    fecha_ingreso = models.DateField()
+    fecha_termino = models.DateField()
+    estado = models.CharField(
+        max_length = 50,
+        null=False, blank=False,
+        choices=status_choices,
+        default=1
+    )
 
-civil_status_choices = [
-    ('--Seleccione el estado civil--', '--Seleccione el estado civil--'),
-    ('Soltero', 'Soltero'),
-    ('Casado', 'Casado'),
-    ('Divorciado', 'Divorciado'),
-    ('Viudo', 'Viudo'),
-]
-
+    contrato = models.CharField(
+        max_length = 50,
+        null=False, blank=False,
+        choices=contract_choices,
+        default=1
+    )
+    metodo_pago = models.CharField(
+        max_length = 50,
+        null=False, blank=False,
+        choices=payment_choices,
+        default=1
+    )
 
 class Datos_Empleado(models.Model):
     Rut = models.CharField(max_length=9, primary_key=True)
@@ -77,46 +71,22 @@ class Datos_Empleado(models.Model):
     Apellidos = models.CharField(max_length=100)
     Direccion = models.CharField(max_length=100)
     Comuna = models.CharField(max_length=100)
-    Fecha_Nacimiento = models.DateField(null=True)
     Sexo = models.CharField(
-        max_length = 500,
+        max_length = 50,
         null=False, blank=False,
         choices=sex_choices,
         default=1
     )
-    Estado_civil = models.CharField(
-        max_length = 500,
-        null=False, blank=False,
-        choices=civil_status_choices,
-        default=1
-    )
-    Nacionalidad = models.CharField(blank=True, null=True, max_length=50)
-    Numero_De_Pasaporte = models.CharField(blank=True,max_length=10)
-    Labor_en_Liquidacion = models.CharField(blank=True,max_length=50)
-    Celular = models.IntegerField()
-    Email = models.EmailField(blank=True, null=True)
+    Numero_De_Pasaporte = models.CharField(max_length=10)
+    Labor_en_Liquidacion = models.CharField(max_length=50)
+    Celular = models.IntegerField(max_length=9)
+    Email = models.EmailField()
     Pensionado_por_Invalidez = models.BooleanField()
     Profesional = models.BooleanField()
     Tipo_de_impuesto_unico = models.CharField(
-        max_length = 500,
+        max_length = 50,
         null=False, blank=False,
         choices=taxes_choices,
         default=1
     )
     Descuento_Prestamo_SII = models.BooleanField()
-    
-    Tipo_Jornada_Trabajo = models.CharField(
-        max_length=500,
-        null=False, blank=False,
-        choices= work_choices,
-        default= 1
-    )
-    Profesional = models.BooleanField()
-
-class Empleado(models.Model):
-    ID = models.AutoField(primary_key=True)
-    Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE, blank=True, null=True,)
-
-def __str__(self):
-    return self.Rut
-
