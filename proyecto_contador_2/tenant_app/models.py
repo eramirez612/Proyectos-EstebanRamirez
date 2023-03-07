@@ -119,4 +119,3 @@ class Empleado(models.Model):
 
 def __str__(self):
     return self.Rut
-
