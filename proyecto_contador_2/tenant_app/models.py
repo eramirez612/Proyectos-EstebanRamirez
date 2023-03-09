@@ -110,7 +110,7 @@ remuneraciones = [
     ('ADICIONAR COLUMNAS INDIVIDUALES POR HABER Y DESCUENTO', 'ADICIONAR COLUMNAS INDIVIDUALES POR HABER Y DESCUENTO'),
 ]
 
-NACIONALIDADES = [
+Nacionalidades = [
     ('afgano', 'Afgano'),
     ('alemán', 'Alemán'),
     ('andorrano', 'Andorrano'),
@@ -293,7 +293,6 @@ NACIONALIDADES = [
     ('zambiano', 'Zambiano'),
     ('zimbabuense', 'Zimbabuense')
 ]
-
 
 Lista_SII = [
         ('011101	CULTIVO DE TRIGO','011101	CULTIVO DE TRIGO'),
@@ -1047,7 +1046,7 @@ class Representante(models.Model):
     Nacionalidad = models.CharField(
         max_length = 500,
         null=False, blank=False,
-        choices= NACIONALIDADES,
+        choices= Nacionalidades,
         default=1
     )
 
