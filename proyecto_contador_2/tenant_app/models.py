@@ -44,7 +44,8 @@ class Datos_Empleado(models.Model):
         choices= work_choices,
         default= 1
     )
-    Profesional = models.BooleanField()
+
+    Tecnico_Extranjero = models.BooleanField()
 
 class Empleado(models.Model):
     ID = models.AutoField(primary_key=True)
@@ -52,6 +53,60 @@ class Empleado(models.Model):
 
 def __str__(self):
     return self.Rut
+
+class Regimen_Provisional(models.Model):
+    Regimen_Provisional = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= regimen,
+        default= 1
+    )
+    Afp = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= afp,
+        default= 1
+    )
+    Ahorro_imponible = models.DecimalField(max_digits=10, decimal_places=1)
+    Puesto_Trabajo_Pesado = models.CharField(max_length=100)
+    Cotizacion_Trabajo_Pesado = models.DecimalField(max_digits=10, decimal_places=1)
+
+class AFP(models.Model):
+    Ahorro_Voluntario_Afp = models.IntegerField()
+    Desea_APV = models.BooleanField()
+
+class Apv(models.Model):
+    Institucion_Apv = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= lista_institucion_apv,
+        default= 1
+    )
+    Nro_Contrato_Apv = models.CharField(max_length=100)
+    Forma_Pago_Apv = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= pago_apv,
+        default= 1
+    )
+    Regimen_Apv = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= regimen_apv,
+        default= 1
+    )
+    Ahorro_Pesos = models.DecimalField(max_digits=10, decimal_places=1)
+    Ahorro_UF = models.DecimalField(max_digits=10, decimal_places=1)
+    Deposito_Convenido = models.DecimalField(max_digits=10, decimal_places=1)
+
+class IPS(models.Model):
+    Ex_caja = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= ex_caja,
+        default= 1
+    )
+    Tasa_Ex_caja = models.DecimalField(max_digits=10, decimal_places=1)
 
 #Modelos empresa
 
