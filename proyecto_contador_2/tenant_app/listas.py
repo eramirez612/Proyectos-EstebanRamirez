@@ -318,6 +318,121 @@ lista_institucion_apv = [
     ('CAJA DE COMPENSACION LOS ANDES', 'CAJA DE COMPENSACION LOS ANDES'),
 ]
 
+institucion_salud = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Sin Isapre','Sin Isapre'),
+    ('Banmedica','Banmedica'),
+    ('Consalud','Consalud'),
+    ('VidaTres','VidraTres'),
+    ('Colmena','Colmena'),
+    ('Isapre Cruz Blanca S.A','Isapre Cruz Blanca S.A'),
+    ('Fonasa','Fonasa'),
+    ('Chuquicamata','Chuquicamata'),
+    ('Institucion de Salud Previsional Fusat LTda','Institucion de Salud Previsional Fusat Ltda'),
+    ('Isapre Bco. Estado','Isapre Bco. Estado'),
+    ('Nueva Masvida','Nueva Masvida'),
+    ('Rio Blanco','Rio Blanco'),
+    ('San Lorenze isapre Ltda.','San Lorenzo isapre Ltda'),
+    ('Cruz del Norte','Cruz del Norte'),
+    ('Esencial','Esencial'),
+]
+
+tipo_trabajador = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Activo (No Pensionado)','Activo (No Pensionado)'),
+    ('Pensionado y cotiza','Pensionado y cotiza'),
+    ('Pensionado y no cotiza','Pensionado y no cotiza'),
+    ('Activo > 65 años (nunca pensionado)','Activo > 65 años (nunca pensionado)'), 
+]
+
+tipo_sueldo = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Normal','Normal'),
+    ('Solo Comision','Solo Comision'),
+    ('Sueldo Base + Comision','Sueldo Base + Comision'),
+]
+
+forma_pago_sueldo = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Por Mes [Jornada Completa]','Por Mes [Jornada Completa]'),
+    ('Por Horas [Partime]','Por Horas [Partime]'),
+    ('Por Dias [Partime]','Por Dias [Partime]'),
+    ('Por Dias [Semana Corrida]','Por Dias [Semana Corrida]'),
+    ('Por Trato','Por Trato'),
+    ('Por Obra o Faena','Por Obra o Faena'),
+]
+
+forma_calculo_sueldo = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Sueldo Base Tradicional','Sueldo Bases Tradicional'),
+    ('Sueldo Base en UF','Sueldo Base en UF'),
+    ('Liquida a Pago','Liquida a Pago'),
+]
+
+duracion_contrato = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Plazo Fijo','Plazo Fijo'),
+    ('Indefinido','Indefinido'),
+]
+
+centro = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Oficina Central','Oficina Central'),
+]
+
+banco = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('BANCO BICE','BANCO BICE'),
+    ('BANCO CONSORCIO','BANCO CONSORCIO'),
+    ('BANCO DE CHILE','BANCO DE CHILE'),
+    ('BANCO DE CREDITO E INVERSIONES','BANCO DE CREDITO E INVERSIONES'),
+    ('BANCO DEL ESTADO DE CHILE','BANCO DEL ESTADO DE CHILE'),
+    ('BANCO FALABELLA','BANCO FALABELLA'),
+    ('BANCO INTERNACIONAL','BANCO INTERNACIONAL'),
+    ('BANCO ITAU CHILE','BANCO ITAU CHILE'),
+    ('BANCO RIPLEY','BANCO RIPLEY'),
+    ('BANCO SANTANDER CHILE','BANCO SANTANDER CHILE'),
+    ('BANCO SECURITY','BANCO SECURITY'),
+    ('HSBC BANK CHILE','HSBC BANK CHILE'),
+    ('SCOTIABANK SUD AMERICANO','SCOTIABANK SUD AMERICANO'),
+    ('--Pago Contado--','--Pago Contado--'),
+]
+
+tipo_cuenta = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Cuenta Corriente','Cuenta Corriente'),
+    ('Cuenta Vista','Cuenta Vista'),
+    ('Cuenta Ahorro','Cuenta Ahorro'),
+    ('Cuenta Rut','Cuenta Rut'),
+]
+
+Beneficios = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Asignacion Familiar','Asignacion Familiar'),
+    ('Asignacion Maternal','Asignacion Maternal'),
+    ('Duplo','Duplo'),
+]
+
+tipo_beneficiaros = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('CONYUGE (Mujer)','CONYUGE (Mujer)'),
+    ('CONYUGE INVALIDO','CONYUGE INVALIDO'),
+    ('HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO','HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO'),
+    ('HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO INVALIDO SIN LIMITE DE EDAD','HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO INVALIDO SIN LIMITE DE EDAD'),
+    ('HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO ENTRE 18 Y 24 AÑOS (ESTUDIANTES)','HIJO, INCLUIDO EL ADOPTADO Y EL HIJASTRO ENTRE 18 Y 24 AÑOS (ESTUDIANTES)'),
+    ('NIETOS Y BISNIETOS HASTA LOS 18 AÑOS, HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS','NIETOS Y BISNIETOS HASTA LOS 18 AÑOS, HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS'),
+    ('NIETOS Y BISNIETOS INVALIDOS SIN LIMITE DE EDAD HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS','NIETOS Y BISNIETOS INVALIDOS SIN LIMITE DE EDAD HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS'),
+    ('MADRE VIUDA','MADRE VIUDA'),
+    ('ASCENDIENTE MAYOR DE 65 AÑOS','ASCENDIENTE MAYOR DE 65 AÑOS'),
+    ('ASCENDIENTE INVALIDO SIN LIMITE DE EDAD','ASCENDIENTE INVALIDO SIN LIMITE DE EDAD'),
+    ('NIETOS Y BISNIETOS HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS ENTRE 18 Y 24 AÑOS (ESTUDIANTES)','NIETOS Y BISNIETOS HUERFANOS DE PADRE Y MADRE O ABANDONADOS POR ESTOS ENTRE 18 Y 24 AÑOS (ESTUDIANTES)'),
+    ('NIÑOS HUERFANOS O ABANDONADOS MENORES DE 18 AÑOS AL CUIDADO DE ALGUNA INSTITUCION','NIÑOS HUERFANOS O ABANDONADOS MENORES DE 18 AÑOS AL CUIDADO DE ALGUNA INSTITUCION'),
+    ('NIÑOS HUERFANOS O ABANDONADOS ENTRE 18 Y 24 AÑOS (ESTUDIANTE) AL CUIDADO DE ALGUNA INSTITUCION','NIÑOS HUERFANOS O ABANDONADOS ENTRE 18 Y 24 AÑOS (ESTUDIANTE) AL CUIDADO DE ALGUNA INSTITUCION'),
+    ('NIÑOS HUERFANOS O ABANDONADOS INVALIDOS AL CUIDADO DE ALGUNA INSTITUCION','NIÑOS HUERFANOS O ABANDONADOS INVALIDOS AL CUIDADO DE ALGUNA INSTITUCION'),
+    ('TRABAJADORA EMBARAZADA','TRABAJADORA EMBARAZADA'),
+    ('CONYUGE EMBARAZADA','CONYUGE EMBARAZADA'),
+]
+
 remuneraciones = [
     ('--Por favor Seleccione--', '--Por favor Seleccione--'),
     ('SOLO COLUMNAS TOTALIZADAS', 'SOLO COLUMNAS TOTALIZADAS'),   

@@ -108,6 +108,120 @@ class IPS(models.Model):
     )
     Tasa_Ex_caja = models.DecimalField(max_digits=10, decimal_places=1)
 
+
+class Salud(models.Model):
+    Institucion_Salud = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= institucion_salud,
+        default= 1
+    )
+    Nro_Fun_Incorporacion = models.CharField(max_length=100)
+    Moneda_Plano_Salud = models.DecimalField(max_digits=10, decimal_places=1)
+    Cotizacion_Pactada_Salud = models.DecimalField(max_digits=10, decimal_places=1)
+    Cotizacion_Voluntaria_Salud_Pesos = models.DecimalField(max_digits=10, decimal_places=1)
+    Cotizacion_Voluntaria_Solud_Uf = models.DecimalField(max_digits=10, decimal_places=1)
+    Pago_Isapre_Proporcional = models.BooleanField()
+
+class Liquidacion(models.Model):
+    Tipo_Trabajador = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= tipo_trabajador,
+        default= 1
+    )
+    Tipo_Sueldo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= tipo_sueldo,
+        default= 1
+    )
+    Forma_Pago_Sueldo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= forma_pago_sueldo,
+        default= 1
+    )
+    Horas_Semanales = models.IntegerField()
+    Informar_Horas_Trabajadas = models.BooleanField()
+    Forma_Calculo_Sueldo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= forma_calculo_sueldo,
+        default= 1
+    )
+    Monto_Calculo_Sueldo = models.DecimalField(max_digits=10, decimal_places=1)
+    Centro_Costo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= centro,
+        default= 1
+    ) #Agregar opcion de añadir centros a centro costo con un boton y formulario
+    Valor_Hora_Normal = models.DecimalField(max_digits=10, decimal_places=1)
+    Valor_Dia_Normal = models.DecimalField(max_digits=10, decimal_places=1)
+    Valor_Recargo_Dominical = models.DecimalField(max_digits=10, decimal_places=1)
+    Duracion_Contrato = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= duracion_contrato,
+        default= 1
+    )
+    Fecha_Ingreso = models.DateField(null=True)
+    Fecha_Termino = models.DateField(null=True)
+    Posee_Seguro_Cesantia = models.BooleanField()
+    Ingreso_Seguro_Cesantia = models.DateField(null=True)
+
+class Nuevo_Centro_Costo(models.Model):
+    Descripcion = models.CharField(max_length=400)
+    Es_Primario = models.BooleanField()
+    Codigo_Previred = models.CharField(max_length=100)
+    Direccion = models.CharField(max_length=100)
+    Comuna = models.CharField(max_length=50)
+    Sucursal_eboleta = models.CharField(max_length=100)
+
+class No_Disponibles(models.Model):
+    Colacion = models.DecimalField(max_digits=10, decimal_places=1)
+    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1)
+    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
+    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1)
+    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1)
+
+class Forma_de_Pago(models.Model):
+    Banco_Deposito = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= banco,
+        default= 1
+    )
+    Tipo_Cuenta = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= tipo_cuenta,
+        default= 1
+    )
+    Nro_Cuenta = models.CharField(max_length=50)
+
+class Nueva_Carga_Familiar(models.Model):
+    Inicio_Beneficio = models.DateField(null=True)
+    Termino_Beneficio = models.DateField(null=True)
+    Rut_Beneficiario = models.CharField(max_length=50)
+    Nombres = models.CharField(max_length=100)
+    Apellido_Paterno = models.CharField(max_length=100)
+    Apellido_Materno = models.CharField(max_length=100)
+    Folio_Ips = models.CharField(max_length=100)
+    Fecha_Nacimiento = models.DateField(null=True)
+    Sexo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= sex_choices,
+        default= 1
+    )
+    Tipo_Beneficio = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= beneficios,
+        default= 1
+    )
 #Modelos empresa
 
 class Datos_basicos(models.Model):
