@@ -179,7 +179,7 @@ class Nuevo_Centro_Costo(models.Model):
     Comuna = models.CharField(max_length=50)
     Sucursal_eboleta = models.CharField(max_length=100)
 
-class No_Disponibles(models.Model):
+class No_Imponibles(models.Model):
     Colacion = models.DecimalField(max_digits=10, decimal_places=1)
     Movilizacion = models.DecimalField(max_digits=10, decimal_places=1)
     Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
@@ -222,6 +222,73 @@ class Nueva_Carga_Familiar(models.Model):
         choices= beneficios,
         default= 1
     )
+
+class Nuevo_Tramo_AF(models.Model):
+    Tramo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= tramo,
+        default= 1
+    )
+    Fecha_Desde = models.DateField(null=True)
+    Fecha_Hasta = models.DateField(null=True)
+
+class Nuevo_Haber_Permanente(models.Model):
+    Fecha_Inicio = models.DateField(null=True)
+    Fecha_Termino = models.DateField(null=True)
+    Descripcion_Haber = models.CharField(max_length=300)
+    Monto = models.DecimalField(max_digits=10, decimal_places=1)
+    Es_Proporcional = models.BooleanField()
+    Es_Imponible = models.BooleanField()
+    Es_Gratificable = models.BooleanField()
+    Es_Tributable = models.BooleanField()
+
+class Nuevo_Descuento_Permanente(models.Model):
+    #nombre y/o rut del empleado 
+    Persona = models.CharField(max_length=222)
+    Causa_Descuento = models.DecimalField(max_digits=10, decimal_places=1)
+    Monto = models.DecimalField(max_digits=10, decimal_places=1)
+    Inicio = models.DateField(null=True)
+    Termino = models.DateField(null=True)
+
+class Datos_Para_Contrato(models.Model):
+    Plantilla_Contrato = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        #choices= ,
+        default= 1
+    )
+    Comuna_Documento = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        choices= Comunas,
+        default= 1
+    )
+    Fecha_Documento = models.DateField(null=True)
+    Labor = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        #choices= ,
+        default= 1
+    )#agregar boton para añadir labor con formulario
+    Texto_Labor = models.CharField(max_length=600)
+    Lugares_Trabajo = models.CharField(
+        max_length=500,
+        null=False, blank=False,
+        #choices= ,
+        default= 1
+    )#agregar boton para añadir lugar de trabajo con formulario
+    Jornada = models.CharField(max_length=100) #agregar boton para añadir jornada con formulario
+
+class Nueva_Jornada(models.Model):
+    Hora_Inicio_1er_Bloque = models.TimeField()
+    Hora_Termino_1er_Bloque = models.TimeField()
+    Tiempo_Colacion = models.TimeField()
+    Hora_Inicio_2do_Bloque = models.TimeField()
+    Hora_Termino_2do_Bloque = models.TimeField()
+    #Dias_Semana = agregar manera de seleccionar dias de la semana
+
+
 #Modelos empresa
 
 class Datos_basicos(models.Model):
