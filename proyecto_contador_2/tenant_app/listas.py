@@ -167,8 +167,8 @@ ex_caja = [
     ('Hipica Nacional - Regimen 2','Hipica Nacional - Regimen 2'),
     ('Hipica Nacional - Regimen 3','Hipica Nacional - Regimen 3'),
     ('Hipica Nacional - Regimen 4','Hipica Nacional - Regimen 4'),
-    ('Servicios de Seguro  Social - Regimen 1','Servicios de Seguro Social - Regimen 1')
-    ('Servicios de Seguro  Social - Regimen 2','Servicios de Seguro Social - Regimen 2')
+    ('Servicios de Seguro  Social - Regimen 1','Servicios de Seguro Social - Regimen 1'),
+    ('Servicios de Seguro  Social - Regimen 2','Servicios de Seguro Social - Regimen 2'),
     ('Empleados de Emos - Regimen 1','Empleados de Emos - Regimen 1'),
     ('Obreros de Emos - Regimen 1','Obreros de Emos - Regimen 1'),
     ('Caja Ferro - Regimen 2','Caja Ferro - Regimen 2'),

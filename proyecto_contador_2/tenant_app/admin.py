@@ -21,7 +21,9 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                     'Pensionado_por_Invalidez',
                     'Profesional',
                     'Tipo_de_impuesto_unico',
-                    'Descuento_Prestamo_SII',)
+                    'Descuento_Prestamo_SII',
+                    'Tipo_Jornada_Trabajo',
+                    'Tecnico_Extranjero',)
     search_fields = ('Rut', 'Nombres','Apellidos',)
     
     list_filter = ('Comuna', 'Sexo', 'Nacionalidad',)
@@ -40,7 +42,9 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                     'Pensionado_por_Invalidez',
                     'Profesional',
                     'Tipo_de_impuesto_unico',
-                    'Descuento_Prestamo_SII',)
+                    'Descuento_Prestamo_SII',
+                    'Tipo_Jornada_Trabajo',
+                    'Tecnico_Extranjero',)
 
 
 
