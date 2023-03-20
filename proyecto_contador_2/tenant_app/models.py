@@ -106,7 +106,7 @@ class Datos_Empleado(models.Model):
     Moneda_Plano_Salud = models.DecimalField(max_digits=10, decimal_places=1)
     Cotizacion_Pactada_Salud = models.DecimalField(max_digits=10, decimal_places=1)
     Cotizacion_Voluntaria_Salud_Pesos = models.DecimalField(max_digits=10, decimal_places=1)
-    Cotizacion_Voluntaria_Solud_Uf = models.DecimalField(max_digits=10, decimal_places=1)
+    Cotizacion_Voluntaria_Salud_Uf = models.DecimalField(max_digits=10, decimal_places=1)
     Pago_Isapre_Proporcional = models.BooleanField()
     #Liquidacion 
     Tipo_Trabajador = models.CharField(
@@ -172,7 +172,7 @@ class Datos_Empleado(models.Model):
 
 
 class Empleado(models.Model):
-    id = models.AutoField(primary_key=True, unique=True)
+    id = models.AutoField(primary_key=True)
     Datos_Empleado = models.ForeignKey(Datos_Empleado, on_delete=models.CASCADE, blank=True, null=True,)
 
 class Nuevo_Centro_Costo(models.Model):
@@ -189,21 +189,6 @@ class No_Imponibles(models.Model):
     Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
     Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1)
     Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1)
-
-class Forma_de_Pago(models.Model):
-    Banco_Deposito = models.CharField(
-        max_length=500,
-        null=False, blank=False,
-        choices= banco,
-        default= 1
-    )
-    Tipo_Cuenta = models.CharField(
-        max_length=500,
-        null=False, blank=False,
-        choices= tipo_cuenta,
-        default= 1
-    )
-    Nro_Cuenta = models.CharField(max_length=50)
 
 class Nueva_Carga_Familiar(models.Model):
     Inicio_Beneficio = models.DateField(null=True)

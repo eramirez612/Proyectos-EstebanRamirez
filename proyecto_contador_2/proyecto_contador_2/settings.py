@@ -77,6 +77,7 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'proyecto_contador_2.urls'
+PUBLIC_SCHEMA_URLCONF = 'proyecto_contador_2.urls_public'
 
 TEMPLATES = [
     {
