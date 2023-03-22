@@ -120,7 +120,7 @@ class Datos_Empleado(models.Model):
         null=False, blank=False,
         choices= tipo_sueldo,
         default= 1
-    )
+    )#agregar funcion que dependiendo de lo seleccionado habilite o deshabilite el campo monto calculo sueldo
     Forma_Pago_Sueldo = models.CharField(
         max_length=500,
         null=False, blank=False,
@@ -155,13 +155,19 @@ class Datos_Empleado(models.Model):
     Fecha_Termino = models.DateField(null=True)
     Posee_Seguro_Cesantia = models.BooleanField()
     Ingreso_Seguro_Cesantia = models.DateField(null=True)
+    #No imponibles
+    Colacion = models.DecimalField(max_digits=10, decimal_places=1)
+    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1)
+    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
+    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1)
+    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1)
     #Forma de pago
     Banco_Deposito = models.CharField(
         max_length=500,
         null=False, blank=False,
         choices= banco,
         default= 1
-    )
+    )# si se selecciona pago contado debe deshabilitar el campo nro cuenta
     Tipo_Cuenta = models.CharField(
         max_length=500,
         null=False, blank=False,
@@ -169,6 +175,12 @@ class Datos_Empleado(models.Model):
         default= 1
     )
     Nro_Cuenta = models.CharField(max_length=50)
+    #Cargas familiares
+    Nueva_Carga_Familiar = models.CharField(max_length=1)
+    #Haberes permanentes
+    Nuevo_Haber_Permanente = models.CharField(max_length=1)
+    #Descuentos permanentes
+    Descuentos_Permanentes = models.CharField(max_length=1)
 
 
 class Empleado(models.Model):
@@ -182,13 +194,6 @@ class Nuevo_Centro_Costo(models.Model):
     Direccion = models.CharField(max_length=100)
     Comuna = models.CharField(max_length=50)
     Sucursal_eboleta = models.CharField(max_length=100)
-
-class No_Imponibles(models.Model):
-    Colacion = models.DecimalField(max_digits=10, decimal_places=1)
-    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1)
-    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
-    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1)
-    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1)
 
 class Nueva_Carga_Familiar(models.Model):
     Inicio_Beneficio = models.DateField(null=True)

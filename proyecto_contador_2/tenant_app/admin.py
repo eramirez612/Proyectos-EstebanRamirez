@@ -6,7 +6,7 @@ from tenant_app.models import Datos_Empleado, Empleado
 @admin.register(Datos_Empleado)
 class Datos_EmpleadoAdmin(admin.ModelAdmin):
     fieldsets = (
-        ('Datos_Basicos', {
+        ('Datos Basicos', {
             'fields':('Rut',
                     'Nombres',
                     'Apellidos',
@@ -27,7 +27,7 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                     'Tipo_Jornada_Trabajo',
                     'Tecnico_Extranjero',),
         }),
-        ('Regimen_Provisional', {
+        ('Regimen Provisional', {
             'fields':('Regimen_Provisional',
                       'Afp',
                       'Ahorro_imponible',
@@ -78,7 +78,14 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                       'Posee_Seguro_Cesantia',
                       'Ingreso_Seguro_Cesantia',),
         }),
-        ('Forma_de_pago',{
+        ('No Imponibles',{
+            'fields':('Colacion',
+                      'Movilizacion',
+                      'Perdida_Caja',
+                      'Desgaste_Herramientas',
+                      'Trabajo_Remoto',)
+        }),
+        ('Forma de pago',{
             'fields':('Banco_Deposito',
                       'Tipo_Cuenta',
                       'Nro_Cuenta',)
