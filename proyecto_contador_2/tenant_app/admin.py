@@ -106,10 +106,7 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
                     'Labor_en_Liquidacion',
                     'Celular',
                     'Email',
-                    'Pensionado_por_Invalidez',
                     'Profesional',
-                    'Tipo_de_impuesto_unico',
-                    'Descuento_Prestamo_SII',
                     'Tipo_Jornada_Trabajo',
                     'Tecnico_Extranjero',)
     
@@ -117,23 +114,23 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
     
     list_filter = ('Comuna', 'Sexo', 'Nacionalidad',)
     
-    list_editable = ('Nombres',
-                    'Apellidos',
-                    'Direccion',
-                    'Comuna',
-                    'Sexo',
-                    'Estado_civil',
-                    'Nacionalidad',
-                    'Numero_De_Pasaporte',
-                    'Labor_en_Liquidacion',
-                    'Celular',
-                    'Email',
-                    'Pensionado_por_Invalidez',
-                    'Profesional',
-                    'Tipo_de_impuesto_unico',
-                    'Descuento_Prestamo_SII',
-                    'Tipo_Jornada_Trabajo',
-                    'Tecnico_Extranjero',)
+    #list_editable = ('Nombres',
+    #                'Apellidos',
+    #                'Direccion',
+    #                'Comuna',
+    #                'Sexo',
+    #                'Estado_civil',
+    #                'Nacionalidad',
+    #                'Numero_De_Pasaporte',
+    #                'Labor_en_Liquidacion',
+    #                'Celular',
+    #                'Email',
+    #                'Pensionado_por_Invalidez',
+    #                'Profesional',
+    #                'Tipo_de_impuesto_unico',
+    #                'Descuento_Prestamo_SII',
+    #                'Tipo_Jornada_Trabajo',
+    #                'Tecnico_Extranjero',)
 
 
 

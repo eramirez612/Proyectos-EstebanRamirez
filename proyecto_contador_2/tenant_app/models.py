@@ -156,11 +156,11 @@ class Datos_Empleado(models.Model):
     Posee_Seguro_Cesantia = models.BooleanField()
     Ingreso_Seguro_Cesantia = models.DateField(null=True)
     #No imponibles
-    Colacion = models.DecimalField(max_digits=10, decimal_places=1)
-    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1)
-    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1)
-    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1)
-    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1)
+    Colacion = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1, default=0)
+    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1, default=0)
     #Forma de pago
     Banco_Deposito = models.CharField(
         max_length=500,
@@ -176,11 +176,11 @@ class Datos_Empleado(models.Model):
     )
     Nro_Cuenta = models.CharField(max_length=50)
     #Cargas familiares
-    Nueva_Carga_Familiar = models.CharField(max_length=1)
+    
     #Haberes permanentes
-    Nuevo_Haber_Permanente = models.CharField(max_length=1)
+    
     #Descuentos permanentes
-    Descuentos_Permanentes = models.CharField(max_length=1)
+   
 
 
 class Empleado(models.Model):
