@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 from tenant_app.listas import *
 
 # Create your models here.
 
 
 class Datos_Empleado(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     Rut = models.CharField(max_length=9, primary_key=True)
     Nombres = models.CharField(max_length=100)
     Apellidos = models.CharField(max_length=100)

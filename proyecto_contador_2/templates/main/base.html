@@ -19,13 +19,18 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div class="container-fluid">
                 <div>
                     <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                        <span class="navbar-text">{{user.username}} | </span>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Logout</a>
+                        </li>
+                        {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="">Login</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
