@@ -113,6 +113,8 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
     search_fields = ('Rut', 'Nombres','Apellidos',)
     
     list_filter = ('Comuna', 'Sexo', 'Nacionalidad',)
+
+    list_per_page = 10
     
     #list_editable = ('Nombres',
     #                'Apellidos',
