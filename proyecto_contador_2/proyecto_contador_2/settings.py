@@ -109,9 +109,9 @@ WSGI_APPLICATION = 'proyecto_contador_2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'contador',
+        'NAME': 'contador_2',
         'USER': 'postgres',
-        'PASSWORD': 'user',
+        'PASSWORD': '123456',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
