@@ -13,6 +13,7 @@
             <th>Direccion</th>
             <th>Comuna</th>
             <th>Nacionalidad</th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
             <th>{{trabajador.Direccion}}</th>
             <th>{{trabajador.Comuna}}</th>
             <th>{{trabajador.Nacionalidad}}</th>
+            <th><a href="/actualizar-trabajador/{{trabajador.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a></th>
         </tr>
         {% endfor %}
     </tbody>

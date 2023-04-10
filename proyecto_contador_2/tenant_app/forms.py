@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from tenant_app.models import Datos_Empleado
+from django.forms import inlineformset_factory
+from tenant_app.models import *
+from tenant_app.listas import *
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -17,75 +19,22 @@ class Datos_EmpleadoForm(forms.ModelForm):
     Rut = forms.CharField(min_length=9, max_length=9, required=True)
     Nombres = forms.CharField(min_length=3, max_length=100, required=True)
     Apellidos = forms.CharField(min_length=3, max_length=100, required=True)
-    Direccion = forms.CharField(max_length=100, required=False)
+    Direccion = forms.CharField(max_length=100, required=True)
     Comuna = forms.CharField(max_length=100, required=True)
     Fecha_Nacimiento = forms.DateField(widget=DateInput)
-    Nacionalidad = forms.CharField(max_length=50, required=True)
+    Sexo = forms.ChoiceField(required=True, choices=sex_choices)
+    Estado_civil = forms.ChoiceField(required=True, choices=civil_status_choices)
+    Nacionalidad = forms.ChoiceField(required=True,choices=Nacionalidades)
     Numero_De_Pasaporte = forms.CharField(max_length=10, required=False)
     Labor_en_Liquidacion = forms.CharField(max_length=50, required=False)
-    Celular = forms.IntegerField(min_value=900000000, max_value=999999999, required=False)
-    Email = forms.EmailField(required=False,)
+    Celular = forms.IntegerField(required=True)
+    Email = forms.EmailField(required=True)
     Pensionado_por_Invalidez = forms.BooleanField(required=False)
     Profesional = forms.BooleanField(required=False)
-    Tipo_de_impuesto_unico = forms.CharField(required=True)
+    Tipo_de_impuesto_unico = forms.ChoiceField(required=True, choices=taxes_choices)
     Descuento_Prestamo_SII = forms.BooleanField(required=False)
-    Tipo_de_Jornada_Trabajo = forms.CharField(required=True)
+    Tipo_de_Jornada_Trabajo = forms.ChoiceField(required=True, choices=work_choices)
     Tecnico_Extranjero = forms.BooleanField(required=False)
-    #Regimen provisional
-    Regimen_Provisional = forms.SelectMultiple()
-    Afp = forms.SelectMultiple()
-    Ahorro_imponible = forms.DecimalField()
-    Puesto_Trabajo_Pesado = forms.CharField()
-    Cotizacion_Trabajo_Pesado = forms.DecimalField()
-    #AFP
-    Ahorro_Voluntario_Afp = forms.DecimalField()
-    Desea_APV = forms.BooleanField()
-    #APV
-    Institucion_Apv = forms.SelectMultiple()
-    Nro_Contrato_Apv = forms.CharField()
-    Forma_Pago_Apv = forms.SelectMultiple()
-    Regimen_Apv = forms.SelectMultiple()
-    Ahorro_Pesos = forms.DecimalField()
-    Ahorro_UF = forms.DecimalField()
-    Deposito_Convenido = forms.DecimalField()
-    #IPS 
-    Ex_caja = forms.SelectMultiple()
-    Tasa_Ex_caja = forms.DecimalField()
-    #Salud
-    Institucion_Salud = forms.SelectMultiple()
-    Nro_Fun_Incorporacion = forms.CharField()
-    Moneda_Plano_Salud = forms.DecimalField()
-    Cotizacion_Pactada_Salud = forms.DecimalField()
-    Cotizacion_Voluntaria_Salud_Pesos = forms.DecimalField()
-    Cotizacion_Voluntaria_Salud_Uf = forms.DecimalField()
-    Pago_Isapre_Proporcional = forms.BooleanField()
-    #Liquidacion
-    Tipo_Trabajador = forms.SelectMultiple()
-    Tipo_Sueldo = forms.SelectMultiple()
-    Forma_Pago_Sueldo = forms.SelectMultiple()
-    Horas_Semanales = forms.IntegerField()
-    Informar_Horas_Trabajadas = forms.BooleanField()
-    Forma_Calculo_Sueldo = forms.SelectMultiple()
-    Monto_Calculo_Sueldo = forms.DecimalField()
-    Centro_Costo = forms.SelectMultiple()
-    Valor_Hora_Normal = forms.DecimalField()
-    Valor_Dia_Normal = forms.DecimalField()
-    Valor_Recargo_Dominical = forms.DecimalField()
-    Duracion_Contrato = forms.SelectMultiple()
-    Fecha_Ingreso = forms.SelectDateWidget()
-    Fecha_Termino = forms.SelectDateWidget()
-    Posee_Seguro_Cesantia = forms.BooleanField()
-    Ingreso_Seguro_Cesantia = forms.SelectDateWidget()
-    #No imponibles 
-    Colacion = forms.DecimalField()
-    Movilizacion = forms.DecimalField()
-    Perdida_Caja = forms.DecimalField()
-    Desgaste_Herramientas = forms.DecimalField()
-    Trabajo_Remoto = forms.DecimalField()
-    #Forma de pago 
-    Banco_Deposito = forms.SelectMultiple()
-    Tipo_Cuenta = forms.SelectMultiple()
-    Nro_Cuenta = forms.CharField()
  
     class Meta:
         model = Datos_Empleado
@@ -96,6 +45,8 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Direccion',
             'Comuna',
             'Fecha_Nacimiento',
+            'Sexo',
+            'Estado_civil',
             'Nacionalidad',
             'Numero_De_Pasaporte',
             'Labor_en_Liquidacion',
@@ -107,6 +58,24 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Descuento_Prestamo_SII',
             'Tipo_de_Jornada_Trabajo',
             'Tecnico_Extranjero',
+            ]
+
+class RegimenForm(forms.ModelForm):
+    Regimen_Provisional = forms.ChoiceField(choices=regimen)
+    Afp = forms.ChoiceField(choices=afp)
+    Ahorro_imponible = forms.DecimalField()
+    Puesto_Trabajo_Pesado = forms.CharField()
+    Cotizacion_Trabajo_Pesado = forms.DecimalField()
+    #AFP
+    Ahorro_Voluntario_Afp = forms.DecimalField()
+    Desea_APV = forms.BooleanField()
+    #IPS 
+    Ex_caja = forms.ChoiceField(choices=ex_caja)
+    Tasa_Ex_caja = forms.DecimalField()
+
+    class Meta:
+        model = Regimen_Provisional
+        fields = [
             'Regimen_Provisional',
             'Afp',
             'Ahorro_imponible',
@@ -114,6 +83,22 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Cotizacion_Trabajo_Pesado',
             'Ahorro_Voluntario_Afp',
             'Desea_APV',
+            'Ex_caja',
+            'Tasa_Ex_caja',
+        ]
+
+class ApvForm(forms.ModelForm):
+    Institucion_Apv = forms.ChoiceField(choices=lista_institucion_apv)
+    Nro_Contrato_Apv = forms.CharField()
+    Forma_Pago_Apv = forms.ChoiceField(choices=pago_apv)
+    Regimen_Apv = forms.ChoiceField(choices=regimen_apv)
+    Ahorro_Pesos = forms.DecimalField()
+    Ahorro_UF = forms.DecimalField()
+    Deposito_Convenido = forms.DecimalField()
+    
+    class Meta:
+        model = APV
+        fields = [
             'Institucion_Apv',
             'Nro_Contrato_Apv',
             'Forma_Pago_Apv',
@@ -121,8 +106,20 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Ahorro_Pesos',
             'Ahorro_UF',
             'Deposito_Convenido',
-            'Ex_caja',
-            'Tasa_Ex_caja',
+        ]
+
+class SaludForm(forms.ModelForm):
+    Institucion_Salud = forms.ChoiceField(choices=institucion_salud)
+    Nro_Fun_Incorporacion = forms.CharField()
+    Moneda_Plano_Salud = forms.DecimalField()
+    Cotizacion_Pactada_Salud = forms.DecimalField()
+    Cotizacion_Voluntaria_Salud_Pesos = forms.DecimalField()
+    Cotizacion_Voluntaria_Salud_Uf = forms.DecimalField()
+    Pago_Isapre_Proporcional = forms.BooleanField()
+
+    class Meta:
+        model = Salud
+        fields = [
             'Institucion_Salud',
             'Nro_Fun_Incorporacion',
             'Moneda_Plano_Salud',
@@ -130,6 +127,31 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Cotizacion_Voluntaria_Salud_Pesos',
             'Cotizacion_Voluntaria_Salud_Uf',
             'Pago_Isapre_Proporcional',
+        ]
+
+class LiquidacionForm(forms.ModelForm):
+    #Liquidacion
+    Tipo_Trabajador = forms.ChoiceField(choices=tipo_trabajador)
+    Tipo_Sueldo = forms.ChoiceField(choices=tipo_sueldo)
+    Forma_Pago_Sueldo = forms.ChoiceField(choices=forma_pago_sueldo)
+    Horas_Semanales = forms.IntegerField()
+    Informar_Horas_Trabajadas = forms.BooleanField()
+    Forma_Calculo_Sueldo = forms.ChoiceField(choices=forma_calculo_sueldo)
+    Monto_Calculo_Sueldo = forms.DecimalField()
+    Centro_Costo = forms.ChoiceField(choices=centro)
+    Valor_Hora_Normal = forms.DecimalField()
+    Valor_Dia_Normal = forms.DecimalField()
+    Valor_Recargo_Dominical = forms.DecimalField()
+    Duracion_Contrato = forms.ChoiceField(choices=duracion_contrato)
+    Fecha_Ingreso = forms.SelectDateWidget()
+    Fecha_Termino = forms.SelectDateWidget()
+    Posee_Seguro_Cesantia = forms.BooleanField()
+    Ingreso_Seguro_Cesantia = forms.SelectDateWidget()
+
+
+    class Meta:
+        model = Liquidacion
+        fields = [
             'Tipo_Trabajador',
             'Tipo_Sueldo',
             'Forma_Pago_Sueldo',
@@ -146,12 +168,63 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Fecha_Termino',
             'Posee_Seguro_Cesantia',
             'Ingreso_Seguro_Cesantia',
+        ]
+
+class No_ImponiblesForm(forms.ModelForm):
+    #No imponibles 
+    Colacion = forms.DecimalField()
+    Movilizacion = forms.DecimalField()
+    Perdida_Caja = forms.DecimalField()
+    Desgaste_Herramientas = forms.DecimalField()
+    Trabajo_Remoto = forms.DecimalField()
+
+    class Meta:
+        model = No_Imponibles
+        fields = [
             'Colacion',
             'Movilizacion',
             'Perdida_Caja',
             'Desgaste_Herramientas',
             'Trabajo_Remoto',
+        ]
+
+class PagoForm(forms.ModelForm):
+    #Forma de pago 
+    Banco_Deposito = forms.ChoiceField(choices=banco)
+    Tipo_Cuenta = forms.ChoiceField(choices=tipo_cuenta)
+    Nro_Cuenta = forms.CharField()
+
+    class Meta:
+        model = Forma_de_pago
+        fields = [
             'Banco_Deposito',
             'Tipo_Cuenta',
             'Nro_Cuenta',
-            ]
+        ]
+
+
+#Formsets
+RegimenFormSet = inlineformset_factory(
+    Datos_Empleado, Regimen_Provisional, form=RegimenForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)
+ApvFormSet = inlineformset_factory(
+    Datos_Empleado, APV, form=ApvForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)
+SaludFormset = inlineformset_factory(
+    Datos_Empleado, Salud, form=SaludForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)
+LiquidacionFormSet = inlineformset_factory(
+    Datos_Empleado, Liquidacion, form=LiquidacionForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)
+No_imponiblesFormSet = inlineformset_factory(
+    Datos_Empleado, No_Imponibles, form=No_ImponiblesForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)
+PagoFormSet = inlineformset_factory(
+    Datos_Empleado, Forma_de_pago, form=PagoForm,
+    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+)

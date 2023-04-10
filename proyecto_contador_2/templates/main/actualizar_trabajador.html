@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+{% block title %}Actualizar tranajador{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <h3>Datos Personales</h3>
+    {{form|crispy}}
+    <h3>Regimen Provisional</h3>
+    {{form_2|crispy}}
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}
