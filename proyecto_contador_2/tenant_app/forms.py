@@ -63,15 +63,15 @@ class Datos_EmpleadoForm(forms.ModelForm):
 class RegimenForm(forms.ModelForm):
     Regimen_Provisional = forms.ChoiceField(choices=regimen)
     Afp = forms.ChoiceField(choices=afp)
-    Ahorro_imponible = forms.DecimalField()
-    Puesto_Trabajo_Pesado = forms.CharField()
-    Cotizacion_Trabajo_Pesado = forms.DecimalField()
+    Ahorro_imponible = forms.DecimalField(required=False)
+    Puesto_Trabajo_Pesado = forms.CharField(required=False)
+    Cotizacion_Trabajo_Pesado = forms.DecimalField(required=False)
     #AFP
-    Ahorro_Voluntario_Afp = forms.DecimalField()
-    Desea_APV = forms.BooleanField()
+    Ahorro_Voluntario_Afp = forms.DecimalField(required=False)
+    Desea_APV = forms.BooleanField(required=False)
     #IPS 
-    Ex_caja = forms.ChoiceField(choices=ex_caja)
-    Tasa_Ex_caja = forms.DecimalField()
+    Ex_caja = forms.ChoiceField(choices=ex_caja, required=False)
+    Tasa_Ex_caja = forms.DecimalField(required=False)
 
     class Meta:
         model = Regimen_Provisional
@@ -89,12 +89,12 @@ class RegimenForm(forms.ModelForm):
 
 class ApvForm(forms.ModelForm):
     Institucion_Apv = forms.ChoiceField(choices=lista_institucion_apv)
-    Nro_Contrato_Apv = forms.CharField()
+    Nro_Contrato_Apv = forms.CharField(required=False)
     Forma_Pago_Apv = forms.ChoiceField(choices=pago_apv)
     Regimen_Apv = forms.ChoiceField(choices=regimen_apv)
-    Ahorro_Pesos = forms.DecimalField()
-    Ahorro_UF = forms.DecimalField()
-    Deposito_Convenido = forms.DecimalField()
+    Ahorro_Pesos = forms.DecimalField(required=False)
+    Ahorro_UF = forms.DecimalField(required=False)
+    Deposito_Convenido = forms.DecimalField(required=False)
     
     class Meta:
         model = APV
@@ -110,12 +110,12 @@ class ApvForm(forms.ModelForm):
 
 class SaludForm(forms.ModelForm):
     Institucion_Salud = forms.ChoiceField(choices=institucion_salud)
-    Nro_Fun_Incorporacion = forms.CharField()
-    Moneda_Plano_Salud = forms.DecimalField()
-    Cotizacion_Pactada_Salud = forms.DecimalField()
-    Cotizacion_Voluntaria_Salud_Pesos = forms.DecimalField()
-    Cotizacion_Voluntaria_Salud_Uf = forms.DecimalField()
-    Pago_Isapre_Proporcional = forms.BooleanField()
+    Nro_Fun_Incorporacion = forms.CharField(required=False)
+    Moneda_Plano_Salud = forms.DecimalField(required=False)
+    Cotizacion_Pactada_Salud = forms.DecimalField(required=False)
+    Cotizacion_Voluntaria_Salud_Pesos = forms.DecimalField(required=False)
+    Cotizacion_Voluntaria_Salud_Uf = forms.DecimalField(required=False)
+    Pago_Isapre_Proporcional = forms.BooleanField(required=False)
 
     class Meta:
         model = Salud
@@ -229,3 +229,4 @@ class PagoForm(forms.ModelForm):
 #    extra=1, max_num=1, can_delete=True, can_delete_extra=True
 #)
 
+#Validaciones 

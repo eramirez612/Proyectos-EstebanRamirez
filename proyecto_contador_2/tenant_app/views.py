@@ -33,18 +33,36 @@ def nuevo_trabajador(request):
 @login_required(login_url="/login")
 def actualizar_trabajador(request, id):
     obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
-    ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
-    ins_apv = APV.objects.get(id=obj.id)
-    ins_salud = Salud.objects.get(id=obj.id)
-    ins_liquidacion = Liquidacion.objects.get(id=obj.id)
-    #ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
-    ins_pago = Forma_de_pago.objects.get(id=obj.id)
+    try:
+        ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
+    except Regimen_Provisional.DoesNotExist:
+        ins_regimen = None
+    try:
+        ins_apv = APV.objects.get(id=obj.id)
+    except APV.DoesNotExist:
+        ins_apv = None
+    try:
+        ins_salud = Salud.objects.get(id=obj.id)
+    except Salud.DoesNotExist:
+        ins_salud= None
+    try:
+        ins_liquidacion = Liquidacion.objects.get(id=obj.id)
+    except Liquidacion.DoesNotExist:
+        ins_liquidacion = None
+    try:
+        ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
+    except No_Imponibles.DoesNotExist:
+        ins_no_imponibles = None
+    try:
+        ins_pago = Forma_de_pago.objects.get(id=obj.id)
+    except Forma_de_pago.DoesNotExist:
+        ins_pago = None
     form = Datos_EmpleadoForm(instance=obj)
     form_2 = RegimenForm(instance=ins_regimen)
     form_3 = ApvForm(instance=ins_apv)
     form_4 = SaludForm(instance=ins_salud)
     form_5 = LiquidacionForm(instance=ins_liquidacion)
-    #form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
+    form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
     form_7 = PagoForm(instance=ins_pago)
     if request.method == 'POST':
         form = Datos_EmpleadoForm(request.POST, instance=obj)
@@ -52,22 +70,22 @@ def actualizar_trabajador(request, id):
         form_3 = ApvForm(request.POST, instance=ins_apv)
         form_4 = SaludForm(request.POST, instance=ins_salud)
         form_5 = LiquidacionForm(request.POST, instance=ins_liquidacion)
-        #form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
+        form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
         form_7 = PagoForm(request.POST, instance=ins_pago)
-        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(),  form_7.is_valid()]):
+        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(),  form_7.is_valid()]):
             post = form.save(commit=False)
             regimen = form_2.save(commit=False)
             apv = form_3.save(commit=False)
             salud = form_4.save(commit=False)
             liquidacion = form_5.save(commit=False)
-            #no_imponibles = form_6.save(commit=False)
+            no_imponibles = form_6.save(commit=False)
             pago = form_7.save(commit=False)
             #--
             regimen.Datos_Empleado = post
             apv.Datos_Empleado = post
             salud.Datos_Empleado = post
             liquidacion.Datos_Empleado = post
-            #no_imponibles.Datos_Empleado = post
+            no_imponibles.Datos_Empleado = post
             pago.Datos_Empleado = post
             #--
             post.save()
@@ -75,7 +93,7 @@ def actualizar_trabajador(request, id):
             apv.save()
             salud.save()
             liquidacion.save()
-            #no_imponibles.save()
+            no_imponibles.save()
             pago.save()
 
 
@@ -86,6 +104,7 @@ def actualizar_trabajador(request, id):
         'form_3': form_3,
         'form_4': form_4,
         'form_5': form_5,
+        'form_6': form_6,
         'form_7': form_7,
         'object': obj
         }
@@ -95,19 +114,38 @@ def actualizar_trabajador(request, id):
 @login_required(login_url="/login")
 def detalle_trabajador(request, id):
     obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
-    card_2 = Regimen_Provisional.objects.get(id=obj.id)
-    card_3 = APV.objects.get(id=obj.id)
-    card_4 = Salud.objects.get(id=obj.id)
-    card_5 = Liquidacion.objects.get(id=obj.id)
-    #card_6 = No_Imponibles.objects.get(id=obj.id)
-    card_7 = Forma_de_pago.objects.get(id=obj.id)
+    try:
+        card_2 = Regimen_Provisional.objects.get(id=obj.id)
+    except Regimen_Provisional.DoesNotExist:
+        card_2 = RegimenForm()
+    try:
+        card_3 = APV.objects.get(id=obj.id)
+    except APV.DoesNotExist:
+        card_3 = ApvForm()
+    try:
+        card_4 = Salud.objects.get(id=obj.id)
+    except Salud.DoesNotExist:
+        card_4 = SaludForm()
+    try:
+        card_5 = Liquidacion.objects.get(id=obj.id)
+    except Liquidacion.DoesNotExist:
+        card_5 = LiquidacionForm()
+    try:
+        card_6 = No_Imponibles.objects.get(id=obj.id)
+    except No_Imponibles.DoesNotExist:
+        card_6 = No_ImponiblesForm()
+    try:
+        card_7 = Forma_de_pago.objects.get(id=obj.id)
+    except Forma_de_pago.DoesNotExist:
+        card_7 = PagoForm()
+
     data = {
         'card': obj, 
         'card_2': card_2,
         'card_3': card_3,
         'card_4': card_4,
         'card_5': card_5,
-        #'card_6': card_6,
+        'card_6': card_6,
         'card_7': card_7,
         }
     return render(request, 'main/trabajador.html', data)
@@ -121,7 +159,7 @@ def liquidacion(request, id):
 def eliminarTrabajadores(request, id):
     trabajador = Datos_Empleado.objects.get(id = id)
     trabajador.delete()
-    return redirect('/Trabajadores')
+    return redirect('/lista')
 
 def sign_up(request):
     if  request.method == 'POST':
@@ -135,3 +173,83 @@ def sign_up(request):
     
     return render(request, 'registration/sign_up.html', {'form': form})
 
+
+
+#def actualizar_trabajadorv2(request, id):
+#    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+#    try:
+#        ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
+#    except Regimen_Provisional.DoesNotExist:
+#        ins_regimen = None
+#    try:
+#        ins_apv = APV.objects.get(id=obj.id)
+#    except APV.DoesNotExist:
+#        ins_apv = None
+#    try:
+#        ins_salud = Salud.objects.get(id=obj.id)
+#    except Salud.DoesNotExist:
+#        ins_salud= None
+#    try:
+#        ins_liquidacion = Liquidacion.objects.get(id=obj.id)
+#    except Liquidacion.DoesNotExist:
+#        ins_liquidacion = None
+#    try:
+#        ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
+#    except No_Imponibles.DoesNotExist:
+#        ins_no_imponibles = None
+#    try:
+#        ins_pago = Forma_de_pago.objects.get(id=obj.id)
+#    except Forma_de_pago.DoesNotExist:
+#        ins_pago = None
+#    form = Datos_EmpleadoForm(instance=obj)
+#    form_2 = RegimenForm(instance=ins_regimen)
+#    form_3 = ApvForm(instance=ins_apv)
+#    form_4 = SaludForm(instance=ins_salud)
+#    form_5 = LiquidacionForm(instance=ins_liquidacion)
+#    form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
+#    form_7 = PagoForm(instance=ins_pago)
+#    if request.method == 'POST':
+#        form = Datos_EmpleadoForm(request.POST, instance=obj)
+#        form_2 = RegimenForm(request.POST, instance=ins_regimen)
+#        form_3 = ApvForm(request.POST, instance=ins_apv)
+#        form_4 = SaludForm(request.POST, instance=ins_salud)
+#        form_5 = LiquidacionForm(request.POST, instance=ins_liquidacion)
+#        form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
+#        form_7 = PagoForm(request.POST, instance=ins_pago)
+#        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(),  form_7.is_valid()]):
+#            post = form.save(commit=False)
+#            regimen = form_2.save(commit=False)
+#            apv = form_3.save(commit=False)
+#            salud = form_4.save(commit=False)
+#            liquidacion = form_5.save(commit=False)
+#            no_imponibles = form_6.save(commit=False)
+#            pago = form_7.save(commit=False)
+#            #--
+#            regimen.Datos_Empleado = post
+#            apv.Datos_Empleado = post
+#            salud.Datos_Empleado = post
+#            liquidacion.Datos_Empleado = post
+#            no_imponibles.Datos_Empleado = post
+#            pago.Datos_Empleado = post
+#            #--
+#            post.save()
+#            regimen.save()
+#            apv.save()
+#            salud.save()
+#            liquidacion.save()
+#            #no_imponibles.save()
+#            pago.save()
+#
+#
+#            return TrabajadorList(request)
+#    data = {
+#        'form': form, 
+#        'form_2': form_2,
+#        'form_3': form_3,
+#        'form_4': form_4,
+#        'form_5': form_5,
+#        'form_7': form_7,
+#        'object': obj
+#        }
+#    
+#    return render(request, 'main/actualizar_trabajador.html', data)
