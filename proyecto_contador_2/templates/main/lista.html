@@ -2,6 +2,7 @@
 {% block title %}Trabajadores{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+&nbsp;
 <div class="container-fluid">
 <a href="/nuevo-trabajador" class="btn btn-info" role="button">Nuevo trabajador</a>
 <table class="table table-striped table-inverse table-responsive">
@@ -25,7 +26,10 @@
             <th>{{trabajador.Direccion}}</th>
             <th>{{trabajador.Comuna}}</th>
             <th>{{trabajador.Nacionalidad}}</th>
-            <th><a href="/actualizar-trabajador/{{trabajador.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a></th>
+            <th>
+                <a href="/trabajador/{{trabajador.id}}" class="btn btn-info btn-sm"><i class="bi bi-pencil"></i></a>
+                <a href="/eliminar-trabajador/{{trabajador.id}}" class="btn btn-danger btn-sm"><i class="bi bi-pencil"></i></a>
+            </th>
         </tr>
         {% endfor %}
     </tbody>

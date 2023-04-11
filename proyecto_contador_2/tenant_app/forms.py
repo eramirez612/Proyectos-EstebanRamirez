@@ -204,27 +204,28 @@ class PagoForm(forms.ModelForm):
 
 
 #Formsets
-RegimenFormSet = inlineformset_factory(
-    Datos_Empleado, Regimen_Provisional, form=RegimenForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
-ApvFormSet = inlineformset_factory(
-    Datos_Empleado, APV, form=ApvForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
-SaludFormset = inlineformset_factory(
-    Datos_Empleado, Salud, form=SaludForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
-LiquidacionFormSet = inlineformset_factory(
-    Datos_Empleado, Liquidacion, form=LiquidacionForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
-No_imponiblesFormSet = inlineformset_factory(
-    Datos_Empleado, No_Imponibles, form=No_ImponiblesForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
-PagoFormSet = inlineformset_factory(
-    Datos_Empleado, Forma_de_pago, form=PagoForm,
-    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-)
+#RegimenFormSet = inlineformset_factory(
+#    Datos_Empleado, Regimen_Provisional, form=RegimenForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+#ApvFormSet = inlineformset_factory(
+#    Datos_Empleado, APV, form=ApvForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+#SaludFormset = inlineformset_factory(
+#    Datos_Empleado, Salud, form=SaludForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+#LiquidacionFormSet = inlineformset_factory(
+#    Datos_Empleado, Liquidacion, form=LiquidacionForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+#No_imponiblesFormSet = inlineformset_factory(
+#    Datos_Empleado, No_Imponibles, form=No_ImponiblesForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+#PagoFormSet = inlineformset_factory(
+#    Datos_Empleado, Forma_de_pago, form=PagoForm,
+#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
+#)
+

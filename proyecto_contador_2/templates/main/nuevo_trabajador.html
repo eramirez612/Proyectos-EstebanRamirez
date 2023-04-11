@@ -2,7 +2,8 @@
 {% block title %}Nuevo tranajador{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form method="post">
+&nbsp;
+<form method="POST">
     {% csrf_token %}
     <h3>Datos Basicos</h3>
     {{form|crispy}}
