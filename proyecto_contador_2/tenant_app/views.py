@@ -25,7 +25,7 @@ def nuevo_trabajador(request):
             post = form.save(commit=False)
             post.autor = request.user
             post.save()
-            return redirect('/trabajadores')
+            return redirect('/lista')
     data = {'form': form,}
     
     return render(request, 'main/nuevo_trabajador.html', data)
@@ -57,6 +57,7 @@ def actualizar_trabajador(request, id):
         ins_pago = Forma_de_pago.objects.get(id=obj.id)
     except Forma_de_pago.DoesNotExist:
         ins_pago = None
+        
     form = Datos_EmpleadoForm(instance=obj)
     form_2 = RegimenForm(instance=ins_regimen)
     form_3 = ApvForm(instance=ins_apv)
@@ -154,6 +155,67 @@ def detalle_trabajador(request, id):
 @login_required(login_url="/login")
 def liquidacion(request, id):
     obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    try:
+        regimen = Regimen_Provisional.objects.get(id=obj.id)
+    except Regimen_Provisional.DoesNotExist:
+        regimen = None
+    try:
+        apv = APV.objects.get(id=obj.id)
+    except APV.DoesNotExist:
+        apv = None
+    try:
+        salud = Salud.objects.get(id=obj.id)
+    except Salud.DoesNotExist:
+        salud = None
+    try:
+        liquidacion = Liquidacion.objects.get(id=obj.id)
+    except Liquidacion.DoesNotExist:
+        liquidacion = None
+    try:
+        no_imponibles = No_Imponibles.objects.get(id=obj.id)
+    except No_Imponibles.DoesNotExist:
+        no_imponibles = None
+    try:
+        pago = Forma_de_pago.objects.get(id=obj.id)
+    except Forma_de_pago.DoesNotExist:
+        pago = None
+
+    ingreso_minimo_mensual = ""
+    utm = ""
+    UF = "" #Ultimo dia del mes
+    tope_imponible_uf = "" #AFP y salud
+    tope_imponible_clp = tope_imponible_uf * UF #AFP y salud
+    tope_imponible_uf_cesantia = ""
+
+    sueldo_base = ""
+    sobresueldo = "" #horas extras
+    comision = ""
+    bono = ""
+    diferencia_gratificacion = ""
+    gratificacion_legal =((4.75*ingreso_minimo_mensual)/12) #4,75 sueldos minimos /12 meses o sueldo_base * 0.25
+    total_haberes_imponibles = sueldo_base + sobresueldo + comision + bono + diferencia_gratificacion + gratificacion_legal
+
+    otras_asignaciones = no_imponibles.Perdida_Caja + no_imponibles.Desgaste_Herramientas + no_imponibles.Trabajo_Remoto
+    transporte_y_colacion = no_imponibles.Colacion + no_imponibles.Movilizacion
+    asignacion_familiar = ""
+    total_haberes_no_imponibles = otras_asignaciones + transporte_y_colacion + asignacion_familiar
+
+    #Cotizacion obligatoria afp
+    pago_electronico_cotizacion_adicional = "" #costo afp
+    pago_electronico_cotizacion_obligatoria = "" #fondo individual
+    cotizacion_obligatoria_afp = pago_electronico_cotizacion_obligatoria + pago_electronico_cotizacion_adicional
+    
+    cotizacion_salud = "" # 7%* total haberes imponible
+    adicional_cotizacion_salud = ""
+    seguro_de_cesantia = ""
+
+    sueldo_antes_de_impuestos = total_haberes_imponibles - cotizacion_obligatoria_afp - cotizacion_salud - adicional_cotizacion_salud - seguro_de_cesantia
+    tasa_impuesto_unica_segunda_categoria = ""
+
+
+
+
+
 
 @login_required(login_url="/login")
 def eliminarTrabajadores(request, id):
