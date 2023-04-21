@@ -6,7 +6,7 @@
 <div class="container-fluid">
     {% csrf_token %}
     <a href="/actualizar-trabajador/{{card.id}}" class="btn btn-info" role="button">Editar</a>
-    <a href="" class="btn btn-info" role="button">Sacar Liquidacion</a>
+    <a href="/liquidacion/{{card.id}}" class="btn btn-info" role="button">Sacar Liquidacion</a>
     <div class="row align-items-start">
         <div class="col">
             <div class="card" style="width: 25rem;">
@@ -43,8 +43,6 @@
                   <p class="card-text">Regimen Provisional: {{card_2.Regimen_Provisional}}</p>
                   <p class="card-text">AFP: {{card_2.Afp}}</p>
                   <p class="card-text">Ahorro imponible: {{card_2.Ahorro_imponible}}</p>
-                  <p class="card-text">Puesto de trabajo pesado: {{card_2.Puesto_Trabajo_Pesado}}</p>
-                  <p class="card-text">Cotizacion de trabajo pesado: {{card_2.Cotizacion_Trabajo_Pesado}}</p>
                   <h6 class="card-subtitle mb-2 text-body-secondary">AFP</h6>
                   <p class="card-text">Ahorro voluntario AFP: {{card_2.Ahorro_Voluntario_Afp}}</p>
                   <p class="card-text">Desea APV: {{card_2.Desea_APV}}</p>

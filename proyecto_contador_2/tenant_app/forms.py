@@ -64,8 +64,6 @@ class RegimenForm(forms.ModelForm):
     Regimen_Provisional = forms.ChoiceField(choices=regimen)
     Afp = forms.ChoiceField(choices=afp)
     Ahorro_imponible = forms.DecimalField(required=False)
-    Puesto_Trabajo_Pesado = forms.CharField(required=False)
-    Cotizacion_Trabajo_Pesado = forms.DecimalField(required=False)
     #AFP
     Ahorro_Voluntario_Afp = forms.DecimalField(required=False)
     Desea_APV = forms.BooleanField(required=False)
@@ -79,8 +77,6 @@ class RegimenForm(forms.ModelForm):
             'Regimen_Provisional',
             'Afp',
             'Ahorro_imponible',
-            'Puesto_Trabajo_Pesado',
-            'Cotizacion_Trabajo_Pesado',
             'Ahorro_Voluntario_Afp',
             'Desea_APV',
             'Ex_caja',
@@ -110,64 +106,41 @@ class ApvForm(forms.ModelForm):
 
 class SaludForm(forms.ModelForm):
     Institucion_Salud = forms.ChoiceField(choices=institucion_salud)
-    Nro_Fun_Incorporacion = forms.CharField(required=False)
-    Moneda_Plano_Salud = forms.DecimalField(required=False)
-    Cotizacion_Pactada_Salud = forms.DecimalField(required=False)
-    Cotizacion_Voluntaria_Salud_Pesos = forms.DecimalField(required=False)
-    Cotizacion_Voluntaria_Salud_Uf = forms.DecimalField(required=False)
-    Pago_Isapre_Proporcional = forms.BooleanField(required=False)
+    Plan_UF = forms.DecimalField(required=False)
 
     class Meta:
         model = Salud
         fields = [
             'Institucion_Salud',
-            'Nro_Fun_Incorporacion',
-            'Moneda_Plano_Salud',
-            'Cotizacion_Pactada_Salud',
-            'Cotizacion_Voluntaria_Salud_Pesos',
-            'Cotizacion_Voluntaria_Salud_Uf',
-            'Pago_Isapre_Proporcional',
+            'Plan_UF',
         ]
 
 class LiquidacionForm(forms.ModelForm):
     #Liquidacion
+    Profesion = forms.ChoiceField(choices=profesion)
     Tipo_Trabajador = forms.ChoiceField(choices=tipo_trabajador)
-    Tipo_Sueldo = forms.ChoiceField(choices=tipo_sueldo)
-    Forma_Pago_Sueldo = forms.ChoiceField(choices=forma_pago_sueldo)
-    Horas_Semanales = forms.IntegerField()
-    Informar_Horas_Trabajadas = forms.BooleanField()
-    Forma_Calculo_Sueldo = forms.ChoiceField(choices=forma_calculo_sueldo)
-    Monto_Calculo_Sueldo = forms.DecimalField()
-    Centro_Costo = forms.ChoiceField(choices=centro)
-    Valor_Hora_Normal = forms.DecimalField()
-    Valor_Dia_Normal = forms.DecimalField()
-    Valor_Recargo_Dominical = forms.DecimalField()
-    Duracion_Contrato = forms.ChoiceField(choices=duracion_contrato)
-    Fecha_Ingreso = forms.SelectDateWidget()
-    Fecha_Termino = forms.SelectDateWidget()
-    Posee_Seguro_Cesantia = forms.BooleanField()
-    Ingreso_Seguro_Cesantia = forms.SelectDateWidget()
-
+    Sin_Seguro_Cesantia = forms.BooleanField()
+    Trabajador_Agricola = forms.BooleanField()
+    Director_de_Empresa = forms.BooleanField()
+    Sueldo_Base = forms.DecimalField()
+    Tipo_Contrato = forms.ChoiceField(choices=duracion_contrato)
+    Tipo_Jornada_Trabajo = forms.ChoiceField(choices=work_choices)
+    Dias_Descontados = forms.IntegerField()
+    Dias_Licencia = forms.IntegerField()
 
     class Meta:
         model = Liquidacion
         fields = [
+            'Profesion',
             'Tipo_Trabajador',
-            'Tipo_Sueldo',
-            'Forma_Pago_Sueldo',
-            'Horas_Semanales',
-            'Informar_Horas_Trabajadas',
-            'Forma_Calculo_Sueldo',
-            'Monto_Calculo_Sueldo',
-            'Centro_Costo',
-            'Valor_Hora_Normal',
-            'Valor_Dia_Normal',
-            'Valor_Recargo_Dominical',
-            'Duracion_Contrato',
-            'Fecha_Ingreso',
-            'Fecha_Termino',
-            'Posee_Seguro_Cesantia',
-            'Ingreso_Seguro_Cesantia',
+            'Sin_Seguro_Cesantia',
+            'Trabajador_Agricola',
+            'Director_de_Empresa',
+            'Sueldo_Base',
+            'Tipo_Contrato',
+            'Tipo_Jornada_Trabajo',
+            'Dias_Descontados',
+            'Dias_Licencia',
         ]
 
 class No_ImponiblesForm(forms.ModelForm):
@@ -203,30 +176,36 @@ class PagoForm(forms.ModelForm):
         ]
 
 
-#Formsets
-#RegimenFormSet = inlineformset_factory(
-#    Datos_Empleado, Regimen_Provisional, form=RegimenForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
-#ApvFormSet = inlineformset_factory(
-#    Datos_Empleado, APV, form=ApvForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
-#SaludFormset = inlineformset_factory(
-#    Datos_Empleado, Salud, form=SaludForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
-#LiquidacionFormSet = inlineformset_factory(
-#    Datos_Empleado, Liquidacion, form=LiquidacionForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
-#No_imponiblesFormSet = inlineformset_factory(
-#    Datos_Empleado, No_Imponibles, form=No_ImponiblesForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
-#PagoFormSet = inlineformset_factory(
-#    Datos_Empleado, Forma_de_pago, form=PagoForm,
-#    extra=1, max_num=1, can_delete=True, can_delete_extra=True
-#)
+class AdicionalesForm(forms.ModelForm):
+    Adicional = forms.ChoiceField(choices=adicional)
+    Tipo_de_Bono = forms.ChoiceField(choices=bonos)
+    Valor = forms.DecimalField()
 
-#Validaciones 
+    class Meta:
+        model = Adicionales
+        fields = [
+            'Adicional',
+            'Tipo_de_Bono',
+            'Valor',
+        ]
+
+
+class DescuentosForm(forms.ModelForm):
+    Descuento = forms.ChoiceField(choices=descuento)
+    Valor = forms.DecimalField()
+    
+    class Meta:
+        model = Descuentos
+        fields = [
+            'Descuento',
+            'Valor',
+        ]
+    
+class Movimiento_PersonalForm(forms.ModelForm):
+    Movimiento_Personal = forms.ChoiceField(choices=movimientos_personales)
+    Fecha_Inicio = forms.DateField()
+    Fecha_Termino = forms.DateField()
+
+class ImpuestoForm(forms.ModelForm):
+    Factor_Impuesto_unico_primera_categoria = forms.DecimalField()
+    Cantidad_a_rebajar = forms.DecimalField()
