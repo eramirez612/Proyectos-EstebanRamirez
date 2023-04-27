@@ -68,25 +68,6 @@ class SaludAdmin(admin.StackedInline):
             'Plan_UF',
     )
 
-
-class LiquidacionAdmin(admin.StackedInline):
-    model = Liquidacion
-    extra = 1
-    fields = (
-            'Fecha_Emision',
-            'Profesion',
-            'Tipo_Trabajador',
-            'Sin_Seguro_Cesantia',
-            'Trabajador_Agricola',
-            'Director_de_Empresa',
-            'Sueldo_Base',
-            'Tipo_Contrato',
-            'Tipo_Jornada_Trabajo',
-            'Dias_Descontados',
-            'Dias_Licencia',
-    )
-
-
 class No_ImponiblesAdmin(admin.StackedInline):
     model = No_Imponibles
     extra = 1
@@ -109,17 +90,34 @@ class PagoAdmin(admin.StackedInline):
             'Nro_Cuenta',
     )
 
+@admin.register(Liquidacion)
+class LiquidacionAdmin(admin.ModelAdmin):
+    inlines = [
+        RegimenAdmin, 
+        ApvAdmin,
+        SaludAdmin,  
+        AdicionalesAdmin,
+        DescuentosAdmin,
+        No_ImponiblesAdmin,
+        ]
+    extra = 1
+    fields = (
+            'Fecha_Emision',
+            'Profesion',
+            'Tipo_Trabajador',
+            'Sin_Seguro_Cesantia',
+            'Trabajador_Agricola',
+            'Director_de_Empresa',
+            'Sueldo_Base',
+            'Tipo_Contrato',
+            'Tipo_Jornada_Trabajo',
+            'Dias_Descontados',
+            'Dias_Licencia',
+    )
 
 @admin.register(Datos_Empleado)
 class Datos_EmpleadoAdmin(admin.ModelAdmin):
     inlines = [
-        RegimenAdmin, 
-        ApvAdmin,
-        SaludAdmin, 
-        LiquidacionAdmin, 
-        AdicionalesAdmin,
-        DescuentosAdmin,
-        No_ImponiblesAdmin,
         PagoAdmin, 
         ]
     

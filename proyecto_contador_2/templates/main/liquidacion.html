@@ -1,24 +1,26 @@
 {% extends 'main/base.html' %}
-{% block title %}Actualizar tranajador{% endblock %}
+{% block title %}Nueva Liquidacion{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
 &nbsp;
 <form method="POST">
     {% csrf_token %}
-    <h3>Datos Personales</h3>
-    {{form|crispy}}
+    <h3>Datos Basicos</h3>
+    {{form_1|crispy}}
     <h3>Regimen Provisional</h3>
     {{form_2|crispy}}
     <h3>APV</h3>
     {{form_3|crispy}}
     <h3>Salud</h3>
     {{form_4|crispy}}
-    <h3>Liquidacion</h3>
-    {{form_5|crispy}}
     <h3>No Imponibles</h3>
+    {{form_5|crispy}}
+    <h3>Adicionales</h3>
     {{form_6|crispy}}
-    <h3>Pago</h3>
+    <h3>Descuentos</h3>
     {{form_7|crispy}}
+    <h3>Movimientos personales</h3>
+    {{form_8|crispy}}
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
 {% endblock %}

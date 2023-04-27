@@ -8,9 +8,14 @@ import requests
 import json
 from django.http import FileResponse
 import io
+from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
 # Create your views here.
 
 @login_required(login_url="/login")
@@ -38,123 +43,130 @@ def nuevo_trabajador(request):
     return render(request, 'main/nuevo_trabajador.html', data)
 
 @login_required(login_url="/login")
-def actualizar_trabajador(request, id):
+def nueva_liquidacion(request, id):
     obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
     try:
-        ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
-    except Regimen_Provisional.DoesNotExist:
-        ins_regimen = None
-    try:
-        ins_apv = APV.objects.get(id=obj.id)
-    except APV.DoesNotExist:
-        ins_apv = None
-    try:
-        ins_salud = Salud.objects.get(id=obj.id)
-    except Salud.DoesNotExist:
-        ins_salud= None
-    try:
-        ins_liquidacion = Liquidacion.objects.get(id=obj.id)
+        ins_liquidacion = Liquidacion.objects.get(Datos_Empleado_id=obj.id)
     except Liquidacion.DoesNotExist:
         ins_liquidacion = None
     try:
-        ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
+        ins_regimen = Regimen_Provisional.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except Regimen_Provisional.DoesNotExist:
+        ins_regimen = None
+    try:
+        ins_apv = APV.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except APV.DoesNotExist:
+        ins_apv = None
+    try:
+        ins_salud = Salud.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except Salud.DoesNotExist:
+        ins_salud= None
+    try:
+        ins_no_imponibles = No_Imponibles.objects.get(Liquidacion_id=ins_liquidacion.id)
     except No_Imponibles.DoesNotExist:
         ins_no_imponibles = None
     try:
-        ins_pago = Forma_de_pago.objects.get(id=obj.id)
-    except Forma_de_pago.DoesNotExist:
-        ins_pago = None
-        
-    form = Datos_EmpleadoForm(instance=obj)
+        ins_adicionales = Adicionales.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except Adicionales.DoesNotExist:
+        ins_adicionales = None
+    try:
+        ins_descuentos = Descuentos.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except Descuentos.DoesNotExist:
+        ins_descuentos = None
+    try:
+        ins_movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=ins_liquidacion.id)
+    except Movimiento_Personal.DoesNotExist:
+        ins_movimiento_personal = None
+
+    form_1 = LiquidacionForm(instance=ins_liquidacion)
     form_2 = RegimenForm(instance=ins_regimen)
     form_3 = ApvForm(instance=ins_apv)
     form_4 = SaludForm(instance=ins_salud)
-    form_5 = LiquidacionForm(instance=ins_liquidacion)
-    form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
-    form_7 = PagoForm(instance=ins_pago)
+    form_5 = No_ImponiblesForm(instance=ins_no_imponibles)
+    form_6 = AdicionalesForm(instance=ins_adicionales)
+    form_7 = DescuentosForm(instance=ins_descuentos)
+    form_8 = Movimiento_PersonalForm(instance=ins_movimiento_personal)
     if request.method == 'POST':
-        form = Datos_EmpleadoForm(request.POST, instance=obj)
+        form_1 = LiquidacionForm(request.POST, instance=ins_liquidacion)
         form_2 = RegimenForm(request.POST, instance=ins_regimen)
         form_3 = ApvForm(request.POST, instance=ins_apv)
         form_4 = SaludForm(request.POST, instance=ins_salud)
-        form_5 = LiquidacionForm(request.POST, instance=ins_liquidacion)
-        form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
-        form_7 = PagoForm(request.POST, instance=ins_pago)
-        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(),  form_7.is_valid()]):
-            post = form.save(commit=False)
+        form_5 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
+        form_6 = AdicionalesForm(request.POST, instance=ins_adicionales)
+        form_7 = DescuentosForm(request.POST, instance=ins_descuentos)
+        form_8 = Movimiento_PersonalForm(request.POST, instance=ins_movimiento_personal)
+        if all([form_1.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(), form_7.is_valid(), form_8.is_valid() ]):
+            liquidacion = form_1.save(commit=False)
             regimen = form_2.save(commit=False)
             apv = form_3.save(commit=False)
             salud = form_4.save(commit=False)
-            liquidacion = form_5.save(commit=False)
-            no_imponibles = form_6.save(commit=False)
-            pago = form_7.save(commit=False)
+            no_imponibles = form_5.save(commit=False)
+            adicionales = form_6.save(commit=False)
+            descuentos = form_7.save(commit=False)
+            movimientos_personal = form_8.save(commit=False)
             #--
-            regimen.Datos_Empleado = post
-            apv.Datos_Empleado = post
-            salud.Datos_Empleado = post
-            liquidacion.Datos_Empleado = post
-            no_imponibles.Datos_Empleado = post
-            pago.Datos_Empleado = post
+            liquidacion.Datos_Empleado = obj
+            regimen.Datos_Empleado = obj
+            apv.Datos_Empleado = obj
+            salud.Datos_Empleado = obj
+            no_imponibles.Datos_Empleado = obj
+            adicionales.Datos_Empleado = obj
+            descuentos.Datos_Empleado = obj
+            movimientos_personal.Datos_Empleado = obj
             #--
-            post.save()
+            liquidacion.save()
             regimen.save()
             apv.save()
             salud.save()
-            liquidacion.save()
             no_imponibles.save()
-            pago.save()
-
+            adicionales.save()
+            descuentos.save()
+            movimientos_personal.save()
 
             return TrabajadorList(request)
     data = {
-        'form': form, 
+        'form_1': form_1,
         'form_2': form_2,
         'form_3': form_3,
         'form_4': form_4,
         'form_5': form_5,
         'form_6': form_6,
         'form_7': form_7,
+        'form_8': form_8,
         'object': obj
         }
     
-    return render(request, 'main/actualizar_trabajador.html', data)
+    return render(request, 'main/liquidacion.html', data)
 
 @login_required(login_url="/login")
 def detalle_trabajador(request, id):
-    obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
     try:
-        card_2 = Regimen_Provisional.objects.get(id=obj.id)
-    except Regimen_Provisional.DoesNotExist:
-        card_2 = RegimenForm()
-    try:
-        card_3 = APV.objects.get(id=obj.id)
-    except APV.DoesNotExist:
-        card_3 = ApvForm()
-    try:
-        card_4 = Salud.objects.get(id=obj.id)
-    except Salud.DoesNotExist:
-        card_4 = SaludForm()
-    try:
-        card_5 = Liquidacion.objects.get(id=obj.id)
-    except Liquidacion.DoesNotExist:
-        card_5 = LiquidacionForm()
-    try:
-        card_6 = No_Imponibles.objects.get(id=obj.id)
-    except No_Imponibles.DoesNotExist:
-        card_6 = No_ImponiblesForm()
-    try:
-        card_7 = Forma_de_pago.objects.get(id=obj.id)
+        ins_pago = Forma_de_pago.objects.get(id=obj.id)
     except Forma_de_pago.DoesNotExist:
-        card_7 = PagoForm()
+        ins_pago = None
+        
+    form = Datos_EmpleadoForm(instance=obj)
+    form_7 = PagoForm(instance=ins_pago)
+    if request.method == 'POST':
+        form = Datos_EmpleadoForm(request.POST, instance=obj)
+        form_7 = PagoForm(request.POST, instance=ins_pago)
+        if all([form.is_valid(), form_7.is_valid()]):
+            post = form.save(commit=False)
+            pago = form_7.save(commit=False)
+            #--
+            pago.Datos_Empleado = post
+            #--
+            post.save()
+            pago.save()
 
+
+            return TrabajadorList(request)
+        
     data = {
-        'card': obj, 
-        'card_2': card_2,
-        'card_3': card_3,
-        'card_4': card_4,
-        'card_5': card_5,
-        'card_6': card_6,
-        'card_7': card_7,
+        'card': form, 
+        'card_7': form_7,
+        'object': obj
         }
     return render(request, 'main/trabajador.html', data)
 
@@ -163,43 +175,39 @@ def detalle_trabajador(request, id):
 def liquidacion(request, id):
     obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
     try:
-        regimen = Regimen_Provisional.objects.get(id=obj.id)
+        regimen = Regimen_Provisional.objects.get(Datos_Empleado_id=obj.id)
     except Regimen_Provisional.DoesNotExist:
         regimen = None
     try:
-        apv = APV.objects.get(id=obj.id)
+        apv = APV.objects.get(Datos_Empleado_id=obj.id)
     except APV.DoesNotExist:
         apv = None
     try:
-        salud = Salud.objects.get(id=obj.id)
+        salud = Salud.objects.get(Datos_Empleado_id=obj.id)
     except Salud.DoesNotExist:
         salud = None
     try:
-        liquidacion = Liquidacion.objects.get(id=obj.id)
+        liquidacion = Liquidacion.objects.get(Datos_Empleado_id=obj.id)
     except Liquidacion.DoesNotExist:
         liquidacion = None
     try:
-        no_imponibles = No_Imponibles.objects.get(id=obj.id)
+        no_imponibles = No_Imponibles.objects.get(Datos_Empleado_id=obj.id)
     except No_Imponibles.DoesNotExist:
         no_imponibles = None
     try:
-        pago = Forma_de_pago.objects.get(id=obj.id)
-    except Forma_de_pago.DoesNotExist:
-        pago = None
-    try:
-        adicionales = Adicionales.objects.get(id=obj.id)
+        adicionales = Adicionales.objects.get(Datos_Empleado_id=obj.id)
     except Adicionales.DoesNotExist:
         adicionales = None
     try:
-        descuentos = Descuentos.objects.get(id=obj.id)
+        descuentos = Descuentos.objects.get(Datos_Empleado_id=obj.id)
     except Descuentos.DoesNotExist:
         descuentos = None
     try:
-        movimiento_personal = Movimiento_Personal.objects.get(id=obj.id)
+        movimiento_personal = Movimiento_Personal.objects.get(Datos_Empleado_id=obj.id)
     except Movimiento_Personal.DoesNotExist:
         movimiento_personal = None
     try:
-        impuesto = Impuesto.objects.get(id=obj.id)
+        impuesto = Impuesto.objects.get(Datos_Empleado_id=obj.id)
     except Impuesto.DoesNotExist:
         impuesto = None
 
@@ -217,43 +225,61 @@ def liquidacion(request, id):
     tope_imponible_clp = tope_imponible_uf * UF #AFP y salud
     tope_imponible_uf_cesantia = 122.6
 
-
-    sueldo_base = Liquidacion.Sueldo_Base
-    bonos = Adicionales.Valor
-    gratificacion_legal = (4.75*ingreso_minimo_mensual)/12
-    haberes_imponibles = sueldo_base + bonos + gratificacion_legal
-
-    colacion = No_Imponibles.Colacion
-    movilizacion = No_Imponibles.Movilizacion
-    trabajo_remoto = No_Imponibles.Trabajo_Remoto
-    haberes_no_imponibles = colacion + movilizacion + trabajo_remoto
+    #haberes imponibles
+    sueldo_base = liquidacion.Sueldo_Base
+    #bonos = adicionales.Valor
+    gratificacion = (4.75*ingreso_minimo_mensual)/12
+    total_haberes_imponibles = float(sueldo_base) + gratificacion
     
-    prevision = haberes_imponibles*11.45 #se necesita una variable que cambie la tasa dependiendo de la prevision
-    salud = haberes_imponibles*7
-    adi_salud = Salud.Plan_UF
-    seguro_cesantia = haberes_imponibles*0.6
-    descuentos_legales = prevision + salud + adi_salud + seguro_cesantia
+    #no imponibles
+    colacion = no_imponibles.Colacion
+    movilizacion = no_imponibles.Movilizacion
+    trabajo_remoto = no_imponibles.Trabajo_Remoto
+    total_no_imponibles = colacion + movilizacion + trabajo_remoto
 
-    sueldo_antes_de_impuesto = haberes_imponibles -descuentos_legales
-    impuesto_primera_categoria = Impuesto.Factor_impuesto_unico_primera_categoria + sueldo_antes_de_impuesto # agregar a forms
-    rebaja = Impuesto.Cantidad_a_rebajar
-    impuesto_segunda_categoria = impuesto_primera_categoria + rebaja
-    impuesto = impuesto_primera_categoria + impuesto_segunda_categoria
-    total_descuento = descuentos_legales+ impuesto
+    #descuentos
+    regimen = float(sueldo_base)
+    salud = float(sueldo_base)*0.07
+    cesantia = float(sueldo_base)*0.6
+    total_descuentos = regimen + salud + cesantia
 
-    total_liquido = haberes_imponibles + haberes_no_imponibles - total_descuento
+    #sueldo liquido 
+    sueldo_liquido = total_haberes_imponibles + float(total_no_imponibles) - total_descuentos
 
-    buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textob = c.beginText()
-    textob.setTextOrigin(inch, inch)
-    textob.setFont("Helvetica", 14)
+    data = {
+        'ingreso_minimo_mensual': ingreso_minimo_mensual,
+        'gratificacion': gratificacion,
+        'total_haberes_imponibles': total_haberes_imponibles,
+        'colacion': colacion,
+        'movilizacion': movilizacion,
+        'trabajo_remoto': trabajo_remoto,
+        'total_no_imponibles': total_no_imponibles,
+        'regimen': regimen,
+        'salud': salud,
+        'cesantia': cesantia, 
+        'total_descuentos': total_descuentos,
+        'sueldo_base': sueldo_base,
+        'total_descuentos': total_descuentos,
+        'sueldo_liquido': sueldo_liquido,
+    }
+    
+    pdf = generar_pdf('main/pdf.html', data)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Report_for_%s.pdf" %(obj.Nombres)
+    content = "inline; filename= %s" %(filename)
+    response['Content-Disposition']=content
+    return response
 
-    lines = []
 
-    lines.append(total_liquido)
-
-    return total_liquido
+def generar_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+    
 
 
 @login_required(login_url="/login")

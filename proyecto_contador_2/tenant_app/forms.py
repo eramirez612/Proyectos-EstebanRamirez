@@ -117,7 +117,8 @@ class SaludForm(forms.ModelForm):
 
 class LiquidacionForm(forms.ModelForm):
     #Liquidacion
-    Profesion = forms.ChoiceField(choices=profesion)
+    Fecha_Emision = forms.DateField(widget=DateInput)
+    #Profesion = forms.ChoiceField(choices=profesion, required=False)
     Tipo_Trabajador = forms.ChoiceField(choices=tipo_trabajador)
     Sin_Seguro_Cesantia = forms.BooleanField()
     Trabajador_Agricola = forms.BooleanField()
@@ -127,11 +128,13 @@ class LiquidacionForm(forms.ModelForm):
     Tipo_Jornada_Trabajo = forms.ChoiceField(choices=work_choices)
     Dias_Descontados = forms.IntegerField()
     Dias_Licencia = forms.IntegerField()
+    Cargas_Familiares = forms.BooleanField()
 
     class Meta:
         model = Liquidacion
         fields = [
-            'Profesion',
+            'Fecha_Emision',
+            #'Profesion',
             'Tipo_Trabajador',
             'Sin_Seguro_Cesantia',
             'Trabajador_Agricola',
@@ -203,9 +206,24 @@ class DescuentosForm(forms.ModelForm):
     
 class Movimiento_PersonalForm(forms.ModelForm):
     Movimiento_Personal = forms.ChoiceField(choices=movimientos_personales)
-    Fecha_Inicio = forms.DateField()
-    Fecha_Termino = forms.DateField()
+    Fecha_Inicio = forms.DateField(widget=DateInput)
+    Fecha_Termino = forms.DateField(widget=DateInput)
+
+    class Meta:
+        model = Movimiento_Personal
+        fields = [
+            'Movimiento_Personal',
+            'Fecha_Inicio',
+            'Fecha_Termino',
+        ]
 
 class ImpuestoForm(forms.ModelForm):
     Factor_Impuesto_unico_primera_categoria = forms.DecimalField()
     Cantidad_a_rebajar = forms.DecimalField()
+
+    class Meta:
+        model = Impuesto
+        fields = [
+            'Factor_Impuesto_unico_primera_categoria',
+            'Cantidad_a_rebajar',
+        ]
