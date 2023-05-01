@@ -36,6 +36,7 @@ class AdicionalesAdmin(admin.StackedInline):
 class RegimenAdmin(admin.StackedInline):
     model = Regimen_Provisional
     extra = 1
+    max_num = 1
     fields = (
             'Regimen_Provisional',
             'Afp',
@@ -49,6 +50,7 @@ class RegimenAdmin(admin.StackedInline):
 class ApvAdmin(admin.StackedInline):
     model = APV
     extra = 1
+    max_num = 1
     fields = (
             'Institucion_Apv',
             'Nro_Contrato_Apv',
@@ -63,6 +65,7 @@ class ApvAdmin(admin.StackedInline):
 class SaludAdmin(admin.StackedInline):
     model = Salud
     extra = 1
+    max_num = 1
     fields = (
             'Institucion_Salud',
             'Plan_UF',
@@ -71,6 +74,7 @@ class SaludAdmin(admin.StackedInline):
 class No_ImponiblesAdmin(admin.StackedInline):
     model = No_Imponibles
     extra = 1
+    max_num = 1
     fields = (
             'Colacion',
             'Movilizacion',
@@ -102,6 +106,7 @@ class LiquidacionAdmin(admin.ModelAdmin):
         ]
     extra = 1
     fields = (
+            'Datos_Empleado',
             'Fecha_Emision',
             'Profesion',
             'Tipo_Trabajador',

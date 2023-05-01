@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
 from django.forms.models import modelformset_factory, inlineformset_factory
-from  django.contrib.auth.decorators import login_required
+from  django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 import requests
 import json
 from django.http import FileResponse
@@ -12,11 +13,20 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 # Create your views here.
+def not_admin(user):
+    if user:
+        return user.groups.filter(name='admin').count() == 0
+    return False
+
+def not_empleado(user):
+    if user:
+        return user.groups.filter(name='empleado').count() == 0
+    return False
 
 @login_required(login_url="/login")
 def home(request):
@@ -29,6 +39,18 @@ def TrabajadorList(request):
     return render(request, 'main/lista.html', data)
 
 @login_required(login_url="/login")
+def LiquidacionList(request, id):
+    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    liquidacion = Liquidacion.objects.filter(Datos_Empleado_id = id)
+    data = {
+        'liquidaciones': liquidacion,
+        'object': obj,
+        }
+    return render(request, 'main/lista_liquidaciones.html', data)
+
+
+@login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def nuevo_trabajador(request):
     form = Datos_EmpleadoForm()
     if request.method == 'POST':
@@ -37,48 +59,71 @@ def nuevo_trabajador(request):
             post = form.save(commit=False)
             post.autor = request.user
             post.save()
-            return redirect('/lista')
+            return redirect('lista')
     data = {'form': form,}
     
     return render(request, 'main/nuevo_trabajador.html', data)
 
 @login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def nueva_liquidacion(request, id):
     obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+
+    form_1 = LiquidacionForm()
+
+    if request.method == 'POST':
+        form_1 = LiquidacionForm(request.POST)
+        if all([form_1.is_valid()]):
+            liquidacion = form_1.save(commit=False)
+            #--
+            liquidacion.Datos_Empleado = obj
+            #--
+            liquidacion.save()
+            return redirect('lista-liquidacion', id=obj.id)
+        
+    data = {
+        'form_1': form_1,
+        'object': obj
+        }
+    
+    return render(request, 'main/liquidacion.html', data)
+
+@login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
+def datos_liquidacion(request, id):
+    
+    obj = get_object_or_404(Liquidacion, id=id)
+    datos_empleado = Datos_Empleado.objects.get(Rut=obj.Datos_Empleado)
     try:
-        ins_liquidacion = Liquidacion.objects.get(Datos_Empleado_id=obj.id)
-    except Liquidacion.DoesNotExist:
-        ins_liquidacion = None
-    try:
-        ins_regimen = Regimen_Provisional.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_regimen = Regimen_Provisional.objects.get(Liquidacion_id=obj.id)
     except Regimen_Provisional.DoesNotExist:
         ins_regimen = None
     try:
-        ins_apv = APV.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_apv = APV.objects.get(Liquidacion_id=obj.id)
     except APV.DoesNotExist:
         ins_apv = None
     try:
-        ins_salud = Salud.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_salud = Salud.objects.get(Liquidacion_id=obj.id)
     except Salud.DoesNotExist:
         ins_salud= None
     try:
-        ins_no_imponibles = No_Imponibles.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_no_imponibles = No_Imponibles.objects.get(Liquidacion_id=obj.id)
     except No_Imponibles.DoesNotExist:
         ins_no_imponibles = None
     try:
-        ins_adicionales = Adicionales.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_adicionales = Adicionales.objects.get(Liquidacion_id=obj.id)
     except Adicionales.DoesNotExist:
         ins_adicionales = None
     try:
-        ins_descuentos = Descuentos.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_descuentos = Descuentos.objects.get(Liquidacion_id=obj.id)
     except Descuentos.DoesNotExist:
         ins_descuentos = None
     try:
-        ins_movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=ins_liquidacion.id)
+        ins_movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=obj.id)
     except Movimiento_Personal.DoesNotExist:
         ins_movimiento_personal = None
 
-    form_1 = LiquidacionForm(instance=ins_liquidacion)
+    
     form_2 = RegimenForm(instance=ins_regimen)
     form_3 = ApvForm(instance=ins_apv)
     form_4 = SaludForm(instance=ins_salud)
@@ -87,7 +132,7 @@ def nueva_liquidacion(request, id):
     form_7 = DescuentosForm(instance=ins_descuentos)
     form_8 = Movimiento_PersonalForm(instance=ins_movimiento_personal)
     if request.method == 'POST':
-        form_1 = LiquidacionForm(request.POST, instance=ins_liquidacion)
+        
         form_2 = RegimenForm(request.POST, instance=ins_regimen)
         form_3 = ApvForm(request.POST, instance=ins_apv)
         form_4 = SaludForm(request.POST, instance=ins_salud)
@@ -95,8 +140,7 @@ def nueva_liquidacion(request, id):
         form_6 = AdicionalesForm(request.POST, instance=ins_adicionales)
         form_7 = DescuentosForm(request.POST, instance=ins_descuentos)
         form_8 = Movimiento_PersonalForm(request.POST, instance=ins_movimiento_personal)
-        if all([form_1.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(), form_7.is_valid(), form_8.is_valid() ]):
-            liquidacion = form_1.save(commit=False)
+        if all([form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(), form_7.is_valid(), form_8.is_valid() ]):
             regimen = form_2.save(commit=False)
             apv = form_3.save(commit=False)
             salud = form_4.save(commit=False)
@@ -105,16 +149,15 @@ def nueva_liquidacion(request, id):
             descuentos = form_7.save(commit=False)
             movimientos_personal = form_8.save(commit=False)
             #--
-            liquidacion.Datos_Empleado = obj
-            regimen.Datos_Empleado = obj
-            apv.Datos_Empleado = obj
-            salud.Datos_Empleado = obj
-            no_imponibles.Datos_Empleado = obj
-            adicionales.Datos_Empleado = obj
-            descuentos.Datos_Empleado = obj
-            movimientos_personal.Datos_Empleado = obj
+            regimen.Liquidacion = obj
+            apv.Liquidacion = obj
+            salud.Liquidacion = obj
+            no_imponibles.Liquidacion = obj
+            adicionales.Liquidacion = obj
+            descuentos.Liquidacion = obj
+            movimientos_personal.Liquidacion = obj
             #--
-            liquidacion.save()
+            
             regimen.save()
             apv.save()
             salud.save()
@@ -123,9 +166,8 @@ def nueva_liquidacion(request, id):
             descuentos.save()
             movimientos_personal.save()
 
-            return TrabajadorList(request)
+            return redirect('lista-liquidacion', id=datos_empleado.id)
     data = {
-        'form_1': form_1,
         'form_2': form_2,
         'form_3': form_3,
         'form_4': form_4,
@@ -136,9 +178,10 @@ def nueva_liquidacion(request, id):
         'object': obj
         }
     
-    return render(request, 'main/liquidacion.html', data)
+    return render(request, 'main/datos_liquidacion.html', data)
 
 @login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def detalle_trabajador(request, id):
     obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
     try:
@@ -173,41 +216,38 @@ def detalle_trabajador(request, id):
 
 @login_required(login_url="/login")
 def liquidacion(request, id):
-    obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    liquidacion = Liquidacion.objects.get(id=id)
+    datos_empleado = Datos_Empleado.objects.get(Rut=liquidacion.Datos_Empleado)
     try:
-        regimen = Regimen_Provisional.objects.get(Datos_Empleado_id=obj.id)
+        regimen = Regimen_Provisional.objects.get(Liquidacion_id=liquidacion)
     except Regimen_Provisional.DoesNotExist:
         regimen = None
     try:
-        apv = APV.objects.get(Datos_Empleado_id=obj.id)
+        apv = APV.objects.get(Liquidacion_id=liquidacion)
     except APV.DoesNotExist:
         apv = None
     try:
-        salud = Salud.objects.get(Datos_Empleado_id=obj.id)
+        salud = Salud.objects.get(Liquidacion_id=liquidacion)
     except Salud.DoesNotExist:
         salud = None
     try:
-        liquidacion = Liquidacion.objects.get(Datos_Empleado_id=obj.id)
-    except Liquidacion.DoesNotExist:
-        liquidacion = None
-    try:
-        no_imponibles = No_Imponibles.objects.get(Datos_Empleado_id=obj.id)
+        no_imponibles = No_Imponibles.objects.get(Liquidacion_id=liquidacion)
     except No_Imponibles.DoesNotExist:
         no_imponibles = None
     try:
-        adicionales = Adicionales.objects.get(Datos_Empleado_id=obj.id)
+        adicionales = Adicionales.objects.get(Liquidacion_id=liquidacion)
     except Adicionales.DoesNotExist:
         adicionales = None
     try:
-        descuentos = Descuentos.objects.get(Datos_Empleado_id=obj.id)
+        descuentos = Descuentos.objects.get(Liquidacion_id=liquidacion)
     except Descuentos.DoesNotExist:
         descuentos = None
     try:
-        movimiento_personal = Movimiento_Personal.objects.get(Datos_Empleado_id=obj.id)
+        movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=liquidacion)
     except Movimiento_Personal.DoesNotExist:
         movimiento_personal = None
     try:
-        impuesto = Impuesto.objects.get(Datos_Empleado_id=obj.id)
+        impuesto = Impuesto.objects.get(Liquidacion_id=liquidacion)
     except Impuesto.DoesNotExist:
         impuesto = None
 
@@ -247,6 +287,7 @@ def liquidacion(request, id):
     sueldo_liquido = total_haberes_imponibles + float(total_no_imponibles) - total_descuentos
 
     data = {
+        'nombre': datos_empleado.Nombres ,
         'ingreso_minimo_mensual': ingreso_minimo_mensual,
         'gratificacion': gratificacion,
         'total_haberes_imponibles': total_haberes_imponibles,
@@ -265,7 +306,7 @@ def liquidacion(request, id):
     
     pdf = generar_pdf('main/pdf.html', data)
     response = HttpResponse(pdf, content_type='application/pdf')
-    filename = "Report_for_%s.pdf" %(obj.Nombres)
+    filename = "Report_for_%s.pdf" %(datos_empleado.Nombres)
     content = "inline; filename= %s" %(filename)
     response['Content-Disposition']=content
     return response
@@ -283,6 +324,7 @@ def generar_pdf(template_src, context_dict={}):
 
 
 @login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def eliminarTrabajadores(request, id):
     trabajador = Datos_Empleado.objects.get(id = id)
     trabajador.delete()

@@ -6,8 +6,6 @@
 <form method="POST">
     <div class="container-fluid">
         {% csrf_token %}
-        <a href="/nueva-liquidacion/{{object.id}}" class="btn btn-info" role="button">Nueva Liquidacion</a>
-        <a href="/pdf/{{object.id}}" class="btn btn-info" role="button">Calculo Liquidacion</a>
         <h1>{{total}}</h1>
         <div class="row align-items-start">
             <div class="col">
@@ -33,8 +31,6 @@
                       <p class="card-text">Descuento prestamo SII: {{card.Descuento_Prestamo_SII|yesno:"Si, No"}}</p>
                       <p class="card-text">Tipo de Jornada trabajo: {{card.Tipo_de_Jornada_Trabajo}}</p>
                       <p class="card-text">Tecnico Extranjero: {{card.Tecnico_Extranjero|yesno:"Si, No"}}</p>
-                      
-                      <a href="#" class="card-link">Another link</a>
                     </div>
                 </div>
             </div>
