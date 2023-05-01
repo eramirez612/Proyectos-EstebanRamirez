@@ -50,6 +50,15 @@ def LiquidacionList(request, id):
 
 
 @login_required(login_url="/login")
+def LiquidacionesList(request):
+    liquidacion = Liquidacion.objects.all()
+    data = {
+        'liquidaciones': liquidacion,
+        }
+    return render(request, 'main/lista_liquidaciones_total.html', data)
+
+
+@login_required(login_url="/login")
 @user_passes_test(not_empleado, login_url='/home')
 def nuevo_trabajador(request):
     form = Datos_EmpleadoForm()
@@ -227,9 +236,9 @@ def liquidacion(request, id):
     except APV.DoesNotExist:
         apv = None
     try:
-        salud = Salud.objects.get(Liquidacion_id=liquidacion)
+        ins_salud = Salud.objects.get(Liquidacion_id=liquidacion)
     except Salud.DoesNotExist:
-        salud = None
+        ins_salud = None
     try:
         no_imponibles = No_Imponibles.objects.get(Liquidacion_id=liquidacion)
     except No_Imponibles.DoesNotExist:
@@ -267,29 +276,35 @@ def liquidacion(request, id):
 
     #haberes imponibles
     sueldo_base = liquidacion.Sueldo_Base
-    #bonos = adicionales.Valor
-    gratificacion = (4.75*ingreso_minimo_mensual)/12
-    total_haberes_imponibles = float(sueldo_base) + gratificacion
+    bonos = adicionales.Valor
+    gratificacion = ((4.75*ingreso_minimo_mensual)/12)
+    total_haberes_imponibles = round(float(sueldo_base) + float(bonos) + gratificacion)
     
     #no imponibles
     colacion = no_imponibles.Colacion
     movilizacion = no_imponibles.Movilizacion
     trabajo_remoto = no_imponibles.Trabajo_Remoto
-    total_no_imponibles = colacion + movilizacion + trabajo_remoto
+    total_no_imponibles = round(colacion + movilizacion + trabajo_remoto)
 
     #descuentos
-    regimen = float(sueldo_base)
+    regimen = float(sueldo_base)*11.45
     salud = float(sueldo_base)*0.07
     cesantia = float(sueldo_base)*0.6
     total_descuentos = regimen + salud + cesantia
 
     #sueldo liquido 
-    sueldo_liquido = total_haberes_imponibles + float(total_no_imponibles) - total_descuentos
+    sueldo_liquido = round(total_haberes_imponibles + float(total_no_imponibles) - total_descuentos)
 
     data = {
-        'nombre': datos_empleado.Nombres ,
+        'fecha': liquidacion.Fecha_Emision,
+        'rut': datos_empleado.Rut,
+        'nombre': datos_empleado.Nombres,
+        'apellido': datos_empleado.Apellidos,
+        'inst_previsional': apv.Institucion_Apv,
+        'inst_salud': ins_salud.Institucion_Salud,
         'ingreso_minimo_mensual': ingreso_minimo_mensual,
-        'gratificacion': gratificacion,
+        'bonos': bonos,
+        'gratificacion': round(gratificacion),
         'total_haberes_imponibles': total_haberes_imponibles,
         'colacion': colacion,
         'movilizacion': movilizacion,

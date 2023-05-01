@@ -23,6 +23,7 @@ urlpatterns = [
     path('sign-up', views.sign_up, name='sign_up'),
     path('lista/', views.TrabajadorList, name='lista'),
     path('lista-liquidacion/<int:id>/', views.LiquidacionList, name='lista-liquidacion'),
+    path('lista-liquidaciones/', views.LiquidacionesList, name='lista-liquidaciones'),
     path('nuevo-trabajador/', views.nuevo_trabajador, name='nuevo-trabajador'),
     path('eliminar-trabajador/<int:id>', views.eliminarTrabajadores, name='eliminar-trabajador'),
     path('trabajador/<int:id>', views.detalle_trabajador, name='trabajador'),

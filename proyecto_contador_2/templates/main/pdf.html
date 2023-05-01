@@ -1,5 +1,53 @@
 {% block title %}Liquidaciones{% endblock %}
 {% block content %}
-<h1>Liquidacion de sueldo para {{nombre}}</h1>
-<h1>{{total_descuentos}}</h1>
+<head>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    <h1>Liquidacion de Remuneraciones</h1>
+    <h1>{{fecha}}</h1>
+    <div id="content">
+        <hr>
+        <div id="datos">
+            <p>Nombre: {{nombre}} {{apellido}}</p>
+            <p>Rut: {{rut}}</p>
+            <p>Cargo: </p>
+        </div>
+        <hr>
+        <div id="prevision">
+            <p>Inst.Previsional: {{inst_previsional}}</p>
+        </div>
+        <hr>
+        <div id="salud">
+            <p>Inst.Salud: {{inst_salud}}</p>
+        </div>
+        <hr>
+        <div id="haberes">
+            <p>Sueldo Base: {{sueldo_base}}</p>
+            <p>Bonos: {{bonos}}</p>
+            <p>Gratificacion: {{gratificacion}}</p>
+            <p>Total Haberes Imponibles: {{total_haberes_imponibles}}</p>
+            <p>Colacion: {{colacion}}</p>
+            <p>Moviliacion: {{movilizacion}}</p>
+            <p>Trabajo Remoto: {{trabajo_remoto}}</p>
+            <p>Total No Imponibles: {{total_no_imponibles}}</p>
+        </div>
+        <hr>
+        <div id="descuentos">
+            <p>Regimen Previsional: {{regimen}}</p>
+            <p>Salud: {{salud}}</p>
+            <p>Cesantia: {{cesantia}}</p>
+            <p>Total Descuentos: {{total_descuentos}}</p>
+        </div>
+        <hr>
+        <div id="totales">
+            <h1>LIQUIDO A RECIBIR: {{sueldo_liquido}}</h1>
+        </div>
+        <hr>
+    </div>
+    <div id="footer"></div>
+</body>
 {% endblock %}
