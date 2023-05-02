@@ -2,48 +2,77 @@
 {% block content %}
 <head>
     <style>
-
+        
     </style>
 </head>
 <body>
-    <div id="header"></div>
-    <h1>Liquidacion de Remuneraciones</h1>
-    <h1>{{fecha}}</h1>
+    <div id="pdf-header"></div>
+        <h1>Liquidacion de Remuneraciones</h1>
+        <h1>{{fecha}}</h1>
     <div id="content">
         <hr>
-        <div id="datos">
-            <p>Nombre: {{nombre}} {{apellido}}</p>
-            <p>Rut: {{rut}}</p>
-            <p>Cargo: </p>
+        <div id="pdf-datos">
+            <table>
+                <tr>
+                    <td><p>Nombre: {{nombre}} {{apellido}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Rut: {{rut}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Cargo: </p></td>
+                    <td><p>Dias Trabajados: </p></td>
+                    <td><p>Dias Descontados: </p></td>
+                </tr>
+            </table>
         </div>
+        &nbsp;
+        <h5>Prevision</h5>
         <hr>
-        <div id="prevision">
+        <div id="pdf-prevision">
             <p>Inst.Previsional: {{inst_previsional}}</p>
         </div>
+        &nbsp;
+        <h5>Salud</h5>
         <hr>
-        <div id="salud">
+        <div id="pdf-salud">
             <p>Inst.Salud: {{inst_salud}}</p>
         </div>
-        <hr>
-        <div id="haberes">
-            <p>Sueldo Base: {{sueldo_base}}</p>
-            <p>Bonos: {{bonos}}</p>
-            <p>Gratificacion: {{gratificacion}}</p>
-            <p>Total Haberes Imponibles: {{total_haberes_imponibles}}</p>
-            <p>Colacion: {{colacion}}</p>
-            <p>Moviliacion: {{movilizacion}}</p>
-            <p>Trabajo Remoto: {{trabajo_remoto}}</p>
-            <p>Total No Imponibles: {{total_no_imponibles}}</p>
+        &nbsp;
+        <div id="pdf-haberes">
+            <h5>Haberes</h5>
+            <hr>
+            <table>
+                <tr>
+                    <td><p>Sueldo Base: {{sueldo_base}}</p></td>
+                    <td><p>Bonos: {{bonos}}</p></td>
+                    <td><p>Gratificacion: {{gratificacion}}</p></td>
+                    <td><p>Total Haberes Imponibles: {{total_haberes_imponibles}}</p></td>
+                </tr>
+            </table>
+            <h5>No Imponibles</h5><hr>
+            <table>
+                <tr>
+                    <td><p>Colacion: {{colacion}}</p></td>
+                    <td><p>Moviliacion: {{movilizacion}}</p></td>
+                    <td><p>Trabajo Remoto: {{trabajo_remoto}}</p></td>
+                    <td><p>Total No Imponibles: {{total_no_imponibles}}</p></td>
+                </tr>
+            </table>
         </div>
+        &nbsp;
+        <h5>Descuentos</h5>
         <hr>
-        <div id="descuentos">
-            <p>Regimen Previsional: {{regimen}}</p>
-            <p>Salud: {{salud}}</p>
-            <p>Cesantia: {{cesantia}}</p>
-            <p>Total Descuentos: {{total_descuentos}}</p>
-        </div>
+        <table>
+            <tr>
+                <td><p>Regimen Previsional: {{regimen}}</p></td>
+                <td><p>Salud: {{salud}}</p></td>
+                <td><p>Cesantia: {{cesantia}}</p></td>
+                <td><p>Total Descuentos: {{total_descuentos}}</p></td>
+            </tr>
+        </table>
         <hr>
-        <div id="totales">
+        <div id="pdf-totales">
             <h1>LIQUIDO A RECIBIR: {{sueldo_liquido}}</h1>
         </div>
         <hr>

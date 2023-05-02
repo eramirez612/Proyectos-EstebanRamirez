@@ -29,17 +29,17 @@ class Datos_Empleado(models.Model):
     Numero_De_Pasaporte = models.CharField(blank=True,max_length=10)
     Celular = models.CharField(max_length=9)
     Email = models.EmailField(blank=True, null=True)
-    Pensionado_por_Invalidez = models.BooleanField()
-    Profesional = models.BooleanField()
+    Pensionado_por_Invalidez = models.BooleanField(null=True, blank=True)
+    Profesional = models.BooleanField(null=True, blank=True)
     Tipo_de_impuesto_unico = models.CharField(
         max_length = 500,
         null=False, blank=False,
         choices=taxes_choices,
         default=1
     )
-    Descuento_Prestamo_SII = models.BooleanField()
+    Descuento_Prestamo_SII = models.BooleanField(null=True, blank=True)
 
-    Tecnico_Extranjero = models.BooleanField(default=False)
+    Tecnico_Extranjero = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
         return self.Rut
@@ -61,9 +61,9 @@ class Liquidacion(models.Model):
         default= 1
     )
 
-    Sin_Seguro_Cesantia = models.BooleanField()
-    Trabajador_Agricola = models.BooleanField()
-    Director_de_Empresa = models.BooleanField()
+    Sin_Seguro_Cesantia = models.BooleanField(null=True, blank=True)
+    Trabajador_Agricola = models.BooleanField(null=True, blank=True)
+    Director_de_Empresa = models.BooleanField(null=True, blank=True)
 
     Sueldo_Base = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
 
@@ -126,7 +126,7 @@ class Regimen_Provisional(models.Model):
     Ahorro_imponible = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
     #AFP
     Ahorro_Voluntario_Afp = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
-    Desea_APV = models.BooleanField()
+    Desea_APV = models.BooleanField(null=True, blank=True)
     #IPS
     Ex_caja = models.CharField(
         max_length=500,
@@ -170,13 +170,6 @@ class Forma_de_pago(models.Model):
         default= 1
     )
     Nro_Cuenta = models.CharField(max_length=50, blank=True)
-
-    #Cargas familiares
-    
-    #Haberes permanentes
-    
-    #Descuentos permanentes
-
 
 class Adicionales(models.Model):
     Liquidacion = models.ForeignKey('Liquidacion', on_delete=models.CASCADE, blank=True, null=True,)
