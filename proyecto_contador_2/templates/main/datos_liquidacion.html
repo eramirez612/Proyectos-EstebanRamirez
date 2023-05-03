@@ -6,7 +6,27 @@
 <form method="POST">
     {% csrf_token %}
     <h3>Regimen Provisional</h3>
-    {{form_2|crispy}}
+    <div id="Regimen_Provisional">
+        {{form_2.Regimen_Provisional|as_crispy_field}}
+    </div>
+    <div id = "Afp" >
+        {{form_2.Afp|as_crispy_field}}
+    </div>
+    <div id="Ahorro_imponible" >
+        {{form_2.Ahorro_imponible|as_crispy_field}}
+    </div>
+    <div id="Ahorro_Voluntario_Afp" >
+        {{form_2.Ahorro_Voluntario_Afp|as_crispy_field}}
+    </div>
+    <div id="Desea_APV" >
+        {{form_2.Desea_APV|as_crispy_field}}
+    </div>
+    <div id="Ex_caja" >
+        {{form_2.Ex_caja|as_crispy_field}}
+    </div>
+    <div id="Tasa_Ex_caja" >
+        {{form_2.Tasa_Ex_caja|as_crispy_field}}
+    </div>
     <h3>APV</h3>
     {{form_3|crispy}}
     <h3>Salud</h3>
@@ -21,4 +41,8 @@
     {{form_8|crispy}}
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+</script>
 {% endblock %}

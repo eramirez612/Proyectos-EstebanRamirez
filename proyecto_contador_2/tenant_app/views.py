@@ -266,6 +266,7 @@ def liquidacion(request, id):
     uf = uf_url.json()["serie"][0]["valor"]
     utm = utm_url.json()["serie"][0]["valor"]
 
+    dias = 31
     
     ingreso_minimo_mensual = 326.500
     utm = utm
@@ -273,18 +274,19 @@ def liquidacion(request, id):
     tope_imponible_uf = 81.6 #AFP y salud
     tope_imponible_clp = tope_imponible_uf * UF #AFP y salud
     tope_imponible_uf_cesantia = 122.6
+    dias_trabajados = dias - liquidacion.Dias_Descontados
 
     #haberes imponibles
     sueldo_base = liquidacion.Sueldo_Base
     bonos = adicionales.Valor
     gratificacion = ((4.75*ingreso_minimo_mensual)/12)
-    total_haberes_imponibles = round(float(sueldo_base) + float(bonos) + gratificacion)
+    total_haberes_imponibles = (float(sueldo_base) + float(bonos) + gratificacion)
     
     #no imponibles
     colacion = no_imponibles.Colacion
     movilizacion = no_imponibles.Movilizacion
     trabajo_remoto = no_imponibles.Trabajo_Remoto
-    total_no_imponibles = round(colacion + movilizacion + trabajo_remoto)
+    total_no_imponibles = (colacion + movilizacion + trabajo_remoto)
 
     #descuentos
     regimen = float(sueldo_base)*11.45
@@ -293,13 +295,15 @@ def liquidacion(request, id):
     total_descuentos = regimen + salud + cesantia
 
     #sueldo liquido 
-    sueldo_liquido = round(total_haberes_imponibles + float(total_no_imponibles) - total_descuentos)
+    sueldo_liquido = (total_haberes_imponibles + float(total_no_imponibles) - total_descuentos)
 
     data = {
         'fecha': liquidacion.Fecha_Emision,
         'rut': datos_empleado.Rut,
         'nombre': datos_empleado.Nombres,
         'apellido': datos_empleado.Apellidos,
+        'dias_trabajados': dias_trabajados,
+        'dias_descontados': liquidacion.Dias_Descontados,
         'inst_previsional': apv.Institucion_Apv,
         'inst_salud': ins_salud.Institucion_Salud,
         'ingreso_minimo_mensual': ingreso_minimo_mensual,
@@ -321,7 +325,7 @@ def liquidacion(request, id):
     
     pdf = generar_pdf('main/pdf.html', data)
     response = HttpResponse(pdf, content_type='application/pdf')
-    filename = "Report_for_%s.pdf" %(datos_empleado.Nombres)
+    filename = "Report_for_%s.pdf" %(datos_empleado.Rut)
     content = "inline; filename= %s" %(filename)
     response['Content-Disposition']=content
     return response

@@ -12,25 +12,7 @@
                 <div class="card" style="width: 25rem;">
                     <div class="card-body">
                       <h5 class="card-title">Datos Personales</h5>
-                      <p class="card-text">Rut: {{card.Rut}}</p>
-                      <p class="card-text">Nombres: {{card.Nombres}}</p>
-                      <p class="card-text">Apellidos: {{card.Apellidos}}</p>
-                      <p class="card-text">Direccion: {{card.Direccion}}</p>
-                      <p class="card-text">Comuna: {{card.Comuna}}</p>
-                      <p class="card-text">Fecha de Nacimiento: {{card.Fecha_Nacimiento}}</p>
-                      <p class="card-text">Sexo: {{card.Sexo}}</p>
-                      <p class="card-text">Estado civil: {{card.Estado_civil}}</p>
-                      <p class="card-text">Nacionalidad: {{card.Nacionalidad}}</p>
-                      <p class="card-text">Numero de pasaporte: {{card.Numero_De_Pasaporte}}</p>
-                      <p class="card-text">Labor en liquidacion: {{card.Labor_en_Liquidacion}}</p>
-                      <p class="card-text">Celular: {{card.Celular}}</p>
-                      <p class="card-text">Email: {{card.Email}}</p>
-                      <p class="card-text">Pensionado por Invalidez: {{card.Pensionado_por_Invalidez|yesno:"Si, No"}}</p>
-                      <p class="card-text">Profesional: {{card.Profesional|yesno:"Si, No"}}</p>
-                      <p class="card-text">Tipo de impuesto unico: {{card.Tipo_de_impuesto_unico}}</p>
-                      <p class="card-text">Descuento prestamo SII: {{card.Descuento_Prestamo_SII|yesno:"Si, No"}}</p>
-                      <p class="card-text">Tipo de Jornada trabajo: {{card.Tipo_de_Jornada_Trabajo}}</p>
-                      <p class="card-text">Tecnico Extranjero: {{card.Tecnico_Extranjero|yesno:"Si, No"}}</p>
+                      {{card|crispy}}
                     </div>
                 </div>
             </div>
@@ -38,14 +20,14 @@
                 <div class="card" style="width: 25rem;">
                     <div class="card-body">
                       <h5 class="card-title">Forma de pago</h5>
-                      <p class="card-text">Banco Deposito: {{card_7.Banco_Deposito}}</p>
-                      <p class="card-text">Tipo de Cuenta: {{card_7.Tipo_Cuenta}}</p>
-                      <p class="card-text">Nro de Cuenta: {{card_7.Nro_Cuenta}}</p>
+                      {{card_7|crispy}}
                     </div>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-success">Guardar</button>
+        <div style="margin: auto; padding: 5px;">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
     </div>
 </form>
 {% endblock %}

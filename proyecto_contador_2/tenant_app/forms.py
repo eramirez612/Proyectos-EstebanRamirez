@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import inlineformset_factory
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Column, Div
 from django.core.validators import *
 from tenant_app.models import *
 from tenant_app.listas import *
@@ -96,11 +98,11 @@ class Datos_EmpleadoForm(forms.ModelForm):
 
 class RegimenForm(forms.ModelForm):
     Regimen_Provisional = forms.ChoiceField(choices=regimen)
+    #AFP
     Afp = forms.ChoiceField(choices=afp)
     Ahorro_imponible = forms.DecimalField(validators=[MinValueValidator(0)], required=False)
-    #AFP
     Ahorro_Voluntario_Afp = forms.DecimalField(validators=[MinValueValidator(0)], required=False)
-    Desea_APV = forms.BooleanField(required=False)
+    Desea_APV = forms.BooleanField(required=False, initial=False)
     #IPS 
     Ex_caja = forms.ChoiceField(choices=ex_caja, required=False)
     Tasa_Ex_caja = forms.DecimalField(validators=[MinValueValidator(0)], required=False)
