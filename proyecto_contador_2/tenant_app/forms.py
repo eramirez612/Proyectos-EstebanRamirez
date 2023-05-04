@@ -35,7 +35,6 @@ class Datos_EmpleadoForm(forms.ModelForm):
     Profesional = forms.BooleanField(required=False)
     Tipo_de_impuesto_unico = forms.ChoiceField(required=True, choices=taxes_choices)
     Descuento_Prestamo_SII = forms.BooleanField(required=False)
-    Tipo_de_Jornada_Trabajo = forms.ChoiceField(required=True, choices=work_choices)
     Tecnico_Extranjero = forms.BooleanField(required=False)
  
     class Meta:
@@ -57,7 +56,6 @@ class Datos_EmpleadoForm(forms.ModelForm):
             'Profesional',
             'Tipo_de_impuesto_unico',
             'Descuento_Prestamo_SII',
-            'Tipo_de_Jornada_Trabajo',
             'Tecnico_Extranjero',
             ]
         

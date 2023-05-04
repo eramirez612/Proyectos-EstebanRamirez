@@ -49,9 +49,7 @@ class Liquidacion(models.Model):
     Fecha_Emision = models.DateField(null=True, blank=True)
     Profesion = models.CharField(
         max_length=500,
-        null=False, blank=False,
-        choices= profesion,
-        default= 1
+        null=True, blank=True,
     )
 
     Tipo_Trabajador = models.CharField(
@@ -81,33 +79,33 @@ class Liquidacion(models.Model):
         default= 1
     )
 
-    Dias_Descontados = models.IntegerField(blank=True)
-    Dias_Licencia = models.IntegerField(blank=True)
+    Dias_Descontados = models.IntegerField(null=True, blank=True)
+    Dias_Licencia = models.IntegerField(null=True, blank=True)
 
 class APV(models.Model):
     Liquidacion = models.ForeignKey('Liquidacion', on_delete=models.CASCADE, blank=True, null=True,)
     Institucion_Apv = models.CharField(
         max_length=500,
-        null=False, blank=False,
+        null=True, blank=True,
         choices= lista_institucion_apv,
         default= 1
     )
-    Nro_Contrato_Apv = models.CharField(max_length=100, blank=True)
+    Nro_Contrato_Apv = models.CharField(max_length=100, null=True, blank=True)
     Forma_Pago_Apv = models.CharField(
         max_length=500,
-        null=False, blank=False,
+        null=True, blank=True,
         choices= pago_apv,
         default= 1
     )
     Regimen_Apv = models.CharField(
         max_length=500,
-        null=False, blank=False,
+        null=True, blank=True,
         choices= regimen_apv,
         default= 1
     )
-    Ahorro_Pesos = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
-    Ahorro_UF = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
-    Deposito_Convenido = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
+    Ahorro_Pesos = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
+    Ahorro_UF = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
+    Deposito_Convenido = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
 
 class Regimen_Provisional(models.Model):
     Liquidacion = models.ForeignKey('Liquidacion', on_delete=models.CASCADE, blank=True, null=True,)
@@ -119,22 +117,22 @@ class Regimen_Provisional(models.Model):
     )
     Afp = models.CharField(
         max_length=500,
-        null=False, blank=False,
+        null=True, blank=True,
         choices= afp,
         default= 1
     )
-    Ahorro_imponible = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
+    Ahorro_imponible = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
     #AFP
-    Ahorro_Voluntario_Afp = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
+    Ahorro_Voluntario_Afp = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
     Desea_APV = models.BooleanField(null=True, blank=True)
     #IPS
     Ex_caja = models.CharField(
         max_length=500,
-        null=False, blank=False,
+        null=True, blank=True,
         choices= ex_caja,
         default= 1
     )
-    Tasa_Ex_caja = models.DecimalField(max_digits=10, decimal_places=1, blank=True)
+    Tasa_Ex_caja = models.DecimalField(max_digits=10, decimal_places=1, null=True, blank=True)
 
 class Salud(models.Model):
     Liquidacion = models.ForeignKey('Liquidacion', on_delete=models.CASCADE, blank=True, null=True,)
@@ -149,11 +147,11 @@ class Salud(models.Model):
 
 class No_Imponibles(models.Model):
     Liquidacion = models.ForeignKey('Liquidacion', on_delete=models.CASCADE, blank=True, null=True,)
-    Colacion = models.DecimalField(max_digits=10, decimal_places=1, default=0, blank=True)
-    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1, default=0, blank=True)
-    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1, default=0, blank=True)
-    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1, default=0, blank=True)
-    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1, default=0, blank=True)
+    Colacion = models.DecimalField(max_digits=10, decimal_places=1, default=0, null=True, blank=True)
+    Movilizacion = models.DecimalField(max_digits=10, decimal_places=1, default=0, null=True, blank=True)
+    Perdida_Caja = models.DecimalField(max_digits=10, decimal_places=1, default=0, null=True, blank=True)
+    Desgaste_Herramientas = models.DecimalField(max_digits=10, decimal_places=1, default=0, null=True, blank=True)
+    Trabajo_Remoto = models.DecimalField(max_digits=10, decimal_places=1, default=0, null=True, blank=True)
 
 class Forma_de_pago(models.Model):
     Datos_Empleado = models.ForeignKey('Datos_Empleado', on_delete=models.CASCADE, blank=True, null=True,)

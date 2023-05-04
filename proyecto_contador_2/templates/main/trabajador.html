@@ -2,30 +2,30 @@
 {% block title %}Trabajadores{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    .card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
 &nbsp;
 <form method="POST">
     <div class="container-fluid">
         {% csrf_token %}
         <h1>{{total}}</h1>
-        <div class="row align-items-start">
-            <div class="col">
-                <div class="card" style="width: 25rem;">
-                    <div class="card-body">
-                      <h5 class="card-title">Datos Personales</h5>
-                      {{card|crispy}}
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card" style="width: 25rem;">
-                    <div class="card-body">
-                      <h5 class="card-title">Forma de pago</h5>
-                      {{card_7|crispy}}
-                    </div>
-                </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Datos Personales</h5>
+                {{card|crispy}}
             </div>
         </div>
-        <div style="margin: auto; padding: 5px;">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Forma de pago</h5>
+                {{card_7|crispy}}
+            </div>
+        </div>
+        <div style="padding-top: 20px; padding-bottom: 20px;">
             <button type="submit" class="btn btn-success">Guardar</button>
         </div>
     </div>
