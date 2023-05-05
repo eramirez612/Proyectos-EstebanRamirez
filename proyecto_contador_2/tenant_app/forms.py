@@ -29,7 +29,7 @@ class Datos_EmpleadoForm(forms.ModelForm):
     Estado_civil = forms.ChoiceField(required=True, choices=civil_status_choices)
     Nacionalidad = forms.ChoiceField(required=True,choices=Nacionalidades)
     Numero_De_Pasaporte = forms.CharField(validators=[MinLengthValidator(3, 'Minimo de caracteres 3'), MaxLengthValidator(100, 'Maximo de caracteres 100')], required=False)
-    Celular = forms.IntegerField(validators=[MinLengthValidator(9, 'Debe ser en el siguiente formato 91111111'), MaxLengthValidator(9, 'Debe ser en el siguiente formato 91111111')], required=True)
+    Celular = forms.CharField(validators=[MinLengthValidator(9, 'Debe ser en el siguiente formato 91111111'), MaxLengthValidator(9, 'Debe ser en el siguiente formato 91111111')], required=True)
     Email = forms.EmailField(required=True)
     Pensionado_por_Invalidez = forms.BooleanField(required=False)
     Profesional = forms.BooleanField(required=False)
@@ -201,7 +201,7 @@ class SaludForm(forms.ModelForm):
 class LiquidacionForm(forms.ModelForm):
     #Liquidacion
     Fecha_Emision = forms.DateField(widget=DateInput)
-    #Profesion = forms.ChoiceField(choices=profesion, required=False)
+    Profesion = forms.CharField(validators=[MinLengthValidator(3, 'Minimo de caracteres 3'), MaxLengthValidator(100, 'Maximo de caracteres 100')], required=False)
     Tipo_Trabajador = forms.ChoiceField(choices=tipo_trabajador)
     Sin_Seguro_Cesantia = forms.BooleanField(required=False)
     Trabajador_Agricola = forms.BooleanField(required=False)
@@ -211,13 +211,12 @@ class LiquidacionForm(forms.ModelForm):
     Tipo_Jornada_Trabajo = forms.ChoiceField(choices=work_choices)
     Dias_Descontados = forms.IntegerField(validators=[MinValueValidator(0)])
     Dias_Licencia = forms.IntegerField(validators=[MinValueValidator(0)])
-    Cargas_Familiares = forms.BooleanField(required=False)
 
     class Meta:
         model = Liquidacion
         fields = [
             'Fecha_Emision',
-            #'Profesion',
+            'Profesion',
             'Tipo_Trabajador',
             'Sin_Seguro_Cesantia',
             'Trabajador_Agricola',

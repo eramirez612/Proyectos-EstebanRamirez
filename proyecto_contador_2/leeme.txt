@@ -1,0 +1,7 @@
+Para el funcionamiento del sistema
+primero se deben crear un super_user y 2 grupos desde /admin
+uno llamado "admin" y otro "empleado"
+se le deben asignar todos los permisos al grupo "admin"
+y al grupo "empleado" solo los "can_view" de los modelos de "tenant_app"
+luego ingresar el super_user al grupo "admin"
+y si crearon otros usuarios agregarlos al grupo "empleado"

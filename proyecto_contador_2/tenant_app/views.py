@@ -6,9 +6,9 @@ from  django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 import requests
-import json
-from django.http import FileResponse
-import io
+from django.utils import timezone
+import pandas as pd
+from datetime import date
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
@@ -212,7 +212,6 @@ def detalle_trabajador(request, id):
             post.save()
             pago.save()
 
-
             return TrabajadorList(request)
         
     data = {
@@ -266,7 +265,7 @@ def liquidacion(request, id):
     uf = uf_url.json()["serie"][0]["valor"]
     utm = utm_url.json()["serie"][0]["valor"]
 
-    dias = 31
+    dias = dias_habiles(liquidacion.Fecha_Emision)
     
     ingreso_minimo_mensual = 326.500
     utm = utm
@@ -292,13 +291,17 @@ def liquidacion(request, id):
     regimen = float(sueldo_base)*11.45
     salud = float(sueldo_base)*0.07
     cesantia = float(sueldo_base)*0.6
-    total_descuentos = regimen + salud + cesantia
+    descuento = descuentos.Valor
+    total_descuentos = regimen + salud + cesantia + float(descuento)
 
     #sueldo liquido 
     sueldo_liquido = (total_haberes_imponibles + float(total_no_imponibles) - total_descuentos)
 
+    #se necesita mejorar el calculo añadir tope de descuentos
+
     data = {
         'fecha': liquidacion.Fecha_Emision,
+        'cargo': liquidacion.Profesion,
         'rut': datos_empleado.Rut,
         'nombre': datos_empleado.Nombres,
         'apellido': datos_empleado.Apellidos,
@@ -360,3 +363,25 @@ def sign_up(request):
         form = RegisterForm()
     
     return render(request, 'registration/sign_up.html', {'form': form})
+
+def dias_habiles(date_field):
+    # feriados nacionales en Chile
+    feriados = [
+        date_field.replace(month=1, day=1),   # Año Nuevo
+        date_field.replace(month=4, day=19),  # Día del Trabajo
+        date_field.replace(month=5, day=1),   # Día del Trabajo
+        date_field.replace(month=9, day=18),  # Día de las Glorias del Ejército
+        date_field.replace(month=9, day=19),  # Día de las Glorias del Ejército (Feriado Irrenunciable)
+        date_field.replace(month=10, day=12), # Día del Descubrimiento de Dos Mundos
+        date_field.replace(month=11, day=1),  # Día de Todos los Santos
+        date_field.replace(month=12, day=8),  # Inmaculada Concepción
+        date_field.replace(month=12, day=25), # Navidad
+    ]
+    
+    inicio = date_field.replace(day=1)
+    fin = inicio.replace(day=28) if inicio.month < 12 else inicio.replace(month=1, day=1, year=inicio.year+1)
+    dias = pd.date_range(start=inicio, end=fin, freq='D').to_pydatetime().tolist()
+    
+    dias_habiles = [d for d in dias if d.weekday() < 5 and d not in feriados]
+    
+    return len(dias_habiles)

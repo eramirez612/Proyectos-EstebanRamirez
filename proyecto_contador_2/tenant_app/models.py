@@ -41,6 +41,10 @@ class Datos_Empleado(models.Model):
 
     Tecnico_Extranjero = models.BooleanField(default=False, null=True, blank=True)
 
+    def fecha(self):
+        Fecha_Nacimiento = self.Fecha_Nacimiento.strftime('%d/%m/%y')
+        return Fecha_Nacimiento
+
     def __str__(self):
         return self.Rut
     
@@ -48,7 +52,7 @@ class Liquidacion(models.Model):
     Datos_Empleado = models.ForeignKey('Datos_Empleado', on_delete=models.CASCADE, blank=True, null=True,)
     Fecha_Emision = models.DateField(null=True, blank=True)
     Profesion = models.CharField(
-        max_length=500,
+        max_length=100,
         null=True, blank=True,
     )
 
@@ -78,7 +82,6 @@ class Liquidacion(models.Model):
         choices= work_choices,
         default= 1
     )
-
     Dias_Descontados = models.IntegerField(null=True, blank=True)
     Dias_Licencia = models.IntegerField(null=True, blank=True)
 

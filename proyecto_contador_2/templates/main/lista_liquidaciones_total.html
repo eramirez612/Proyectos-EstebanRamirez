@@ -26,10 +26,10 @@
         {% for liquidacion in liquidaciones %}
         <tr>
             <th>{{liquidacion.Fecha_Emision}}</th>
-            <th>{{liquidacion.Tipo_Jornada}}</th>
-            <th>{{liquidacion.Sin_Seguro_Cesantia}}</th>
-            <th>{{liquidacion.Trabajador_Agricola}}</th>
-            <th>{{liquidacion.Director_de_Empresa}}</th>
+            <th>{{liquidacion.Tipo_Trabajador}}</th>
+            <th>{{liquidacion.Sin_Seguro_Cesantia|yesno:"Si,No"}}</th>
+            <th>{{liquidacion.Trabajador_Agricola|yesno:"Si,No"}}</th>
+            <th>{{liquidacion.Director_de_Empresa|yesno:"Si,No"}}</th>
             <th>{{liquidacion.Sueldo_Base}}</th>
             <th>{{liquidacion.Tipo_Contrato}}</th>
             <th>{{liquidacion.Tipo_Jornada_Trabajo}}</th>
@@ -39,9 +39,9 @@
             <th>
                 {% if user|has_group:'admin' %}
                 <a href="/datos-liquidacion/{{liquidacion.id}}" class="btn btn-info btn-sm"><i class="bi bi-pencil"></i></a>
-                <a href="/pdf/{{liquidacion.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+                <a href="/pdf/{{liquidacion.id}}" class="btn btn-success btn-sm"><i class="bi bi-filetype-pdf"></i></a>
                 {% else %}
-                <a href="/pdf/{{liquidacion.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+                <a href="/pdf/{{liquidacion.id}}" class="btn btn-success btn-sm"><i class="bi bi-filetype-pdf"></i></a>
                 {% endif %}
             </th>
         </tr>
