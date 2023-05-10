@@ -4,8 +4,10 @@
 {% block content %}
 &nbsp;
 <div class="container-fluid">
-<a href="/nueva-liquidacion/{{object.id}}" class="btn btn-info" role="button">Nueva liquidacion</a>
-<table class="table table-striped table-inverse table-responsive">
+<div style="margin: auto; margin-bottom: 10px; width: auto;">
+    <a href="/nueva-liquidacion/{{object.id}}" class="btn btn-info" role="button">Nueva liquidacion</a>
+</div> 
+<table class="table table-striped table-inverse table-responsive table-bordered">
     <thead class="thead-inverse">
         <tr>
             <th>Fecha de emision</th>
@@ -19,16 +21,17 @@
             <th>Dias descontados</th>
             <th>Dias Licencia</th>
             <th>Cargas familiares</th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
         {% for liquidacion in liquidaciones %}
         <tr>
             <th>{{liquidacion.Fecha_Emision}}</th>
-            <th>{{liquidacion.Tipo_Jornada}}</th>
-            <th>{{liquidacion.Sin_Seguro_Cesantia}}</th>
-            <th>{{liquidacion.Trabajador_Agricola}}</th>
-            <th>{{liquidacion.Director_de_Empresa}}</th>
+            <th>{{liquidacion.Tipo_Trabajador}}</th>
+            <th>{{liquidacion.Sin_Seguro_Cesantia|yesno:"Si,No"}}</th>
+            <th>{{liquidacion.Trabajador_Agricola|yesno:"Si,No"}}</th>
+            <th>{{liquidacion.Director_de_Empresa|yesno:"Si,No"}}</th>
             <th>{{liquidacion.Sueldo_Base}}</th>
             <th>{{liquidacion.Tipo_Contrato}}</th>
             <th>{{liquidacion.Tipo_Jornada_Trabajo}}</th>
