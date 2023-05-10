@@ -288,7 +288,7 @@ def liquidacion(request, id):
     total_no_imponibles = (colacion + movilizacion + trabajo_remoto)
 
     #descuentos
-    regimen = float(sueldo_base)*11.45
+    regimen = float(sueldo_base)*0.1145
     salud = float(sueldo_base)*0.07
     cesantia = float(sueldo_base)*0.6
     descuento = descuentos.Valor
