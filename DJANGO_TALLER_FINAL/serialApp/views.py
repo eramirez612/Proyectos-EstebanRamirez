@@ -24,7 +24,7 @@ def agregarReserva(request):
         form = FormInscritos(request.POST)
         if form.is_valid():
             form.save()
-        return index(request)
+            return index(request)
     data = {'form' : form}
     return render(request, 'agregarreserva.html', data)
 
@@ -40,7 +40,7 @@ def actualizarReserva(request, id):
         form = FormInscritos(request.POST, instance=ins)
         if form.is_valid():
             form.save()
-        return index(request)
+            return index(request)
     data = {'form' : form}
     return render(request, 'actualizarreserva.html', data)
 

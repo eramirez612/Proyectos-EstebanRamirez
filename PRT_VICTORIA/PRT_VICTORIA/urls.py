@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from serialapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index),
+    path('reservas/',views.listadoreservas),
+    path('agregarreserva/',views.agregarreserva),
+    path('eliminarReserva/<int:id>', views.eliminarReserva),
+    path('actualizarReserva/<int:id>', views.actualizarReserva),
 ]
