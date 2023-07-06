@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap !-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Bootstrap !-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de registros</title>
+</head>
+<body class="container mt-5">
+
+    <div class="alert alert-info display-3 text-center">LISTADO DE REGISTROS</div>
+
+    {% if equipos %}
+    <table class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Nombre</th>
+                <th>Rut</th>
+                <th>Departamento</th>
+                <th>Número de Serie</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Correo</th>
+                <th>Tipo de dispositivo</th>
+                <th>Tipo de Licencia Windows</th>
+                <th>Número de la licencia Windows</th>
+                <th>Tipo de Licencia Office</th>
+                <th>Número de Licencia Office</th>
+                <th>Ingreso del Registro</th>
+                <th>--</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for Registro_Equipos in equipos %}
+            <tr>
+                <td>{{ Registro_Equipos.nombre}}</td>
+                <td>{{ Registro_Equipos.rut}}</td>
+                <td>{{ Registro_Equipos.departamento}}</td>
+                <td>{{ Registro_Equipos.serial_number}}</td>
+                <td>{{ Registro_Equipos.marca}}</td>
+                <td>{{ Registro_Equipos.modelo}}</td>
+                <td>{{ Registro_Equipos.correo}}</td>
+                <td>{{ Registro_Equipos.tipo_dispositivo}}</td>
+                <td>{{ Registro_Equipos.tipo_licencias_windows}}</td>
+                <td>{{ Registro_Equipos.nro_licencia_windows}}</td>
+                <td>{{ Registro_Equipos.tipo_licencias_office}}</td>
+                <td>{{ Registro_Equipos.nro_licencia_office}}</td>
+                <td>{{ Registro_Equipos.fecha_ingreso_del_registro}}</td>
+                <td><a href="/actualizar_equipo/{{Registro_Equipos.id}}" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></td>
+                <td><a href="/eliminar_equipo/{{Registro_Equipos.id}}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <strong>No se encuentran equipos registrados en el sistema</strong>
+    </div>
+    {% endif %}
+
+    <a href="/" class="btn btn-danger">VOLVER</a>
+    <a href="/agregar_equipo" class="btn btn-info float-end">AGREGAR EQUIPO</a>
+
+</body>
+</html>
