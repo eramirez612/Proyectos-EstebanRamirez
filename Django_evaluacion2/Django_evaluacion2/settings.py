@@ -79,9 +79,11 @@ WSGI_APPLICATION = 'Django_evaluacion2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DJANGO_RESERVAS',
+        'NAME': 'db_pruebas_2',
         'USER': 'root',
-        'PASSWORD': ''
+        'PASSWORD': 'mc5r1c15t3n2023',
+        'PORT': '3306',
+        'HOST': '192.168.0.6'
     }
 }
 

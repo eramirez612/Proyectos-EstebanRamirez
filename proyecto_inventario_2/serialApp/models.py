@@ -6,7 +6,7 @@ from serialApp.listas import *
 class Registro_Equipo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=128)
-    rut = models.CharField(max_length=9)
+    rut = models.CharField(max_length=9, blank=True)
     departamento = models.CharField(
         max_length=100,
         null=False, blank=False,
@@ -15,11 +15,10 @@ class Registro_Equipo(models.Model):
     )
 
     serial_number = models.CharField(unique=True, max_length=128)
-    marca = models.CharField(max_length=128)
-    modelo = models.CharField(max_length=128)
-    correo = models.EmailField()
-    #Encriptacion de la contraseña
-    contraseña = models.CharField(max_length=128)
+    marca = models.CharField(max_length=128, blank=True)
+    modelo = models.CharField(max_length=128, blank=True)
+    correo = models.EmailField(blank=True)
+    contraseña = models.CharField(max_length=128, blank=True)
     #----------------------------------------------------------------#
     tipo_licencias_windows = models.CharField(
         max_length=100,

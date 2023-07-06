@@ -5,13 +5,11 @@ class FormReservas(forms.ModelForm):
     
     reservante = forms.CharField(min_length=3, max_length=50)
     telefono = forms.IntegerField(min_value=900000000, max_value=999999999)
-    fechareserva = forms.DateField()
-    horareserva = forms.TimeField()
     numeropersonas = forms.IntegerField(min_value=1, max_value=15)
     observacion = forms.CharField(required=False)
     
     class Meta:
         model = reserva
-        fields = 'reservante','telefono','fechareserva','horareserva','estado','numeropersonas','observacion'
+        fields = '__all__'
     
 
