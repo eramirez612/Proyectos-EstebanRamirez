@@ -14,7 +14,9 @@ class reserva(models.Model):
     
     reservante = models.CharField(max_length=50)
     telefono = models.IntegerField()
-    fechareserva = models.DateTimeField(auto_now_add=True)
+    fechareserva = models.DateField()
+    horareserva = models.TimeField()
+    
     estado = models.CharField(
         max_length = 50,
         null=False, blank=False,
