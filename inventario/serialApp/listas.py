@@ -77,5 +77,6 @@ dispositivo_choices = [
     ('All-In-one', 'All-In-one'),
     ('Celular', 'Celular'),
     ('Monitor', 'Monitor'),
+    ('Impresora', 'Impresora'),
     ('Otros', 'Otros'),
 ]

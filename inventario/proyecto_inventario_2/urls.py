@@ -19,7 +19,7 @@ from serialApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
+    path('', admin.site.urls),
     path('agregar_equipo', views.agregar_equipo),
     path('listado_registros', views.listado_equipos, name='listado_registros'),
     path('eliminar_equipo/<int:id>', views.eliminar_equipo),

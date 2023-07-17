@@ -44,4 +44,7 @@ class Registro_Equipo(models.Model):
     
     fecha_ingreso_del_registro = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.nombre
+
 
