@@ -15,21 +15,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    
-
-    if __name__ == '__main__':
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proyecto_inventario.settings')
-        from django.core.management import execute_from_command_line
-
-        # Cambia el número de puerto a tu elección
-        ip = '192.168.0.8'
-        
-        port = 8080
-
-        # Ejecuta el servidor Django en el nuevo puerto
-        execute_from_command_line(['manage.py', 'runserver', f'{ip}:{port}'])
-
-        execute_from_command_line(sys.argv)
+    execute_from_command_line(sys.argv)
 
 
 if __name__ == '__main__':
