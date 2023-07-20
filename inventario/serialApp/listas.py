@@ -30,6 +30,8 @@ depto_choices = [
     ('Adquisiciones', 'Adquisiciones'),
     ('Administracion y Finanzas','Administracion y Finanzas'),
     ('Biblioteca','Biblioteca'),
+    ('Juzgado de Policia local', 'Juzgado de Policia local'),
+    ('Prodesal','Prodesal'),
 ]
 
 #Estan las licencias desde Office 2019 hasta Office 365, si se requiere agregar más antiguas

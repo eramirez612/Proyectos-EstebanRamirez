@@ -8,5 +8,5 @@ class RegistroAdmin(admin.ModelAdmin):
     list_display = ('id','nombre', 'departamento', 'marca_modelo', 'serial_number', 'tipo_dispositivo')
     ordering = ('nombre','departamento',)
     search_fields = ('nombre','departamento','serial_number',)
-    list_filter = ('departamento',)
+    list_filter = ('departamento','tipo_dispositivo',)
     list_per_page = 20
