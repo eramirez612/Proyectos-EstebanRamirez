@@ -18,9 +18,9 @@ class RegistroResource(resources.ModelResource):
         model = Registro_Equipo
 
 @admin.register(Registro_Equipo)
-class RegistroAdmin(admin.ModelAdmin):
+class RegistroAdmin(ImportExportModelAdmin ,admin.ModelAdmin):
     list_display = ('id','nombre', 'departamento', 'marca_modelo', 'serial_number', 'tipo_dispositivo', 'fecha_ingreso_del_registro',)
-    ordering = ('fecha_ingreso_del_registro','departamento',)
+    ordering = ('-fecha_ingreso_del_registro','departamento',)
     search_fields = ('nombre','departamento','serial_number','fecha_ingreso_del_registro',)
     list_filter = ('fecha_ingreso_del_registro','departamento','tipo_dispositivo',)
     list_per_page = 20
