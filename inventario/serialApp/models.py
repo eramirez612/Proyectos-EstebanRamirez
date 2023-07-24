@@ -6,7 +6,6 @@ from serialApp.listas import *
 class Registro_Equipo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=128)
-    rut = models.CharField(max_length=9, null=True, blank=True)
     departamento = models.CharField(
         max_length=100,
         null=False, blank=False,
