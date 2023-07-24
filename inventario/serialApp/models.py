@@ -6,7 +6,6 @@ from serialApp.listas import *
 class Registro_Equipo(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=128)
-    rut = models.CharField(max_length=9, null=True, blank=True)
     departamento = models.CharField(
         max_length=100,
         null=False, blank=False,
@@ -21,24 +20,24 @@ class Registro_Equipo(models.Model):
     #----------------------------------------------------------------#
     tipo_licencias_windows = models.CharField(
         max_length=100,
-        null=False, blank=False,
+        null=False, blank=False, unique=False,
         choices=windows_choices,
         default=1)
     
-    nro_licencia_windows = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    nro_licencia_windows = models.CharField(max_length=100, null=True, blank=True)
 #----------------------------------------------------------------#
     tipo_licencias_office = models.CharField(
         max_length=100,
-        null=False, blank=False,
+        null=False, blank=False, unique=False,
         choices=office_choices,
         default=1)
     
-    nro_licencia_office = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    nro_licencia_office = models.CharField(max_length=100, null=True, blank=True)
 #----------------------------------------------------------------#
 
     tipo_dispositivo = models.CharField(
     max_length=100,
-    null=False, blank=False,
+    null=False, blank=False, unique=False,
     choices=dispositivo_choices,
     default=1)
     
