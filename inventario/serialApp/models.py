@@ -41,7 +41,7 @@ class Registro_Equipo(models.Model):
     choices=dispositivo_choices,
     default=1)
     
-    fecha_ingreso_del_registro = models.DateTimeField(auto_now_add=True)
+    fecha_ingreso_del_registro = models.DateTimeField()
 
     def __str__(self):
         return self.nombre
