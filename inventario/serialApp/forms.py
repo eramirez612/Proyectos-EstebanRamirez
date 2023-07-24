@@ -6,7 +6,7 @@ class DateInput(forms.DateInput):
 
 class FormEquipo(forms.ModelForm):
     
-    fecha_ingreso_del_registro = forms.DateTimeField(widget=DateInput)
+    fecha_de_compra = forms.DateTimeField(widget=DateInput)
 
     class Meta:
         model = Registro_Equipo

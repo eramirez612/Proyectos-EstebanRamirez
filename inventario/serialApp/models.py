@@ -20,28 +20,28 @@ class Registro_Equipo(models.Model):
     #----------------------------------------------------------------#
     tipo_licencias_windows = models.CharField(
         max_length=100,
-        null=False, blank=False,
+        null=False, blank=False, unique=False,
         choices=windows_choices,
         default=1)
     
-    nro_licencia_windows = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    nro_licencia_windows = models.CharField(max_length=100, null=True, blank=True)
 #----------------------------------------------------------------#
     tipo_licencias_office = models.CharField(
         max_length=100,
-        null=False, blank=False,
+        null=False, blank=False, unique=False,
         choices=office_choices,
         default=1)
     
-    nro_licencia_office = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    nro_licencia_office = models.CharField(max_length=100, null=True, blank=True)
 #----------------------------------------------------------------#
 
     tipo_dispositivo = models.CharField(
     max_length=100,
-    null=False, blank=False,
+    null=False, blank=False, unique=False,
     choices=dispositivo_choices,
     default=1)
     
-    fecha_ingreso_del_registro = models.DateTimeField()
+    fecha_de_compra = models.DateTimeField()
 
     def __str__(self):
         return self.nombre
