@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'proyecto_inventario_2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_testing',
+        'NAME': 'produccion_inventario',
         'USER': 'root',
         'PASSWORD': 'mc5r1c15t3n2023',
         'PORT': '3306',
