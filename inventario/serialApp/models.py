@@ -42,7 +42,7 @@ class Registro_Equipo(models.Model):
     choices=dispositivo_choices,
     default=1)
     
-    fecha_ingreso_del_registro = models.DateTimeField()
+    fecha_de_compra = models.DateTimeField()
 
     def __str__(self):
         return self.nombre

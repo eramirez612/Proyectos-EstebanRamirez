@@ -14,14 +14,14 @@ class RegistroResource(resources.ModelResource):
         'marca_modelo',
         'serial_number',
         'tipo_dispositivo',
-        'fecha_ingreso_del_registro',)
+        'fecha_de_compra',)
     class Meta:
         model = Registro_Equipo
 
 @admin.register(Registro_Equipo)
 class RegistroAdmin(ImportExportModelAdmin ,admin.ModelAdmin):
-    list_display = ('id','nombre', 'departamento', 'marca_modelo', 'serial_number', 'tipo_dispositivo', 'fecha_ingreso_del_registro',)
-    ordering = ('-fecha_ingreso_del_registro','departamento',)
-    search_fields = ('nombre','departamento','serial_number','fecha_ingreso_del_registro',)
-    list_filter = (('fecha_ingreso_del_registro',DateRangeFilter),'departamento','tipo_dispositivo',)
+    list_display = ('id','nombre', 'departamento', 'marca_modelo', 'serial_number', 'tipo_dispositivo', 'fecha_de_compra',)
+    ordering = ('-fecha_de_compra','departamento',)
+    search_fields = ('nombre','departamento','serial_number','fecha_de_compra',)
+    list_filter = (('fecha_de_compra',DateRangeFilter),'departamento','tipo_dispositivo',)
     list_per_page = 20
