@@ -9,5 +9,10 @@ class FormEquipo(forms.ModelForm):
     fecha_de_compra = forms.DateTimeField(widget=DateInput)
 
     class Meta:
-        model = Registro_Equipo
+        model = Equipo
+        fields = '__all__'
+
+class FormsLicencias(forms.ModelForm):
+    class Meta:
+        model = Licencia
         fields = '__all__'
