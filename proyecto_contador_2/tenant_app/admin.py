@@ -2,6 +2,37 @@ from django.contrib import admin
 from tenant_app.models import *
 
 # Register your models here.
+class Asignacion_FamiliarAdmin(admin.StackedInline):
+    model = Asignacion_Familiar
+    extra = 1 
+    fields = (
+        'Tramo',
+        'Cargas_simples',
+        'Cargas_maternales',
+        'Cargas_por_invalidez',
+        'Monto_retroactivo',
+        'Monto_reintegro',
+    )
+
+
+class DescuentosAdmin(admin.StackedInline):
+    model = Descuentos
+    extra = 1
+    fields = (
+        'Descuento',
+        'Valor',
+        )
+
+
+class AdicionalesAdmin(admin.StackedInline):
+    model = Adicionales
+    extra = 1
+    fields = (
+        'Adicional',
+        'Tipo_de_Bono',
+        'Valor',
+        )
+
 class RegimenAdmin(admin.StackedInline):
     model = Regimen_Provisional
     extra = 1
@@ -10,8 +41,6 @@ class RegimenAdmin(admin.StackedInline):
             'Regimen_Provisional',
             'Afp',
             'Ahorro_imponible',
-            'Puesto_Trabajo_Pesado',
-            'Cotizacion_Trabajo_Pesado',
             'Ahorro_Voluntario_Afp',
             'Desea_APV',
             'Ex_caja',
@@ -39,38 +68,8 @@ class SaludAdmin(admin.StackedInline):
     max_num = 1
     fields = (
             'Institucion_Salud',
-            'Nro_Fun_Incorporacion',
-            'Moneda_Plano_Salud',
-            'Cotizacion_Pactada_Salud',
-            'Cotizacion_Voluntaria_Salud_Pesos',
-            'Cotizacion_Voluntaria_Salud_Uf',
-            'Pago_Isapre_Proporcional',
+            'Plan_UF',
     )
-
-
-class LiquidacionAdmin(admin.StackedInline):
-    model = Liquidacion
-    extra = 1
-    max_num = 1
-    fields = (
-            'Tipo_Trabajador',
-            'Tipo_Sueldo',
-            'Forma_Pago_Sueldo',
-            'Horas_Semanales',
-            'Informar_Horas_Trabajadas',
-            'Forma_Calculo_Sueldo',
-            'Monto_Calculo_Sueldo',
-            'Centro_Costo',
-            'Valor_Hora_Normal',
-            'Valor_Dia_Normal',
-            'Valor_Recargo_Dominical',
-            'Duracion_Contrato',
-            'Fecha_Ingreso',
-            'Fecha_Termino',
-            'Posee_Seguro_Cesantia',
-            'Ingreso_Seguro_Cesantia',
-    )
-
 
 class No_ImponiblesAdmin(admin.StackedInline):
     model = No_Imponibles
@@ -95,18 +94,35 @@ class PagoAdmin(admin.StackedInline):
             'Nro_Cuenta',
     )
 
-@admin.register(Empleado)
-class EmpleadoAdmin(admin.ModelAdmin):
-    list_display = ('Datos_Empleado',)
+@admin.register(Liquidacion)
+class LiquidacionAdmin(admin.ModelAdmin):
+    inlines = [
+        RegimenAdmin, 
+        ApvAdmin,
+        SaludAdmin,  
+        AdicionalesAdmin,
+        DescuentosAdmin,
+        No_ImponiblesAdmin,
+        ]
+    extra = 1
+    fields = (
+            'Datos_Empleado',
+            'Fecha_Emision',
+            'Profesion',
+            'Tipo_Trabajador',
+            'Sin_Seguro_Cesantia',
+            'Trabajador_Agricola',
+            'Director_de_Empresa',
+            'Sueldo_Base',
+            'Tipo_Contrato',
+            'Tipo_Jornada_Trabajo',
+            'Dias_Descontados',
+            'Dias_Licencia',
+    )
 
 @admin.register(Datos_Empleado)
 class Datos_EmpleadoAdmin(admin.ModelAdmin):
     inlines = [
-        RegimenAdmin, 
-        ApvAdmin,
-        SaludAdmin, 
-        LiquidacionAdmin, 
-        No_ImponiblesAdmin,
         PagoAdmin, 
         ]
     
@@ -121,14 +137,12 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
         'Estado_civil',
         'Nacionalidad',
         'Numero_De_Pasaporte',
-        'Labor_en_Liquidacion',
         'Celular',
         'Email',
         'Pensionado_por_Invalidez',
         'Profesional',
         'Tipo_de_impuesto_unico',
         'Descuento_Prestamo_SII',
-        'Tipo_Jornada_Trabajo',
         'Tecnico_Extranjero',
     )
 
@@ -143,14 +157,12 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
         'Estado_civil',
         'Nacionalidad',
         'Numero_De_Pasaporte',
-        'Labor_en_Liquidacion',
         'Celular',
         'Email',
         'Pensionado_por_Invalidez',
         'Profesional',
         'Tipo_de_impuesto_unico',
         'Descuento_Prestamo_SII',
-        'Tipo_Jornada_Trabajo',
         'Tecnico_Extranjero',
     )
     
@@ -170,13 +182,11 @@ class Datos_EmpleadoAdmin(admin.ModelAdmin):
         'Estado_civil',
         'Nacionalidad',
         'Numero_De_Pasaporte',
-        'Labor_en_Liquidacion',
         'Celular',
         'Email',
         'Pensionado_por_Invalidez',
         'Profesional',
         'Tipo_de_impuesto_unico',
         'Descuento_Prestamo_SII',
-        'Tipo_Jornada_Trabajo',
         'Tecnico_Extranjero',
     )

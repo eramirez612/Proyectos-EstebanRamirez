@@ -102,6 +102,22 @@ compensacion = [
     ('Los Andes', 'Los Andes'),
 ]
 
+descuento = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Anticipo', 'Anticipo'),
+    ('Bono de vacaciones', 'Bono vacaciones'),
+    ('Creditos personales CCAF', 'Creditos personales CCAF'),
+    ('Descuento convenido', 'Descuento convenido'),
+    ('Descuento dental CCAF', 'Descuento dental CCAF'),
+    ('Descuentos por seguro de vida CCAF', 'Descuentos por seguro de vida CCAF'),
+    ('Otros descuentos CCAF', 'Otros descuentos CCAF'),
+    ('Pension alimenticia', 'Pension alimenticia'),
+    ('Prestamo', 'Prestamo'),
+    ('Prestamo Solidario del Estado', 'Prestamo Solidario del Estado'),
+    ('Retencion', 'Retencion'),
+    ('Otros', 'Otros'),
+]
+
 regimen = [
     ('--Por favor Seleccione--', '--Por favor Seleccione--'),
     ('AFP', 'AFP'),
@@ -438,10 +454,75 @@ tipo_beneficiaros = [
 
 tramo = [
     ('--Por favor Seleccione--', '--Por favor Seleccione--'),
-    ('A','A'),
-    ('B','B'),
-    ('C','C'),
-    ('D','D'),
+    ('Primer Tramo A','Primer Tramo A'),
+    ('Segundo Tramo B','Segundo Tramo B'),
+    ('Tercer Tramo C','Tercer Tramo C'),
+    ('Sin Derecho D','Sin Derecho D'),
+]
+
+movimientos_personales = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Contratacion a plaazo indefinido','Contratacion a plaazo indefinido'),
+    ('Retiro','Retiro'),
+    ('Subsidios (Licencia)','Subsidios (Licencia)'),
+    ('Permiso sin goce de sueldos','Permiso sin goce de sueldos'),
+    ('Incorporacion en el lugar de trabajo','Incorporacion en el lugar de trabajo'),
+    ('Accidentes del trabajo','Accidentes del trabajo'),
+    ('Contratacion a plazo fijo','Contratacion a plazo fijo'),
+    ('Cambio contrato plazo fijo a plazo indefinido','Cambio contrato plazo fijo a plazo indefinido'),
+    ('Otros movimientos (ausentismos)','Otros movimientos (ausentismos)'),
+    ('Reliquidacion, premio, bono','Reliquidacion, premio, bono'),
+    ('Suspension de contrato acto de autoridad (Ley N°21.227)','Suspension de contrato acto de autoridad (Ley N°21.227)'),
+    ('Suspension de contrato por pacto (Ley N° 21.227)','Suspension de contrato por pacto (Ley N° 21.227)'),
+    ('Reduccion de jornada (Ley N° 21.227)','Reduccion de jornada (Ley N° 21.227)'),
+]
+
+adicional = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Acarreo 20','Acarreo 20'),
+    ('Aguinaldo fiestas patrias','Aguinaldo fiestas patrias'),
+    ('Aguinaldo navideño','Aguinaldo navideño'),
+    ('Amarra','Amarra'),
+    ('Asig. alta dir. pub','Asig. alta dir. pub'),
+    ('Asig. fisc D.L.3551','Asig. fisc D.L.3551'),
+    ('Asig. gestion colectiva','Asig. gestion colectiva'),
+    ('Asig. gestion institucional','Asig. gestion institucional'),
+    ('Asig. ley 18091 art. 17','Asig. ley 18091 art. 17'),
+    ('Asignacion familiar','Asignacion familiar'),
+    ('Asignacion familiar reintegro','Asignacion familiar reintegro'),
+    ('Asignacion familiar retroactiva','Asignacion familiar retroactiva'),
+    ('Asignacion zona','Asignacion zona'),
+    ('Bono Gratificacion legal','Bono Gratificacion legal'),
+    ('Bono colacion','Bono colacion'),
+    ('Bono de Produccion','Bono de Produccion'),
+    ('Bono transporte','Bono transporte'),
+    ('Comision por venta','Comision por venta'),
+    ('Compensatoria de salud','Compensatoria de salud'),
+    ('D.L.3501 art.2 incr 13,05','D.L.3501 art.2 incr 13,05'),
+    ('Formacion 20','Formacion 20'),
+    ('Gratificacion legal con tope','Gratificacion legal con tope'),
+    ('Gratificacion legal sin tope','Gratificacion legal sin tope'),
+    ('Horas extra','Horas extra'),
+    ('Ley 18566','Ley 18566'),
+    ('Ley 18675','Ley 18675'),
+    ('Ley 18717','Ley 18717'),
+    ('Ley 19528 art.5','Ley 19528 art.5'),
+    ('Mantencion caminos','Mantencion caminos'),
+    ('Raspar claros 20','Raspar claros 20'),
+    ('Tractor Acarreo 20','Tractor Acarreo 20'),
+    ('Trato','Trato'),
+    ('Viaticos','Viaticos'),
+]
+
+bonos = [
+    ('--Por favor Seleccione--', '--Por favor Seleccione--'),
+    ('Monto','Monto'),
+    ('Valor unitario y cantidad','Valor unitario y cantidad'),
+    ('Porcentaje del sueldo','Porcentaje del sueldo'),
+]
+
+profesion = [
+    ('', '')
 ]
 
 remuneraciones = [
@@ -1659,3 +1740,4 @@ Lista_SII = [
         ('970000	ACTIVIDADES DE LOS HOGARES COMO EMPLEADORES DE PERSONAL DOMÉSTICO','970000	ACTIVIDADES DE LOS HOGARES COMO EMPLEADORES DE PERSONAL DOMÉSTICO'),
         ('990000	ACTIVIDADES DE ORGANIZACIONES Y ÓRGANOS EXTRATERRITORIALES','990000	ACTIVIDADES DE ORGANIZACIONES Y ÓRGANOS EXTRATERRITORIALES'),
 ]
+

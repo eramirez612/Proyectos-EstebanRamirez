@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}Nueva Liquidacion{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+&nbsp;
+<form method="POST">
+    {% csrf_token %}
+    <h3>Datos Basicos</h3>
+    {{form_1|crispy}}
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}

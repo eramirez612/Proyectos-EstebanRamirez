@@ -1,0 +1,112 @@
+{% extends 'main/base.html' %}
+{% block title %}Datos de Liquidacion{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+&nbsp;
+<form method="POST">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>Regimen Provisional</h3></div>
+            {{form_2.Regimen_Provisional|as_crispy_field}}
+            <div id="afp-fields" style="display: none">
+                {{ form_2.Afp|as_crispy_field }}
+                {{ form_2.Ahorro_imponible|as_crispy_field }}
+                {{ form_2.Ahorro_Voluntario_Afp|as_crispy_field }}
+                {{ form_2.Desea_APV|as_crispy_field }}
+            </div>
+            <div id="ips-fields" style="display: none">
+                {{ form_2.Ex_caja|as_crispy_field }}
+                {{ form_2.Tasa_Ex_caja|as_crispy_field }}
+            </div>
+        </div>
+    </div>
+    <div id="apv-fields" style="display: none">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>APV</h3>
+                </div>
+                {{form_3|crispy}}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>Salud</h3></div>
+            {{form_4|crispy}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>No Imponibles</h3></div>
+            {{form_5|crispy}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>Adicionales</h3></div>
+            {{form_6|crispy}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>Descuentos</h3></div>
+            {{form_7|crispy}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"><h3>Movimientos personales</h3></div>
+            {{form_8|crispy}}
+        </div>
+    </div>
+    <div style="padding-top: 20px; padding-bottom: 20px;">
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div> 
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+        var choiceField = $('#id_Regimen_Provisional');
+        var checkField = $('#id_Desea_APV');
+        var afpFields = $('#afp-fields');
+        var ipsFields = $('#ips-fields');
+        var apvFields = $('#apv-fields');
+
+        function actualizarCampos() {
+            var valorSeleccionado = choiceField.val();
+            if (valorSeleccionado == 'AFP') {
+                afpFields.show();
+                ipsFields.hide();
+            } else if (valorSeleccionado == 'IPS (Ex-INP)') {
+                afpFields.hide();
+                ipsFields.show();
+            } else {
+                afpFields.hide();
+                ipsFields.hide();
+            }
+        }
+
+        function mostrarAPV() {
+            if (checkField.is(':checked')) {
+                apvFields.show();
+            } else {
+                apvFields.hide();
+            }  
+        }
+
+        actualizarCampos();
+        mostrarAPV();
+        choiceField.change(actualizarCampos);
+        checkField.change(mostrarAPV);
+    });
+
+</script>
+{% endblock %}

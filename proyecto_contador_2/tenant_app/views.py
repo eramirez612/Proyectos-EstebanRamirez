@@ -2,9 +2,31 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
 from django.forms.models import modelformset_factory, inlineformset_factory
-from  django.contrib.auth.decorators import login_required
+from  django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
+import requests
+from django.utils import timezone
+import pandas as pd
+from datetime import date
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
 # Create your views here.
+def not_admin(user):
+    if user:
+        return user.groups.filter(name='admin').count() == 0
+    return False
+
+def not_empleado(user):
+    if user:
+        return user.groups.filter(name='empleado').count() == 0
+    return False
 
 @login_required(login_url="/login")
 def home(request):
@@ -17,6 +39,27 @@ def TrabajadorList(request):
     return render(request, 'main/lista.html', data)
 
 @login_required(login_url="/login")
+def LiquidacionList(request, id):
+    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    liquidacion = Liquidacion.objects.filter(Datos_Empleado_id = id)
+    data = {
+        'liquidaciones': liquidacion,
+        'object': obj,
+        }
+    return render(request, 'main/lista_liquidaciones.html', data)
+
+
+@login_required(login_url="/login")
+def LiquidacionesList(request):
+    liquidacion = Liquidacion.objects.all()
+    data = {
+        'liquidaciones': liquidacion,
+        }
+    return render(request, 'main/lista_liquidaciones_total.html', data)
+
+
+@login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def nuevo_trabajador(request):
     form = Datos_EmpleadoForm()
     if request.method == 'POST':
@@ -25,199 +68,285 @@ def nuevo_trabajador(request):
             post = form.save(commit=False)
             post.autor = request.user
             post.save()
-            return redirect('/lista')
+            return redirect('lista')
     data = {'form': form,}
     
     return render(request, 'main/nuevo_trabajador.html', data)
 
 @login_required(login_url="/login")
-def actualizar_trabajador(request, id):
+@user_passes_test(not_empleado, login_url='/home')
+def nueva_liquidacion(request, id):
     obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+
+    form_1 = LiquidacionForm()
+
+    if request.method == 'POST':
+        form_1 = LiquidacionForm(request.POST)
+        if all([form_1.is_valid()]):
+            liquidacion = form_1.save(commit=False)
+            #--
+            liquidacion.Datos_Empleado = obj
+            #--
+            liquidacion.save()
+            return redirect('lista-liquidacion', id=obj.id)
+        
+    data = {
+        'form_1': form_1,
+        'object': obj
+        }
+    
+    return render(request, 'main/liquidacion.html', data)
+
+@login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
+def datos_liquidacion(request, id):
+    
+    obj = get_object_or_404(Liquidacion, id=id)
+    datos_empleado = Datos_Empleado.objects.get(Rut=obj.Datos_Empleado)
     try:
-        ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
+        ins_regimen = Regimen_Provisional.objects.get(Liquidacion_id=obj.id)
     except Regimen_Provisional.DoesNotExist:
         ins_regimen = None
     try:
-        ins_apv = APV.objects.get(id=obj.id)
+        ins_apv = APV.objects.get(Liquidacion_id=obj.id)
     except APV.DoesNotExist:
         ins_apv = None
     try:
-        ins_salud = Salud.objects.get(id=obj.id)
+        ins_salud = Salud.objects.get(Liquidacion_id=obj.id)
     except Salud.DoesNotExist:
         ins_salud= None
     try:
-        ins_liquidacion = Liquidacion.objects.get(id=obj.id)
-    except Liquidacion.DoesNotExist:
-        ins_liquidacion = None
-    try:
-        ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
+        ins_no_imponibles = No_Imponibles.objects.get(Liquidacion_id=obj.id)
     except No_Imponibles.DoesNotExist:
         ins_no_imponibles = None
     try:
-        ins_pago = Forma_de_pago.objects.get(id=obj.id)
-    except Forma_de_pago.DoesNotExist:
-        ins_pago = None
-        
-    form = Datos_EmpleadoForm(instance=obj)
+        ins_adicionales = Adicionales.objects.get(Liquidacion_id=obj.id)
+    except Adicionales.DoesNotExist:
+        ins_adicionales = None
+    try:
+        ins_descuentos = Descuentos.objects.get(Liquidacion_id=obj.id)
+    except Descuentos.DoesNotExist:
+        ins_descuentos = None
+    try:
+        ins_movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=obj.id)
+    except Movimiento_Personal.DoesNotExist:
+        ins_movimiento_personal = None
+
+    
     form_2 = RegimenForm(instance=ins_regimen)
     form_3 = ApvForm(instance=ins_apv)
     form_4 = SaludForm(instance=ins_salud)
-    form_5 = LiquidacionForm(instance=ins_liquidacion)
-    form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
-    form_7 = PagoForm(instance=ins_pago)
+    form_5 = No_ImponiblesForm(instance=ins_no_imponibles)
+    form_6 = AdicionalesForm(instance=ins_adicionales)
+    form_7 = DescuentosForm(instance=ins_descuentos)
+    form_8 = Movimiento_PersonalForm(instance=ins_movimiento_personal)
     if request.method == 'POST':
-        form = Datos_EmpleadoForm(request.POST, instance=obj)
+        
         form_2 = RegimenForm(request.POST, instance=ins_regimen)
         form_3 = ApvForm(request.POST, instance=ins_apv)
         form_4 = SaludForm(request.POST, instance=ins_salud)
-        form_5 = LiquidacionForm(request.POST, instance=ins_liquidacion)
-        form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
-        form_7 = PagoForm(request.POST, instance=ins_pago)
-        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(),  form_7.is_valid()]):
-            post = form.save(commit=False)
+        form_5 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
+        form_6 = AdicionalesForm(request.POST, instance=ins_adicionales)
+        form_7 = DescuentosForm(request.POST, instance=ins_descuentos)
+        form_8 = Movimiento_PersonalForm(request.POST, instance=ins_movimiento_personal)
+        if all([form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(), form_7.is_valid(), form_8.is_valid() ]):
             regimen = form_2.save(commit=False)
             apv = form_3.save(commit=False)
             salud = form_4.save(commit=False)
-            liquidacion = form_5.save(commit=False)
-            no_imponibles = form_6.save(commit=False)
-            pago = form_7.save(commit=False)
+            no_imponibles = form_5.save(commit=False)
+            adicionales = form_6.save(commit=False)
+            descuentos = form_7.save(commit=False)
+            movimientos_personal = form_8.save(commit=False)
             #--
-            regimen.Datos_Empleado = post
-            apv.Datos_Empleado = post
-            salud.Datos_Empleado = post
-            liquidacion.Datos_Empleado = post
-            no_imponibles.Datos_Empleado = post
-            pago.Datos_Empleado = post
+            regimen.Liquidacion = obj
+            apv.Liquidacion = obj
+            salud.Liquidacion = obj
+            no_imponibles.Liquidacion = obj
+            adicionales.Liquidacion = obj
+            descuentos.Liquidacion = obj
+            movimientos_personal.Liquidacion = obj
             #--
-            post.save()
+            
             regimen.save()
             apv.save()
             salud.save()
-            liquidacion.save()
             no_imponibles.save()
-            pago.save()
+            adicionales.save()
+            descuentos.save()
+            movimientos_personal.save()
 
-
-            return TrabajadorList(request)
+            return redirect('lista-liquidacion', id=datos_empleado.id)
     data = {
-        'form': form, 
         'form_2': form_2,
         'form_3': form_3,
         'form_4': form_4,
         'form_5': form_5,
         'form_6': form_6,
         'form_7': form_7,
+        'form_8': form_8,
         'object': obj
         }
     
-    return render(request, 'main/actualizar_trabajador.html', data)
+    return render(request, 'main/datos_liquidacion.html', data)
 
 @login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def detalle_trabajador(request, id):
-    obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
     try:
-        card_2 = Regimen_Provisional.objects.get(id=obj.id)
-    except Regimen_Provisional.DoesNotExist:
-        card_2 = RegimenForm()
-    try:
-        card_3 = APV.objects.get(id=obj.id)
-    except APV.DoesNotExist:
-        card_3 = ApvForm()
-    try:
-        card_4 = Salud.objects.get(id=obj.id)
-    except Salud.DoesNotExist:
-        card_4 = SaludForm()
-    try:
-        card_5 = Liquidacion.objects.get(id=obj.id)
-    except Liquidacion.DoesNotExist:
-        card_5 = LiquidacionForm()
-    try:
-        card_6 = No_Imponibles.objects.get(id=obj.id)
-    except No_Imponibles.DoesNotExist:
-        card_6 = No_ImponiblesForm()
-    try:
-        card_7 = Forma_de_pago.objects.get(id=obj.id)
+        ins_pago = Forma_de_pago.objects.get(id=obj.id)
     except Forma_de_pago.DoesNotExist:
-        card_7 = PagoForm()
+        ins_pago = None
+        
+    form = Datos_EmpleadoForm(instance=obj)
+    form_7 = PagoForm(instance=ins_pago)
+    if request.method == 'POST':
+        form = Datos_EmpleadoForm(request.POST, instance=obj)
+        form_7 = PagoForm(request.POST, instance=ins_pago)
+        if all([form.is_valid(), form_7.is_valid()]):
+            post = form.save(commit=False)
+            pago = form_7.save(commit=False)
+            #--
+            pago.Datos_Empleado = post
+            #--
+            post.save()
+            pago.save()
 
+            return TrabajadorList(request)
+        
     data = {
-        'card': obj, 
-        'card_2': card_2,
-        'card_3': card_3,
-        'card_4': card_4,
-        'card_5': card_5,
-        'card_6': card_6,
-        'card_7': card_7,
+        'card': form, 
+        'card_7': form_7,
+        'object': obj
         }
     return render(request, 'main/trabajador.html', data)
 
 
 @login_required(login_url="/login")
 def liquidacion(request, id):
-    obj =  get_object_or_404(Datos_Empleado, id=id, autor=request.user)
+    liquidacion = Liquidacion.objects.get(id=id)
+    datos_empleado = Datos_Empleado.objects.get(Rut=liquidacion.Datos_Empleado)
     try:
-        regimen = Regimen_Provisional.objects.get(id=obj.id)
+        regimen = Regimen_Provisional.objects.get(Liquidacion_id=liquidacion)
     except Regimen_Provisional.DoesNotExist:
         regimen = None
     try:
-        apv = APV.objects.get(id=obj.id)
+        apv = APV.objects.get(Liquidacion_id=liquidacion)
     except APV.DoesNotExist:
         apv = None
     try:
-        salud = Salud.objects.get(id=obj.id)
+        ins_salud = Salud.objects.get(Liquidacion_id=liquidacion)
     except Salud.DoesNotExist:
-        salud = None
+        ins_salud = None
     try:
-        liquidacion = Liquidacion.objects.get(id=obj.id)
-    except Liquidacion.DoesNotExist:
-        liquidacion = None
-    try:
-        no_imponibles = No_Imponibles.objects.get(id=obj.id)
+        no_imponibles = No_Imponibles.objects.get(Liquidacion_id=liquidacion)
     except No_Imponibles.DoesNotExist:
         no_imponibles = None
     try:
-        pago = Forma_de_pago.objects.get(id=obj.id)
-    except Forma_de_pago.DoesNotExist:
-        pago = None
+        adicionales = Adicionales.objects.get(Liquidacion_id=liquidacion)
+    except Adicionales.DoesNotExist:
+        adicionales = None
+    try:
+        descuentos = Descuentos.objects.get(Liquidacion_id=liquidacion)
+    except Descuentos.DoesNotExist:
+        descuentos = None
+    try:
+        movimiento_personal = Movimiento_Personal.objects.get(Liquidacion_id=liquidacion)
+    except Movimiento_Personal.DoesNotExist:
+        movimiento_personal = None
+    try:
+        impuesto = Impuesto.objects.get(Liquidacion_id=liquidacion)
+    except Impuesto.DoesNotExist:
+        impuesto = None
 
-    ingreso_minimo_mensual = ""
-    utm = ""
-    UF = "" #Ultimo dia del mes
-    tope_imponible_uf = "" #AFP y salud
-    tope_imponible_clp = tope_imponible_uf * UF #AFP y salud
-    tope_imponible_uf_cesantia = ""
+    uf_url = requests.get('https://mindicador.cl/api/uf')
+    utm_url = requests.get('https://mindicador.cl/api/utm')
 
-    sueldo_base = ""
-    sobresueldo = "" #horas extras
-    comision = ""
-    bono = ""
-    diferencia_gratificacion = ""
-    gratificacion_legal =((4.75*ingreso_minimo_mensual)/12) #4,75 sueldos minimos /12 meses o sueldo_base * 0.25
-    total_haberes_imponibles = sueldo_base + sobresueldo + comision + bono + diferencia_gratificacion + gratificacion_legal
+    uf = uf_url.json()["serie"][0]["valor"]
+    utm = utm_url.json()["serie"][0]["valor"]
 
-    otras_asignaciones = no_imponibles.Perdida_Caja + no_imponibles.Desgaste_Herramientas + no_imponibles.Trabajo_Remoto
-    transporte_y_colacion = no_imponibles.Colacion + no_imponibles.Movilizacion
-    asignacion_familiar = ""
-    total_haberes_no_imponibles = otras_asignaciones + transporte_y_colacion + asignacion_familiar
-
-    #Cotizacion obligatoria afp
-    pago_electronico_cotizacion_adicional = "" #costo afp
-    pago_electronico_cotizacion_obligatoria = "" #fondo individual
-    cotizacion_obligatoria_afp = pago_electronico_cotizacion_obligatoria + pago_electronico_cotizacion_adicional
+    dias = dias_habiles(liquidacion.Fecha_Emision)
     
-    cotizacion_salud = "" # 7%* total haberes imponible
-    adicional_cotizacion_salud = ""
-    seguro_de_cesantia = ""
+    ingreso_minimo_mensual = 326.500
+    utm = utm
+    UF = uf #Ultimo dia del mes
+    tope_imponible_uf = 81.6 #AFP y salud
+    tope_imponible_clp = tope_imponible_uf * UF #AFP y salud
+    tope_imponible_uf_cesantia = 122.6
+    dias_trabajados = dias - liquidacion.Dias_Descontados
 
-    sueldo_antes_de_impuestos = total_haberes_imponibles - cotizacion_obligatoria_afp - cotizacion_salud - adicional_cotizacion_salud - seguro_de_cesantia
-    tasa_impuesto_unica_segunda_categoria = ""
+    #haberes imponibles
+    sueldo_base = liquidacion.Sueldo_Base
+    bonos = adicionales.Valor
+    gratificacion = ((4.75*ingreso_minimo_mensual)/12)
+    total_haberes_imponibles = (float(sueldo_base) + float(bonos) + gratificacion)
+    
+    #no imponibles
+    colacion = no_imponibles.Colacion
+    movilizacion = no_imponibles.Movilizacion
+    trabajo_remoto = no_imponibles.Trabajo_Remoto
+    total_no_imponibles = (colacion + movilizacion + trabajo_remoto)
+
+    #descuentos
+    regimen = float(sueldo_base)*0.1145
+    salud = float(sueldo_base)*0.07
+    cesantia = float(sueldo_base)*0.6
+    descuento = descuentos.Valor
+    total_descuentos = regimen + salud + cesantia + float(descuento)
+
+    #sueldo liquido 
+    sueldo_liquido = (total_haberes_imponibles + float(total_no_imponibles) - total_descuentos)
+
+    #se necesita mejorar el calculo añadir tope de descuentos
+
+    data = {
+        'fecha': liquidacion.Fecha_Emision,
+        'cargo': liquidacion.Profesion,
+        'rut': datos_empleado.Rut,
+        'nombre': datos_empleado.Nombres,
+        'apellido': datos_empleado.Apellidos,
+        'dias_trabajados': dias_trabajados,
+        'dias_descontados': liquidacion.Dias_Descontados,
+        'inst_previsional': apv.Institucion_Apv,
+        'inst_salud': ins_salud.Institucion_Salud,
+        'ingreso_minimo_mensual': ingreso_minimo_mensual,
+        'bonos': bonos,
+        'gratificacion': round(gratificacion),
+        'total_haberes_imponibles': total_haberes_imponibles,
+        'colacion': colacion,
+        'movilizacion': movilizacion,
+        'trabajo_remoto': trabajo_remoto,
+        'total_no_imponibles': total_no_imponibles,
+        'regimen': regimen,
+        'salud': salud,
+        'cesantia': cesantia, 
+        'total_descuentos': total_descuentos,
+        'sueldo_base': sueldo_base,
+        'total_descuentos': total_descuentos,
+        'sueldo_liquido': sueldo_liquido,
+    }
+    
+    pdf = generar_pdf('main/pdf.html', data)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Report_for_%s.pdf" %(datos_empleado.Rut)
+    content = "inline; filename= %s" %(filename)
+    response['Content-Disposition']=content
+    return response
 
 
-
-
+def generar_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+    
 
 
 @login_required(login_url="/login")
+@user_passes_test(not_empleado, login_url='/home')
 def eliminarTrabajadores(request, id):
     trabajador = Datos_Empleado.objects.get(id = id)
     trabajador.delete()
@@ -235,83 +364,24 @@ def sign_up(request):
     
     return render(request, 'registration/sign_up.html', {'form': form})
 
-
-
-#def actualizar_trabajadorv2(request, id):
-#    obj = get_object_or_404(Datos_Empleado, id=id, autor=request.user)
-#    try:
-#        ins_regimen = Regimen_Provisional.objects.get(id=obj.id)
-#    except Regimen_Provisional.DoesNotExist:
-#        ins_regimen = None
-#    try:
-#        ins_apv = APV.objects.get(id=obj.id)
-#    except APV.DoesNotExist:
-#        ins_apv = None
-#    try:
-#        ins_salud = Salud.objects.get(id=obj.id)
-#    except Salud.DoesNotExist:
-#        ins_salud= None
-#    try:
-#        ins_liquidacion = Liquidacion.objects.get(id=obj.id)
-#    except Liquidacion.DoesNotExist:
-#        ins_liquidacion = None
-#    try:
-#        ins_no_imponibles = No_Imponibles.objects.get(id=obj.id)
-#    except No_Imponibles.DoesNotExist:
-#        ins_no_imponibles = None
-#    try:
-#        ins_pago = Forma_de_pago.objects.get(id=obj.id)
-#    except Forma_de_pago.DoesNotExist:
-#        ins_pago = None
-#    form = Datos_EmpleadoForm(instance=obj)
-#    form_2 = RegimenForm(instance=ins_regimen)
-#    form_3 = ApvForm(instance=ins_apv)
-#    form_4 = SaludForm(instance=ins_salud)
-#    form_5 = LiquidacionForm(instance=ins_liquidacion)
-#    form_6 = No_ImponiblesForm(instance=ins_no_imponibles)
-#    form_7 = PagoForm(instance=ins_pago)
-#    if request.method == 'POST':
-#        form = Datos_EmpleadoForm(request.POST, instance=obj)
-#        form_2 = RegimenForm(request.POST, instance=ins_regimen)
-#        form_3 = ApvForm(request.POST, instance=ins_apv)
-#        form_4 = SaludForm(request.POST, instance=ins_salud)
-#        form_5 = LiquidacionForm(request.POST, instance=ins_liquidacion)
-#        form_6 = No_ImponiblesForm(request.POST, instance=ins_no_imponibles)
-#        form_7 = PagoForm(request.POST, instance=ins_pago)
-#        if all([form.is_valid(), form_2.is_valid(), form_3.is_valid(), form_4.is_valid(), form_5.is_valid(), form_6.is_valid(),  form_7.is_valid()]):
-#            post = form.save(commit=False)
-#            regimen = form_2.save(commit=False)
-#            apv = form_3.save(commit=False)
-#            salud = form_4.save(commit=False)
-#            liquidacion = form_5.save(commit=False)
-#            no_imponibles = form_6.save(commit=False)
-#            pago = form_7.save(commit=False)
-#            #--
-#            regimen.Datos_Empleado = post
-#            apv.Datos_Empleado = post
-#            salud.Datos_Empleado = post
-#            liquidacion.Datos_Empleado = post
-#            no_imponibles.Datos_Empleado = post
-#            pago.Datos_Empleado = post
-#            #--
-#            post.save()
-#            regimen.save()
-#            apv.save()
-#            salud.save()
-#            liquidacion.save()
-#            #no_imponibles.save()
-#            pago.save()
-#
-#
-#            return TrabajadorList(request)
-#    data = {
-#        'form': form, 
-#        'form_2': form_2,
-#        'form_3': form_3,
-#        'form_4': form_4,
-#        'form_5': form_5,
-#        'form_7': form_7,
-#        'object': obj
-#        }
-#    
-#    return render(request, 'main/actualizar_trabajador.html', data)
+def dias_habiles(date_field):
+    # feriados nacionales en Chile
+    feriados = [
+        date_field.replace(month=1, day=1),   # Año Nuevo
+        date_field.replace(month=4, day=19),  # Día del Trabajo
+        date_field.replace(month=5, day=1),   # Día del Trabajo
+        date_field.replace(month=9, day=18),  # Día de las Glorias del Ejército
+        date_field.replace(month=9, day=19),  # Día de las Glorias del Ejército (Feriado Irrenunciable)
+        date_field.replace(month=10, day=12), # Día del Descubrimiento de Dos Mundos
+        date_field.replace(month=11, day=1),  # Día de Todos los Santos
+        date_field.replace(month=12, day=8),  # Inmaculada Concepción
+        date_field.replace(month=12, day=25), # Navidad
+    ]
+    
+    inicio = date_field.replace(day=1)
+    fin = inicio.replace(day=28) if inicio.month < 12 else inicio.replace(month=1, day=1, year=inicio.year+1)
+    dias = pd.date_range(start=inicio, end=fin, freq='D').to_pydatetime().tolist()
+    
+    dias_habiles = [d for d in dias if d.weekday() < 5 and d not in feriados]
+    
+    return len(dias_habiles)

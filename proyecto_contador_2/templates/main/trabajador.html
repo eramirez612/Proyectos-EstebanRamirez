@@ -2,125 +2,32 @@
 {% block title %}Trabajadores{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    .card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
 &nbsp;
-<div class="container-fluid">
-    {% csrf_token %}
-    <a href="/actualizar-trabajador/{{card.id}}" class="btn btn-info" role="button">Editar</a>
-    <a href="" class="btn btn-info" role="button">Sacar Liquidacion</a>
-    <div class="row align-items-start">
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Datos Personales</h5>
-                  <p class="card-text">Rut: {{card.Rut}}</p>
-                  <p class="card-text">Nombres: {{card.Nombres}}</p>
-                  <p class="card-text">Apellidos: {{card.Apellidos}}</p>
-                  <p class="card-text">Direccion: {{card.Direccion}}</p>
-                  <p class="card-text">Comuna: {{card.Comuna}}</p>
-                  <p class="card-text">Fecha de Nacimiento: {{card.Fecha_Nacimiento}}</p>
-                  <p class="card-text">Sexo: {{card.Sexo}}</p>
-                  <p class="card-text">Estado civil: {{card.Estado_civil}}</p>
-                  <p class="card-text">Nacionalidad: {{card.Nacionalidad}}</p>
-                  <p class="card-text">Numero de pasaporte: {{card.Numero_De_Pasaporte}}</p>
-                  <p class="card-text">Labor en liquidacion: {{card.Labor_en_Liquidacion}}</p>
-                  <p class="card-text">Celular: {{card.Celular}}</p>
-                  <p class="card-text">Email: {{card.Email}}</p>
-                  <p class="card-text">Pensionado por Invalidez: {{card.Pensionado_por_Invalidez|yesno:"Si, No"}}</p>
-                  <p class="card-text">Profesional: {{card.Profesional|yesno:"Si, No"}}</p>
-                  <p class="card-text">Tipo de impuesto unico: {{card.Tipo_de_impuesto_unico}}</p>
-                  <p class="card-text">Descuento prestamo SII: {{card.Descuento_Prestamo_SII|yesno:"Si, No"}}</p>
-                  <p class="card-text">Tipo de Jornada trabajo: {{card.Tipo_de_Jornada_Trabajo}}</p>
-                  <p class="card-text">Tecnico Extranjero: {{card.Tecnico_Extranjero|yesno:"Si, No"}}</p>
-                  
-                  <a href="#" class="card-link">Another link</a>
-                </div>
+<form method="POST">
+    <div class="container-fluid">
+        {% csrf_token %}
+        <h1>{{total}}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Datos Personales</h5>
+                {{card|crispy}}
             </div>
         </div>
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Regimen Provisional</h5>
-                  <p class="card-text">Regimen Provisional: {{card_2.Regimen_Provisional}}</p>
-                  <p class="card-text">AFP: {{card_2.Afp}}</p>
-                  <p class="card-text">Ahorro imponible: {{card_2.Ahorro_imponible}}</p>
-                  <p class="card-text">Puesto de trabajo pesado: {{card_2.Puesto_Trabajo_Pesado}}</p>
-                  <p class="card-text">Cotizacion de trabajo pesado: {{card_2.Cotizacion_Trabajo_Pesado}}</p>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">AFP</h6>
-                  <p class="card-text">Ahorro voluntario AFP: {{card_2.Ahorro_Voluntario_Afp}}</p>
-                  <p class="card-text">Desea APV: {{card_2.Desea_APV}}</p>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">IPS</h6>
-                  <p class="card-text">Ex caja: {{card_2.EX_caja}}</p>
-                  <p class="card-text">Tasa Ex caja: {{card_2.Tasa_Ex_caja}}</p>
-                </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Forma de pago</h5>
+                {{card_7|crispy}}
             </div>
         </div>
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">APV</h5>
-                  <p class="card-text">Institucion APV: {{card_3.Institucion_Apv}}</p>
-                  <p class="card-text">Nro contrato APV: {{card_3.Nro_Contrato_Apv}}</p>
-                  <p class="card-text">Forma pago APV: {{card_3.Forma_Pago_Apv}}</p>
-                  <p class="card-text">Regimen APV: {{card_3.Regimen_Apv}}</p>
-                  <p class="card-text">Ahorro pesos: {{card_3.Ahorro_Pesos}}</p>
-                  <p class="card-text">Ahorro UF: {{card_3.Ahorro_UF}}</p>
-                  <p class="card-text">Deposito convenido: {{card_2.Deposito_Convenido}}</p>
-                </div>
-            </div>
+        <div style="padding-top: 20px; padding-bottom: 20px;">
+            <button type="submit" class="btn btn-success">Guardar</button>
         </div>
     </div>
-    &nbsp;
-    <div class="row align-items-start">
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Salud</h5>
-                  <p class="card-text">Insitucion de salud: {{card_4.Institucion_Salud}}</p>
-                  <p class="card-text">Nro fun incorporacion: {{card_4.Nro_Fun_Incorporacion}}</p>
-                  <p class="card-text">Moneda plano salud: {{card_4.Moneda_Plano_Salud}}</p>
-                  <p class="card-text">Cotizacion pactada salud: {{card_4.Cotizacion_Pactada_Salud}}</p>
-                  <p class="card-text">Cotizacion Voluntaria salud (pesos): {{card_4.Cotizacion_Voluntaria_Salud_Pesos}}</p>
-                  <p class="card-text">Cotizacion Voluntaria salud (UF): {{card_4.Cotizacion_Voluntaria_Salud_Uf}}</p>
-                  <p class="card-text">Pago_Isapre_Proporcional: {{card_4.Pago_Isapre_Proporcional|yesno:"Si, No"}}</p>
-                  
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Liquidacion</h5>
-                  <p class="card-text">Tipo de trabajador: {{card_5.Tipo_Trabajador}}</p>
-                  <p class="card-text">Tipo de sueldo: {{card_5.Tipo_Sueldo}}</p>
-                  <p class="card-text">Forma Pago Sueldo: {{card_5.Forma_Pago_Sueldo}}</p>
-                  <p class="card-text">Horas Semanales: {{card_5.Horas_Semanales}}</p>
-                  <p class="card-text">Informar horas trabajadas: {{card_5.Informar_Horas_Trabajadas|yesno:"Si, No"}}</p>
-                  <p class="card-text">Forma Calculo Sueldo: {{card_5.Forma_Calculo_Sueldo}}</p>
-                  <p class="card-text">Monto Calculo_Sueldo: {{card_5.Monto_Calculo_Sueldo}}</p>
-                  <p class="card-text">Centro Costo: {{card_5.Centro_Costo}}</p>
-                  <p class="card-text">Valor hora normal: {{card_5.Valor_Hora_Normal}}</p>
-                  <p class="card-text">Valor dia normal: {{card_5.Valor_Dia_Normal}}</p>
-                  <p class="card-text">Valor recargo dominical: {{card_5.Valor_Recargo_Dominimal}}</p>
-                  <p class="card-text">Duracion contrato: {{card_5.Duracion_Contrato}}</p>
-                  <p class="card-text">Fecha ingreso: {{card_5.Fecha_Ingreso}}</p>
-                  <p class="card-text">Fecha termino: {{card_5.Fecha_Termino}}</p>
-                  <p class="card-text">Posee seguro cesantia: {{card_5.Posee_Seguro_Cesantia}}</p>
-                  <p class="card-text">Ingreso seguro cesantia: {{card_5.Ingreso_Seguro_Cesantia}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 25rem;">
-                <div class="card-body">
-                  <h5 class="card-title">No imponibles</h5>
-                  <p class="card-text">Colacion: {{card_6.Colacion}}</p>
-                  <p class="card-text">Movilizacion: {{card_6.Movilizacion}}</p>
-                  <p class="card-text">Perdido caja: {{card_6.Perdida_Caja}}</p>
-                  <p class="card-text">Desgaste herramientas: {{card_6.Desgaste_Herramientas}}</p>
-                  <p class="card-text">Trabajo remoto: {{card_6.Trabajo_Remoto}}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</form>
 {% endblock %}

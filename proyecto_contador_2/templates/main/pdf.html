@@ -1,0 +1,77 @@
+{% block title %}Liquidaciones{% endblock %}
+{% block content %}
+{% load humanize %}
+<body>
+    <div id="pdf-header"></div>
+        <h1>Liquidacion de Remuneraciones</h1>
+        <h1>{{fecha}}</h1>
+    <div id="content">
+        <hr>
+        <div id="pdf-datos">
+            <table>
+                <tr>
+                    <td><p>Nombre: {{nombre}} {{apellido}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Rut: {{rut}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Cargo: {{cargo}}</p></td>
+                    <td><p>Dias Trabajados: {{dias_trabajados}}</p></td>
+                    <td><p>Dias Descontados: {{dias_descontados}}</p></td>
+                </tr>
+            </table>
+        </div>
+        &nbsp;
+        <h5>Prevision</h5>
+        <hr>
+        <div id="pdf-prevision">
+            <p>Inst.Previsional: {{inst_previsional}}</p>
+        </div>
+        &nbsp;
+        <h5>Salud</h5>
+        <hr>
+        <div id="pdf-salud">
+            <p>Inst.Salud: {{inst_salud}}</p>
+        </div>
+        &nbsp;
+        <div id="pdf-haberes">
+            <h5>Haberes</h5>
+            <hr>
+            <table>
+                <tr>
+                    <td><p>Sueldo Base: {{sueldo_base|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Bonos: {{bonos|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Gratificacion: {{gratificacion|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Total Haberes Imponibles: {{total_haberes_imponibles|floatformat:"0"|intcomma}}</p></td>
+                </tr>
+            </table>
+            <h5>No Imponibles</h5><hr>
+            <table>
+                <tr>
+                    <td><p>Colacion: {{colacion|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Moviliacion: {{movilizacion|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Trabajo Remoto: {{trabajo_remoto|floatformat:"0"|intcomma}}</p></td>
+                    <td><p>Total No Imponibles: {{total_no_imponibles|floatformat:"0"|intcomma}}</p></td>
+                </tr>
+            </table>
+        </div>
+        &nbsp;
+        <h5>Descuentos</h5>
+        <hr>
+        <table>
+            <tr>
+                <td><p>Regimen Previsional: {{regimen|floatformat:"0"|intcomma}}</p></td>
+                <td><p>Salud: {{salud|floatformat:"0"|intcomma}}</p></td>
+                <td><p>Cesantia: {{cesantia|floatformat:"0"|intcomma}}</p></td>
+                <td><p>Total Descuentos: {{total_descuentos|floatformat:"0"|intcomma}}</p></td>
+            </tr>
+        </table>
+        <hr>
+        <div id="pdf-totales">
+            <h1>LIQUIDO A RECIBIR: {{sueldo_liquido|floatformat:"0"|intcomma}}</h1>
+        </div>
+        <hr>
+    </div>
+</body>
+{% endblock %}

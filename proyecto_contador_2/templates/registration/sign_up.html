@@ -3,8 +3,16 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <form method="post">
-    {% csrf_token %}{{form|crispy}}
-    <p>Ya tienes una<a href="/login">cuenta</a>?</p>
-    <button type="submit" class="btn btn-success">Registrar</button>
+    {% csrf_token %}
+    <div class="card" style="margin: 100px;">
+        <div class="card-body">
+            <div class="card-title"><h3>Sign-up</div>
+            {{form|crispy}}
+            <p>Ya tienes una<a href="/login">cuenta</a>?</p>
+            <div style="margin: auto; margin-bottom: 10px; width: auto;">
+                <button type="submit" class="btn btn-success">Registrar</button>
+            </div> 
+        </div>
+    </div>
 </form>
 {% endblock %}
